@@ -16,6 +16,7 @@ Imports:
     survival,
     survminer,
     stats,
+    utils
 Suggests: 
     knitr,
     rmarkdown
