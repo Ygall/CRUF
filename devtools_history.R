@@ -7,5 +7,8 @@ usethis::use_package("utils") # Utile uniquement pour les fonctions de select
 usethis::use_build_ignore("devtools_history.R")
 usethis::use_git_ignore("devtools_history.R")
 
+usethis::use_build_ignore("workflow.R")
+usethis::use_git_ignore("workflow.R")
+
 # Ignorer le .Rproj
 usethis::use_git_ignore("YPJ.Rproj")
