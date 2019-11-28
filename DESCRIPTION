@@ -1,0 +1,13 @@
+Package: YPJ
+Title: Fonctions Utilitaires Personnelles
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Yves",
+           family = "Gallien",
+           role = c("aut", "cre"),
+           email = "yves.gallien@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Collection de fonctions utiles pour analyse de données de recherche clinique.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
