@@ -28,7 +28,7 @@ result.cox <- function (modele)
           sep = "")
   for (i in 1:length(res$IC))
   {
-    res$pval[i] <- as.character(format.pv(summary(modele)$coef[i, 5]))
+    res$pval[i] <- as.character(format_pv(summary(modele)$coef[i, 5]))
   }
   return(res)
 }
@@ -157,7 +157,7 @@ qualitbis <-
               test, ".test", sep = ""
             ), tab)))
         }
-        p.value <- format.pv(restest$p.value)
+        p.value <- format_pv(restest$p.value)
         #p.value <- ifelse (p.value>0.055,signif(p.value,1),signif(p.value,2))
         #p.value <- ifelse (p.value<0.0001,"<0.0001",p.value)
         #p.value <- ifelse(nchar(as.character(p.value))==3,paste(p.value,"0",sep=""),p.value)
@@ -376,7 +376,7 @@ quantitbis <-
           suppressWarnings(eval(call(paste(
             test, ".test", sep = ""
           ), x ~ y)))
-        p.value <- format.pv(restest$p.value)
+        p.value <- format_pv(restest$p.value)
         #p.value <- ifelse (p.value>0.055,signif(p.value,1),signif(p.value,2))
         #p.value <- ifelse (p.value<0.0001,"<0.0001",p.value)
         #p.value <- ifelse(nchar(as.character(p.value))==3,paste(p.value,"0",sep=""),p.value)

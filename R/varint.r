@@ -1,9 +1,10 @@
 # Checker si une variable d'intérêt est présente
-#   Subset dans une liste des différents modalités de la variable
-#   Reprendre le nom de la variable d'intérêt dans un vecteur et ses modalités pour la suite, dans des attributs
-#   Supprimer la variable d'intérêt de la description
+#  Subset dans une liste des différents modalités de la variable
+#  Reprendre le nom de la variable d'intérêt dans un vecteur et ses modalités
+#  pour la suite, dans des attributs
+#  Supprimer la variable d'intérêt de la description
 
-make.varint <- function(data, varint = NULL) {
+make_varint <- function(data, varint = NULL) {
   if (!is.null(varint)) {
     n <- nlevels(data[, varint])
 
@@ -28,7 +29,7 @@ make.varint <- function(data, varint = NULL) {
 }
 
 # TODO : A revoir
-varint.check <- function(varint) {
+varint_check <- function(varint) {
   if (nlevels(varint) == 0) {
     if (is.logical(unique(varint))) {
       varint <- factor(varint)

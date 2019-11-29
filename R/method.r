@@ -6,10 +6,10 @@
 #     - Ordonné : Effectif, % des modalités, dans l'ordre des modalités
 #     - Non ordonné : Selon la fréquence d'apparition : % + effectif
 
-make.method <- function(data,
-                        defaultMethod = c("cont", "bino", "cate", "ordo")) {
+make_method <- function(data,
+                        default_method = c("cont", "bino", "cate", "ordo")) {
 
-  assign.method <- function(y) {
+  assign_method <- function(y) {
     if (is.numeric(y)) return(1)
     if (nlevels(y) == 2) return(2)
     if (is.ordered(y) && nlevels(y) > 2) return(4)
@@ -24,9 +24,9 @@ make.method <- function(data,
   names(method) <- names(data)
   for (j in names(data)) {
     y <- data[, j]
-    def <- sapply(y, assign.method)
+    def <- sapply(y, assign_method)
     k <- ifelse(all(diff(def) == 0), k <- def[1], 1)
-    method[j] <- defaultMethod[k]
+    method[j] <- default_method[k]
   }
   method
 }
@@ -104,4 +104,3 @@ make.method <- function(data,
 #   method[nimp == 0] <- ""
 #   unlist(method)
 # }
-

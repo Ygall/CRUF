@@ -12,21 +12,21 @@
 #' @export
 #'
 # #' @examples
-cox.result <- function(obj, varname = NULL, test = "Likelihood"){
+cox_result <- function(obj, varname = NULL, test = "Likelihood") {
 
-# Transformation d'un objet coxph en survfit
-  if (!(class(obj) %in% c("coxph", "survfit"))) {
-    stop("Unavailable object type, either \"coxph\" or \"survfit\" needed")
+# Transformation d'un objet coxph_fit en survfit
+  if (!(class(obj) %in% c("coxph_fit", "survfit"))) {
+    stop("Unavailable object type, either \"coxph_fit\" or \"survfit\" needed")
   }
 
-  if (class(obj) == "coxph") {
-    formula = as.formula(obj$call$formula)
-    data = eval(obj$call$data)
+  if (class(obj) == "coxph_fit") {
+    formula <- as.formula(obj$call$formula)
+    data    <- eval(obj$call$data)
   }
 
   if (class(obj) == "survfit") {
-    formula = as.formula(obj$call$formula)
-    data = eval(obj$call$data)
+    formula <- as.formula(obj$call$formula)
+    data    <- eval(obj$call$data)
   }
 
   if (is.null(varname)) {
@@ -39,62 +39,68 @@ cox.result <- function(obj, varname = NULL, test = "Likelihood"){
 
   # Fit des trois classes nécessaires
 suppressWarnings({
-  KM    <- survfit( formula = as.formula(obj$call$formula), data = eval(obj$call$data))
-  COXPH <- coxph(   formula = as.formula(obj$call$formula), data = eval(obj$call$data))
+  km    <- survfit(formula = as.formula(obj$call$formula),
+                    data = eval(obj$call$data))
+  coxph_fit <- coxph_fit(formula = as.formula(obj$call$formula),
+                    data = eval(obj$call$data))
 })
   if (test == "LogRank") {
-    LR    <- NULL
-    try(LR    <- survdiff(formula = as.formula(obj$call$formula), data = eval(obj$call$data)), silent = T)
+    lr        <- NULL
+    try(lr    <- survdiff(formula = as.formula(obj$call$formula),
+                          data = eval(obj$call$data)),
+        silent = T)
   }
 
 
-  varint <- names(COXPH$assign)
-  lev <- levels(factor(data[ , varint]))
+  varint <- names(coxph_fit$assign)
+  lev <- levels(factor(data[, varint]))
 
-  if (length(unique(eval(obj$call$data)[ , varint])) == 1){
+  if (length(unique(eval(obj$call$data)[, varint])) == 1) {
     stop("Data for only one level of variable, impossible to compute results")
   }
 
-  if (sum(KM$n.event) == 0) {
+  if (sum(km$n.event) == 0) {
     warning("No event, impossible to compute results")
-    res.table <- t(as.data.frame(summary(KM)$table[4:3]))
+    res_table <- t(as.data.frame(summary(km)$table[4:3]))
   } else {
-    res.table <- summary(KM)$table[ , 4:3]
+    res_table <- summary(km)$table[, 4:3]
   }
 
-  res.table2 <- NULL
-  for(i in seq_along(lev)){
+  res_table2 <- NULL
+  for (i in seq_along(lev)) {
     if (i == 1) {
-      HR <- 1
-      IC <- ""
+      hr <- 1
+      ic <- ""
       pval <- ""
       if (test == "LogRank") {
-        HR <- ""
+        hr <- ""
       }
     } else {
-      HR <- round(exp(coef(COXPH)), 2)
-      IC <- paste0("[", round(summary(COXPH)$conf.int[3], 2), ";", round(summary(COXPH)$conf.int[4], 2), "]")
-      pval <- signif(summary(COXPH)$coef[5], 2)
+      hr <- round(exp(coef(coxph_fit)), 2)
+      ic <- paste0("[", round(summary(coxph_fit)$conf.int[3], 2), ";",
+                        round(summary(coxph_fit)$conf.int[4], 2), "]")
+      pval <- signif(summary(coxph_fit)$coef[5], 2)
       if (test == "LogRank") {
-        if (!is.null(LR)) {
-          pval <- paste0(signif(pchisq(LR$chisq, length(LR$n) - 1), 2), "*")
+        if (!is.null(lr)) {
+          pval <- paste0(signif(pchisq(lr$chisq, length(lr$n) - 1), 2), "*")
         } else {
-          pval <- paste0(signif(summary(COXPH)$coef[5], 2), "*")
+          pval <- paste0(signif(summary(coxph_fit)$coef[5], 2), "*")
         }
-        HR <- ""
-        IC <- ""
+        hr <- ""
+        ic <- ""
       }
     }
 
-    res.table2 <- rbind(res.table2, c(HR, IC, pval))
+    res_table2 <- rbind(res_table2, c(hr, ic, pval))
   }
 
-  res.table <- cbind("", lev, res.table, res.table2)
+  res_table <- cbind("", lev, res_table, res_table2)
 
   wip <- c(varname, "", "", "", "", "", "")
 
-  res.table <- rbind(wip, res.table)
+  res_table <- rbind(wip, res_table)
 
-  colnames(res.table) <- c("Variable", "Group", "N Event", "N", "HR", "IC", "pval")
-  return(res.table)
+  colnames(res_table) <- c("Variable", "Group", "N Event", "N",
+                           "HR", "IC", "pval")
+  return(res_table)
 }

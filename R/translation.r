@@ -1,4 +1,4 @@
-#' \code{make.language}
+#' \code{make_language}
 #'
 #' Exit language from description table
 #' @param data The table to be translated
@@ -8,23 +8,22 @@
 #' @export
 #'
 #' @examples
-#' make.language(AirPassengers, "fr")
+#' make_language(AirPassengers, "fr")
 
-make.language <- function(data, lang) {
-  # Permettre de transformer tous les noms dépendants de la fonction en une autre langue
+make_language <- function(data, lang) {
+  # Permettre de transformer tous les noms dépendants de la fonction en une
+  # autre langue
   #  Idéalement à mettre à la fin de la fonction.
-  data <- switch (lang,
+  data <- switch(lang,
     en = data,
-    fr = make.french(data)
+    fr = make_french(data)
   )
 
   return(data)
 }
 
-make.french <- function(data) {
-
+make_french <- function(data) {
   # Translate in french
-  #data[""] <- ""
-
-  return(data())
+  # data[""] <- ""
+  return(data)
 }

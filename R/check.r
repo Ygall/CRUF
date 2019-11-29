@@ -1,4 +1,4 @@
-check.data <- function(data) {
+check_data <- function(data) {
     # data conformity :
     # - matrix or dataframe
     # - no duplicated names

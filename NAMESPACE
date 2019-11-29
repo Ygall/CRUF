@@ -2,7 +2,7 @@
 
 export(TABKRIS)
 export(cox.result)
-export(make.language)
+export(make_language)
 export(selectNOMS)
 import(stats)
 import(survival)
