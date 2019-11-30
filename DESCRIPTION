@@ -14,10 +14,10 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    survival,
-    survminer,
+    utils,
     stats,
-    utils
+    survminer,
+    survival
 Suggests: 
     knitr,
     rmarkdown

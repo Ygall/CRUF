@@ -1,3 +1,5 @@
+#' @importFrom stats aov qnorm sd
+
 or.calc <- function(obj, alpha = 0.05)
   ##
   ## calculer un OR ? partir d'un objet (r?sultat d'un certain mod?le)

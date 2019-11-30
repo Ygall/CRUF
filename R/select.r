@@ -2,8 +2,7 @@
 #'
 #' @param fichier Le fichier a passer
 #'
-#' @import utils
-#'
+#' @importFrom utils menu select.list
 #' @return Permet de sélectionner les noms dans un vecteur
 #' @export
 #'

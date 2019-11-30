@@ -5,9 +5,9 @@
 #' @param test     Test à réaliser
 #'
 #' @return Une dataframe renvoyant la présentation d'un modèle de survie
-#' @import survival
-#' @import survminer
-#' @import stats
+#'
+#' @importFrom stats as.formula coef pchisq
+#' @importFrom survival survfit survdiff
 #'
 #' @export
 #'

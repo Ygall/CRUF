@@ -42,9 +42,8 @@ tabkris_2 <- function(data,
                       default_method = c("cont", "bino", "cate", "ordo"),
                       default_test   = c("stud", "chisq", "chisq", "chisq"),
                       explicit_na = FALSE,
-                      digits = NULL,
+                      digits = 2,
                       return_table = TRUE) {
-
   # Check
   data  <- check_data(data)
   names <- check_names(data, names)
@@ -72,12 +71,18 @@ tabkris_2 <- function(data,
   data <- make_varint(data, varint)
 
   if (return_table == TRUE) {
-  # Description
-  result <- make_result(data, names, varint, method, test, default_method,
-                        default_test, explicit_na, digits)
+    # Description
+    result <-
+      make_result(data,
+                  names,
+                  varint,
+                  method,
+                  test,
+                  explicit_na,
+                  digits)
 
-  # Translate
-  result <- make_language(result, lang)
+    # Translate
+    result <- make_language(result, lang)
 
   } else {
     result <- list(names = names,
@@ -103,3 +108,5 @@ tabkris_2 <- function(data,
 # default_test   = c("stud", "chisq", "chisq", "chisq")
 # digits <- 2
 # return_table = TRUE
+#
+# tabkris_2(data = boys)

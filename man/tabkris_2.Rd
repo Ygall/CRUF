@@ -14,7 +14,7 @@ tabkris_2(
   default_method = c("cont", "bino", "cate", "ordo"),
   default_test = c("stud", "chisq", "chisq", "chisq"),
   explicit_na = FALSE,
-  digits = NULL,
+  digits = 2,
   return_table = TRUE
 )
 }

@@ -1,5 +1,6 @@
 # Packages et fonctions utilisées
 usethis::use_package("stats")
+usethis::use_package("survival")
 usethis::use_package("survminer")
 usethis::use_package("utils") # Utile uniquement pour les fonctions de select
 

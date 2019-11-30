@@ -78,9 +78,6 @@ check_args <- function(lang,
     }
 
     # Check le format de digits
-    if (is.null(digits)) {
-        options("digits")$digits
-    }
     if (!is.numeric(digits)) {
         stop("Argument digits not numeric", call. = FALSE)
     } else if (digits < 0 || digits > 15) {
@@ -105,6 +102,8 @@ check_method <- function(data, method) {
             ))
         }
     }
+
+    #TODO Check l'adéquation entre les methods et les data
 }
 
 check_test <- function(data, test, varint) {
