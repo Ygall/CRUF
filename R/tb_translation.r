@@ -23,7 +23,6 @@ make_language <- function(data, lang) {
 }
 
 make_french <- function(data) {
-  # Translate in french
-  # data[""] <- ""
+ # Translate in french
   return(data)
 }

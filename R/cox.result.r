@@ -39,15 +39,15 @@ cox_result <- function(obj, varname = NULL, test = "Likelihood") {
 
   # Fit des trois classes nécessaires
 suppressWarnings({
-  km    <- survfit(formula = as.formula(obj$call$formula),
-                    data = eval(obj$call$data))
-  coxph_fit <- coxph_fit(formula = as.formula(obj$call$formula),
-                    data = eval(obj$call$data))
+  km    <- survfit(formula = formula,
+                    data = data)
+  coxph_fit <- coxph_fit(formula = formula,
+                    data = data)
 })
   if (test == "LogRank") {
     lr        <- NULL
-    try(lr    <- survdiff(formula = as.formula(obj$call$formula),
-                          data = eval(obj$call$data)),
+    try(lr    <- survdiff(formula = formula,
+                          data = data),
         silent = T)
   }
 
@@ -55,7 +55,7 @@ suppressWarnings({
   varint <- names(coxph_fit$assign)
   lev <- levels(factor(data[, varint]))
 
-  if (length(unique(eval(obj$call$data)[, varint])) == 1) {
+  if (length(unique(data[, varint])) == 1) {
     stop("Data for only one level of variable, impossible to compute results")
   }
 

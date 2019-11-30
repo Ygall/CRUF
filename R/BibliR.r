@@ -26,7 +26,7 @@ result.cox <- function (modele)
           round(modele.detail[, 4], 2) ,
           "]",
           sep = "")
-  for (i in 1:length(res$IC))
+  for (i in seq_along(res$IC))
   {
     res$pval[i] <- as.character(format_pv(summary(modele)$coef[i, 5]))
   }
@@ -134,7 +134,7 @@ qualitbis <-
       if (sum(nb.na) == dim(baz)[1])
       {
         tmpna <- NULL
-        for (i in 1:length(levels(y)))
+        for (i in seq_along(levels(y)))
         {
           tmpna <- c(tmpna, nb.na[i], "")
         }
@@ -393,11 +393,11 @@ quantitbis <-
         truc <- paste(tempo[, 3], " [", tempo[, 2], ";", tempo[, 5], "]", sep =
                         "")
         tmp <- NULL
-        for (i in 1:length(levels(y)))
+        for (i in seq_along(levels(y)))
         {
           tmp <- cbind(tmp, paste(eff[i] - nb.na[i]), paste(truc[i]))
         }
-        for (i in 1:length(tmp))
+        for (i in seq_along(tmp))
         {
           if (tmp[i] == "NA [NA;NA]")
             tmp[i] <- ""
@@ -424,11 +424,11 @@ quantitbis <-
                 ")",
                 sep = "")
         tmp <- NULL
-        for (i in 1:length(levels(y)))
+        for (i in seq_along(levels(y)))
         {
           tmp <- cbind(tmp, paste(eff[i] - nb.na[i]), paste(truc[i]))
         }
-        for (i in 1:length(tmp))
+        for (i in seq_along(tmp))
         {
           if (tmp[i] == "NA [NA;NA] (NA;NA)")
             tmp[i] <- ""
@@ -446,11 +446,11 @@ quantitbis <-
         tmp2 <- signif(tmp2, digits = digits)
         truc <- paste(tempo[, 4], "(", tmp2, ")", sep = "")
         tmp <- NULL
-        for (i in 1:length(levels(y)))
+        for (i in seq_along(levels(y)))
         {
           tmp <- cbind(tmp, paste(eff[i] - nb.na[i]), paste(truc[i]))
         }
-        for (i in 1:length(tmp))
+        for (i in seq_along(tmp))
         {
           if (tmp[i] == "NaN (NA)")
             tmp[i] <- ""
@@ -466,11 +466,11 @@ quantitbis <-
       {
         truc <- paste(tempo[, 4], "(", tempo[, 1], ";", tempo[, 6], ")", sep = "")
         tmp <- NULL
-        for (i in 1:length(levels(y)))
+        for (i in seq_along(levels(y)))
         {
           tmp <- cbind(tmp, paste(eff[i] - nb.na[i]), paste(truc[i]))
         }
-        for (i in 1:length(tmp))
+        for (i in seq_along(tmp))
         {
           if (tmp[i] == "NaN (NA;NA)")
             tmp[i] <- ""

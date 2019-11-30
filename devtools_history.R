@@ -12,3 +12,5 @@ usethis::use_git_ignore("workflow.R")
 
 # Ignorer le .Rproj
 usethis::use_git_ignore("YPJ.Rproj")
+
+devtools::document()
