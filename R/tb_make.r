@@ -142,7 +142,7 @@ make_result <-
 
       if (test_yn == TRUE) {
         tested <-
-          make_table_test(temp, name, method, test, explicit_na, digits)
+          make_table_test(temp, name, method, test, explicit_na, digits, varint)
 
         result_test <- cbind.data.frame(result_test, tested)
       }
@@ -267,7 +267,7 @@ make_desc_cont <- function(r, temp, name, digits, pres_quant) {
                    round(max(vec, na.rm = T), digits), "}")
   }
 
-  mat[1, 1] <- length(!is.na(vec))
+  mat[1, 1] <- sum(!is.na(vec))
   mat[1, 2] <- paste0(res1, res2, res3)
 
   return(mat)
@@ -279,7 +279,8 @@ make_table_test <-
            method,
            test,
            explicit_na,
-           digits) {
+           digits,
+           varint) {
     res <- NULL
 
     exp_na <- as.numeric(explicit_na)
@@ -297,10 +298,11 @@ make_table_test <-
     mat[1, 1] <- switch(
       test[name],
       stud   = "stud",
-      fish   = "fisher",
-      krusk  = "kruskal",
-      chisq  = "chisq",
       wilcox = "wilcox",
+      krusk  = "kruskal",
+      chisq  = signif(chisq.test(boys[, name], boys[, varint])$p.value, digits),
+      fish   = signif(fisher.test(boys[, name], boys[, varint],
+                           simulate.p.value = T)$p.value, digits)
     )
 
     res <- data.frame(mat, stringsAsFactors = F)
