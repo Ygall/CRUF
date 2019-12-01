@@ -109,7 +109,7 @@ qualitbis <-
           cbind(c(nom, rep("", length(ref) - 1)), ref, tab, paste(pourc, "%"))
         if (dim(tmp)[1] == 2)
         {
-          tmp <- tmp[2, ]
+          tmp <- tmp[2,]
         }
         if (nb.na != 0)
         {
@@ -235,7 +235,7 @@ qualitbis <-
         if (dim(tab)[1] >= 2)
         {
           tmp[2, 2] <- ref
-          tmp <- tmp[2, ]
+          tmp <- tmp[2,]
         } else {
           tmp[, 2] <- ref
         }
@@ -388,12 +388,14 @@ quantitbis <-
       {
         tempo[[ii]] <- tempo[[ii]][1:6]
       }
-      tempo <- matrix(unlist(tempo), nrow = dim(tempo), byrow = TRUE)
+      tempo <-
+        matrix(unlist(tempo), nrow = dim(tempo), byrow = TRUE)
 
       if (pres == "med")
       {
-        truc <- paste(tempo[, 3], " [", tempo[, 2], ";", tempo[, 5], "]", sep =
-                        "")
+        truc <-
+          paste(tempo[, 3], " [", tempo[, 2], ";", tempo[, 5], "]", sep =
+                  "")
         tmp <- NULL
         for (i in seq_along(levels(y)))
         {
@@ -466,7 +468,8 @@ quantitbis <-
       }
       if (pres == "mean_mm")
       {
-        truc <- paste(tempo[, 4], "(", tempo[, 1], ";", tempo[, 6], ")", sep = "")
+        truc <-
+          paste(tempo[, 4], "(", tempo[, 1], ";", tempo[, 6], ")", sep = "")
         tmp <- NULL
         for (i in seq_along(levels(y)))
         {
@@ -613,7 +616,7 @@ qualit <-
         tmp <-
           paste(tab, " (", round(tab / som * 100, digits = digits), ")", sep = "")
         tmp <- matrix(tmp, nrow = dim(tab)[1])
-        tmp <- c(nom, ref, tmp[2, ])
+        tmp <- c(nom, ref, tmp[2,])
         if (!is.null(test))
         {
           tmp <- c(tmp, p.value)
@@ -903,7 +906,8 @@ quantit2 <-
       {
         tmp2 <- tapply(x, y, sd, na.rm = TRUE)
         tmp2 <- signif(tmp2, digits = digits)
-        tmp <- paste(tmp[, 4], " (", tmp[, 1], ";", tmp[, 6], ")", sep = "")
+        tmp <-
+          paste(tmp[, 4], " (", tmp[, 1], ";", tmp[, 6], ")", sep = "")
         tmp <- c(nom, "", tmp)
         if (!is.null(test))
         {

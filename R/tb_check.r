@@ -118,7 +118,8 @@ check_method <- function(data, method) {
                 "Argument method : ",
                 method[i],
                 " not in supported methods"
-            ), call. = FALSE)
+            ),
+            call. = FALSE)
         }
     }
 
@@ -151,11 +152,10 @@ check_test <- function(data, test, varint) {
 
     for (i in seq_along(test)) {
         if (!(test[i] %in% c("stud", "chisq", "fisher", "kruskal", "wilcox"))) {
-            stop(paste0(
-                "Argument test : ",
-                test[i],
-                " not in supported tests"
-            ), call. = FALSE)
+            stop(paste0("Argument test : ",
+                        test[i],
+                        " not in supported tests"),
+                 call. = FALSE)
         }
     }
 

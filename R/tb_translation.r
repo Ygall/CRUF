@@ -3,15 +3,13 @@ make_language <- function(data, lang) {
   # autre langue
   #  Idéalement à mettre à la fin de la fonction.
   data <- switch(lang,
-    en = data,
-    fr = make_french(data)
-  )
+                 en = data,
+                 fr = make_french(data))
 
   return(data)
 }
 
 make_french <- function(data) {
-
   colonnes <- colnames(data)
 
   colonnes[colonnes == "Variable"] <- "Variable"

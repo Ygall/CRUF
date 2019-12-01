@@ -126,7 +126,12 @@ make_result <-
         temp <- data[[j]]
 
         description <-
-          make_description(temp, name, method, explicit_na, digits, pres_quant,
+          make_description(temp,
+                           name,
+                           method,
+                           explicit_na,
+                           digits,
+                           pres_quant,
                            pres_quali)
 
         result_desc <- cbind.data.frame(result_desc, description)
@@ -197,7 +202,13 @@ make_first_column <- function(data, name, method, explicit_na) {
 }
 
 make_description <-
-  function(temp, name, method, explicit_na, digits, pres_quant, pres_quali) {
+  function(temp,
+           name,
+           method,
+           explicit_na,
+           digits,
+           pres_quant,
+           pres_quali) {
     exp_na <- as.numeric(explicit_na)
 
     r <- switch(
@@ -238,20 +249,22 @@ make_desc_cont <- function(r, temp, name, digits, pres_quant) {
   if ("mean" %in% pres_quant) {
     res1 <- paste0(round(mean(vec, na.rm = T), digits), " (",
                    round(sd(vec, na.rm = T), digits), ") ")
-    name1 <- "Mean (SD) \n"
   }
 
   if ("med" %in% pres_quant) {
-    res2 <- paste0(round(median(vec, na.rm = T), digits), " [",
-                  round(quantile(vec, 0.25, na.rm = T), digits), ";",
-                  round(quantile(vec, 0.75, na.rm = T), digits), "] ")
-    name2 <- "Median [IQR] \n"
+    res2 <- paste0(
+      round(median(vec, na.rm = T), digits),
+      " [",
+      round(quantile(vec, 0.25, na.rm = T), digits),
+      ";",
+      round(quantile(vec, 0.75, na.rm = T), digits),
+      "] "
+    )
   }
 
   if ("range" %in% pres_quant) {
     res3 <- paste0("{", round(min(vec, na.rm = T), digits), ";",
-                    round(max(vec, na.rm = T), digits), "}")
-    name3 <- "Min;Max"
+                   round(max(vec, na.rm = T), digits), "}")
   }
 
   mat[1, 1] <- length(!is.na(vec))

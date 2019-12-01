@@ -85,16 +85,18 @@ tabkris_2 <- function(data,
   if (return_table == TRUE) {
     # Description
     result <-
-      make_result(data,
-                  names,
-                  varint,
-                  method,
-                  test,
-                  test_yn,
-                  explicit_na,
-                  digits,
-                  pres_quant,
-                  pres_quali)
+      make_result(
+        data,
+        names,
+        varint,
+        method,
+        test,
+        test_yn,
+        explicit_na,
+        digits,
+        pres_quant,
+        pres_quali
+      )
 
     # Translate
     result <- make_language(result, lang)
