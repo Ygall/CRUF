@@ -10,8 +10,8 @@ tabkris_2(
   varint = NULL,
   lang = "en",
   method = NULL,
-  test = TRUE,
-  pres_quant = c("mean", "med", "range"),
+  test = FALSE,
+  pres_quant = c("mean"),
   pres_quali = c("n", "total", "per"),
   default_method = c("cont", "bino", "cate", "ordo"),
   default_test = c("stud", "chisq", "chisq", "chisq"),
@@ -35,7 +35,7 @@ description, length of data columns}
 
 \item{test}{Either a logical indicating statistical tests execution or a
 vectors of variables to customize the tests, length of
-data columns. Default TRUE}
+data columns. Default FALSE}
 
 \item{pres_quant}{Descriptive statistics for quantitative variables. Possible
 values are "mean" for mean, SD, "med" for median, IQR, "range" for range}
@@ -48,7 +48,7 @@ percentages}
 
 \item{default_test}{Default test to apply for each variable type}
 
-\item{explicit_na}{Whether to account for NA in description}
+\item{explicit_na}{Whether to display NA in description}
 
 \item{digits}{Number of significant number to display, default system option}
 

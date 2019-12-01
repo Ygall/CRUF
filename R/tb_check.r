@@ -1,4 +1,8 @@
 check_data <- function(data) {
+    if (is.null(data)) {
+        stop("Data not provided", call. = FALSE)
+    }
+
     if (!(is.matrix(data) || is.data.frame(data)))
         stop("Data should be a matrix or data frame", call. = FALSE)
     data <- as.data.frame(data)
@@ -62,13 +66,16 @@ check_args <- function(lang,
     }
 
     # Check le format de la méthode de présentation des quantitatifs
-    if (!all(sapply(pres_quant, function(x) x %in% c("mean", "med", "range")))) {
-        stop("Argument pres_quant not a correct value")
+    if (!all(sapply(pres_quant, function(x)
+        x %in% c("mean",
+                 "med", "range")))) {
+        stop("Argument pres_quant not a correct value", call. = FALSE)
     }
 
     # Check le format de la méthode de présentation des qualitatifs
-    if (!all(sapply(pres_quali, function(x) x %in% c("n", "total", "per")))) {
-        stop("Argument pres_quali not a correct value")
+    if (!all(sapply(pres_quali, function(x)
+        x %in% c("n", "total", "per")))) {
+        stop("Argument pres_quali not a correct value", call. = FALSE)
     }
 
     # Check default method
@@ -102,7 +109,7 @@ check_method <- function(data, method) {
     if (!is.vector(method)) {
         stop("Argument method not a vector", call. = F)
     } else if (length(method) != dim(data)[2]) {
-        stop("Argument method must be length of data columns")
+        stop("Argument method must be length of data columns", call. = FALSE)
     }
 
     for (i in seq_along(method)) {
@@ -111,7 +118,7 @@ check_method <- function(data, method) {
                 "Argument method : ",
                 method[i],
                 " not in supported methods"
-            ))
+            ), call. = FALSE)
         }
     }
 
@@ -120,22 +127,39 @@ check_method <- function(data, method) {
 
 check_test <- function(data, test, varint) {
     # Vérifier si l'input de l'utilisateur correspond à des test viables
-    if (is.null(varint)) {
-        warning("Argument varint is null, argument test will be ignored")
+
+    if (test == FALSE) {
+        test_yn <- FALSE
+        return(test_yn)
     }
+
+    if (test == TRUE & is.null(varint)) {
+        test_yn <- FALSE
+        warning("Argument test true but varint null, tests not executed",
+                call. = FALSE)
+        return(test_yn)
+    } else if (test == TRUE) {
+        test_yn <- TRUE
+        return(test_yn)
+    }
+
     if (!is.vector(test)) {
         stop("Argument test not a vector", call. = F)
     } else if (length(test) != dim(data)[2]) {
-        stop("Argument test must be length of data columns")
+        stop("Argument test must be length of data columns", call. = FALSE)
     }
 
     for (i in seq_along(test)) {
-        if (!(test[i] %in% c("stud", "chisq", "", ""))) {
+        if (!(test[i] %in% c("stud", "chisq", "fisher", "kruskal", "wilcox"))) {
             stop(paste0(
-                "Argument method : ",
+                "Argument test : ",
                 test[i],
-                " not in supported methods"
-            ))
+                " not in supported tests"
+            ), call. = FALSE)
         }
     }
+
+    test_yn <- TRUE
+
+    return(test_yn)
 }
