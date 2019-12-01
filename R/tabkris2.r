@@ -61,7 +61,12 @@ tabkris_2 <- function(data,
   check_args(lang, pres_quant, pres_quali, default_method, default_test,
              explicit_na, digits)
 
+    if (is.null(varint)) {
+      test <- FALSE
+    }
+
     if (test == TRUE) {
+      check_test(data, test, varint)
       test <- make_test(data, default_test)
     } else if (test != FALSE) {
       check_test(data, test, varint)

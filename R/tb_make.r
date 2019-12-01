@@ -190,13 +190,15 @@ make_description <-
 
       mat <- matrix("", ncol = 2, nrow = r)
 
-      mat[, 1] <- switch(
+    for (j in 1:(r - exp_na)) {
+      mat[j, 1] <- switch(
         method[i],
         cont = "cont",
         bino = "bino",
         cate = "cate",
         ordo = "ordo"
       )
+    }
 
       res <- rbind.data.frame(res, mat, stringsAsFactors = F)
     }
@@ -230,16 +232,14 @@ make_table_test <-
 
       mat <- matrix("", ncol = 2, nrow = r)
 
-      for (j in 1:(r - exp_na)) {
-        mat[j, 1] <- switch(
+        mat[1, 1] <- switch(
           test[i],
-          stud   = paste0("stud", j),
+          stud   = "stud",
           fish   = "fisher",
           krusk  = "kruskal",
-          chisq  = paste0("chisq", j),
+          chisq  = "chisq",
           wilcox = "wilcox",
         )
-      }
 
       if (exp_na == 1) {
         mat[r, 1] <- ""

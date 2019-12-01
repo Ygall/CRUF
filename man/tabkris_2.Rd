@@ -10,7 +10,7 @@ tabkris_2(
   varint = NULL,
   lang = "en",
   method = NULL,
-  test = FALSE,
+  test = TRUE,
   pres_quant = c("mean", "med", "range"),
   pres_quali = c("n", "total", "per"),
   default_method = c("cont", "bino", "cate", "ordo"),
@@ -33,8 +33,9 @@ data columns}
 \item{method}{Vectors of variables to customize the methods used for
 description, length of data columns}
 
-\item{test}{Vectors of variables to customize the tests used for statistics,
-length of data columns}
+\item{test}{Either a logical indicating statistical tests execution or a
+vectors of variables to customize the tests, length of
+data columns. Default TRUE}
 
 \item{pres_quant}{Descriptive statistics for quantitative variables. Possible
 values are "mean" for mean, SD, "med" for median, IQR, "range" for range}
