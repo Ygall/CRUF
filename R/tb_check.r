@@ -47,6 +47,8 @@ check_varint <- function(data, varint) {
 }
 
 check_args <- function(lang,
+                       pres_quant,
+                       pres_quali,
                        default_method,
                        default_test,
                        explicit_na,
@@ -57,6 +59,16 @@ check_args <- function(lang,
         stop("Argument lang error.
              Supported language are \"english\", \"french\"",
              call. = FALSE)
+    }
+
+    # Check le format de la méthode de présentation des quantitatifs
+    if (!all(sapply(pres_quant, function(x) x %in% c("mean", "med", "range")))) {
+        stop("Argument pres_quant not a correct value")
+    }
+
+    # Check le format de la méthode de présentation des qualitatifs
+    if (!all(sapply(pres_quali, function(x) x %in% c("n", "total", "per")))) {
+        stop("Argument pres_quali not a correct value")
     }
 
     # Check default method

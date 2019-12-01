@@ -114,15 +114,19 @@ make_result <-
     for (i in 1:iter) {
       temp <- data[[i]]
 
-      description <- make_description(temp, names, method, explicit_na, digits)
+      description <-
+        make_description(temp, names, method, explicit_na, digits)
 
-      test <- make_table_test(temp, names, method, test, explicit_na, digits)
+      if (length(test) != 1) {
+        test <-
+          make_table_test(temp, names, method, test, explicit_na, digits)
+      }
 
       result <- cbind.data.frame(result, description, test)
     }
 
     result
-}
+  }
 
 make_first_column <- function(data, names, method, explicit_na) {
   res <- NULL
@@ -160,6 +164,8 @@ make_first_column <- function(data, names, method, explicit_na) {
     res <- rbind.data.frame(res, mat, stringsAsFactors = F)
   }
 
+  colnames(res) <- c("Variable", "Modality")
+
   if (!any(res[, 2] == "")) {
     res <- res[, -2]
   }
@@ -167,35 +173,8 @@ make_first_column <- function(data, names, method, explicit_na) {
   res
 }
 
-make_description <- function(temp, names, method, explicit_na, digits) {
-  res <- NULL
-
-  exp_na <- as.numeric(explicit_na)
-
-  for (i in names) {
-    r <- switch(
-      method[i],
-      cont = 1 + exp_na,
-      bino = 1 + exp_na,
-      cate = 1 + exp_na + length(levels(temp[, i])),
-      ordo = 1 + exp_na + length(levels(temp[, i]))
-    )
-
-    mat <- matrix("", ncol = 2, nrow = r)
-
-    mat[, 1] <- "description" #TODO
-
-    res <- rbind.data.frame(res, mat, stringsAsFactors = F)
-  }
-
-  if (!any((res[, 2]) == "NA")) {
-    res <- res[, -2]
-  }
-
-  res
-}
-
-make_table_test <- function(temp, names, method, test, explicit_na, digits) {
+make_description <-
+  function(temp, names, method, explicit_na, digits) {
     res <- NULL
 
     exp_na <- as.numeric(explicit_na)
@@ -211,7 +190,13 @@ make_table_test <- function(temp, names, method, test, explicit_na, digits) {
 
       mat <- matrix("", ncol = 2, nrow = r)
 
-      mat[, 1] <- "test" #TODO
+      mat[, 1] <- switch(
+        method[i],
+        cont = "cont",
+        bino = "bino",
+        cate = "cate",
+        ordo = "ordo"
+      )
 
       res <- rbind.data.frame(res, mat, stringsAsFactors = F)
     }
@@ -221,4 +206,51 @@ make_table_test <- function(temp, names, method, test, explicit_na, digits) {
     }
 
     res
-}
+  }
+
+make_table_test <-
+  function(temp,
+           names,
+           method,
+           test,
+           explicit_na,
+           digits) {
+    res <- NULL
+
+    exp_na <- as.numeric(explicit_na)
+
+    for (i in names) {
+      r <- switch(
+        method[i],
+        cont = 1 + exp_na,
+        bino = 1 + exp_na,
+        cate = 1 + exp_na + length(levels(temp[, i])),
+        ordo = 1 + exp_na + length(levels(temp[, i]))
+      )
+
+      mat <- matrix("", ncol = 2, nrow = r)
+
+      for (j in 1:(r - exp_na)) {
+        mat[j, 1] <- switch(
+          test[i],
+          stud   = paste0("stud", j),
+          fish   = "fisher",
+          krusk  = "kruskal",
+          chisq  = paste0("chisq", j),
+          wilcox = "wilcox",
+        )
+      }
+
+      if (exp_na == 1) {
+        mat[r, 1] <- ""
+      }
+
+      res <- rbind.data.frame(res, mat, stringsAsFactors = F)
+    }
+
+    if (!any((res[, 2]) == "NA")) {
+      res <- res[, -2]
+    }
+
+    res
+  }

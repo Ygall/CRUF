@@ -17,17 +17,24 @@
 #' @param names Vectors of variables to display in the final table, length of
 #'   data columns
 #' @param varint Variable to stratify on, factor only
-#' @param lang Language to display, default "en", "fr"
+#' @param lang Language to display, default \code{"en"}, \code{"fr"}
 #' @param method Vectors of variables to customize the methods used for
 #'   description, length of data columns
-#' @param test Vectors of variables to customize the tests used for statistics,
-#'   length of data columns
+#' @param test Either a logical indicating statistical tests execution or a
+#'   vectors of variables to customize the tests, length of
+#'   data columns. Default TRUE
+#' @param pres_quant Descriptive statistics for quantitative variables. Possible
+#'   values are "mean" for mean, SD, "med" for median, IQR, "range" for range
+#' @param pres_quali Descriptive statistics for qualitative variables. Possible
+#'   values are "n" for number, "total" to add "/ total" and "per" for
+#'   percentages
 #' @param default_method Default method to compute the table for each variable
 #' @param default_test Default test to apply for each variable type
 #' @param explicit_na Whether to account for NA in description
 #' @param digits Number of significant number to display, default system option
 #' @param return_table Whether to return a dataframe or an object to customize
 #'   option easily, default TRUE
+#'
 #'
 #' @return A dataframe or an object with all arguments to customize function
 #'   call
@@ -38,7 +45,9 @@ tabkris_2 <- function(data,
                       varint = NULL,
                       lang = "en",
                       method = NULL,
-                      test = FALSE,
+                      test = TRUE,
+                      pres_quant = c("mean", "med", "range"),
+                      pres_quali = c("n", "total", "per"),
                       default_method = c("cont", "bino", "cate", "ordo"),
                       default_test   = c("stud", "chisq", "chisq", "chisq"),
                       explicit_na = FALSE,
@@ -49,15 +58,14 @@ tabkris_2 <- function(data,
   names <- check_names(data, names)
 
   check_varint(data, varint)
-  check_args(lang, default_method, default_test, explicit_na, digits)
+  check_args(lang, pres_quant, pres_quali, default_method, default_test,
+             explicit_na, digits)
 
-  if (test != FALSE) {
-    if (!is.null(test)) {
-      check_test(data, test, varint)
-    } else {
+    if (test == TRUE) {
       test <- make_test(data, default_test)
+    } else if (test != FALSE) {
+      check_test(data, test, varint)
     }
-  }
 
 
   if (!is.null(method)) {
@@ -104,9 +112,9 @@ tabkris_2 <- function(data,
 #
 # method = NULL
 # default_method = c("cont", "bino", "cate", "ordo")
-# test = FALSE
+# test = TRUE
 # default_test   = c("stud", "chisq", "chisq", "chisq")
 # digits <- 2
 # return_table = TRUE
-#
+
 # tabkris_2(data = boys)

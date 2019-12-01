@@ -11,6 +11,8 @@ tabkris_2(
   lang = "en",
   method = NULL,
   test = FALSE,
+  pres_quant = c("mean", "med", "range"),
+  pres_quali = c("n", "total", "per"),
   default_method = c("cont", "bino", "cate", "ordo"),
   default_test = c("stud", "chisq", "chisq", "chisq"),
   explicit_na = FALSE,
@@ -26,13 +28,20 @@ data columns}
 
 \item{varint}{Variable to stratify on, factor only}
 
-\item{lang}{Language to display, default "en", "fr"}
+\item{lang}{Language to display, default \code{"en"}, \code{"fr"}}
 
 \item{method}{Vectors of variables to customize the methods used for
 description, length of data columns}
 
 \item{test}{Vectors of variables to customize the tests used for statistics,
 length of data columns}
+
+\item{pres_quant}{Descriptive statistics for quantitative variables. Possible
+values are "mean" for mean, SD, "med" for median, IQR, "range" for range}
+
+\item{pres_quali}{Descriptive statistics for qualitative variables. Possible
+values are "n" for number, "total" to add "/ total" and "per" for
+percentages}
 
 \item{default_method}{Default method to compute the table for each variable}
 

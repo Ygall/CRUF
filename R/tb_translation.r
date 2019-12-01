@@ -11,6 +11,13 @@ make_language <- function(data, lang) {
 }
 
 make_french <- function(data) {
- # Translate in french
+
+  colonnes <- colnames(data)
+
+  colonnes[colonnes == "Variable"] <- "Variable"
+  colonnes[colonnes == "Modality"] <- "Modalit\u00E9"
+
+  colnames(data) <- colonnes
+
   return(data)
 }
