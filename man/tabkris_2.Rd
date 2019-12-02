@@ -34,26 +34,30 @@ data columns}
 description, length of data columns}
 
 \item{test}{Either a logical indicating statistical tests execution or a
-vectors of variables to customize the tests, length of
-data columns. Default FALSE}
+vectors of variables to customize the tests, length of data columns.
+Default \code{FALSE}}
 
 \item{pres_quant}{Descriptive statistics for quantitative variables. Possible
-values are "mean" for mean, SD, "med" for median, IQR, "range" for range}
+values are \code{"mean"} for mean, SD, \code{"med"} for median, IQR,
+\code{"range"} for range}
 
 \item{pres_quali}{Descriptive statistics for qualitative variables. Possible
-values are "n" for number, "total" to add "/ total" and "per" for
-percentages}
+values are \code{"n"} for number, \code{"total"} to add "/ total" and
+\code{"per"} for percentages}
 
-\item{default_method}{Default method to compute the table for each variable}
+\item{default_method}{Default method to compute the table for each variable.
+Default \code{default_method = c("cont", "bino", "cate", "ordo")}}
 
-\item{default_test}{Default test to apply for each variable type}
+\item{default_test}{Default test to apply for each variable type. Default
+\code{c("stud", "chisq", "chisq", "chisq")}. Available \code{"stud",
+"wilcox", "kruskal", "chisq", "fish"}}
 
-\item{explicit_na}{Whether to display NA in description}
+\item{explicit_na}{Whether to display NA in description, Default \code{FALSE}}
 
-\item{digits}{Number of significant number to display, default system option}
+\item{digits}{Number of significant number to display, default \code{2}}
 
 \item{return_table}{Whether to return a dataframe or an object to customize
-option easily, default TRUE}
+option easily, default \code{TRUE}}
 }
 \value{
 A dataframe or an object with all arguments to customize function

@@ -21,19 +21,23 @@
 #' @param method Vectors of variables to customize the methods used for
 #'   description, length of data columns
 #' @param test Either a logical indicating statistical tests execution or a
-#'   vectors of variables to customize the tests, length of
-#'   data columns. Default FALSE
+#'   vectors of variables to customize the tests, length of data columns.
+#'   Default \code{FALSE}
 #' @param pres_quant Descriptive statistics for quantitative variables. Possible
-#'   values are "mean" for mean, SD, "med" for median, IQR, "range" for range
+#'   values are \code{"mean"} for mean, SD, \code{"med"} for median, IQR,
+#'   \code{"range"} for range
 #' @param pres_quali Descriptive statistics for qualitative variables. Possible
-#'   values are "n" for number, "total" to add "/ total" and "per" for
-#'   percentages
-#' @param default_method Default method to compute the table for each variable
-#' @param default_test Default test to apply for each variable type
-#' @param explicit_na Whether to display NA in description
-#' @param digits Number of significant number to display, default system option
+#'   values are \code{"n"} for number, \code{"total"} to add "/ total" and
+#'   \code{"per"} for percentages
+#' @param default_method Default method to compute the table for each variable.
+#'   Default \code{default_method = c("cont", "bino", "cate", "ordo")}
+#' @param default_test Default test to apply for each variable type. Default
+#'   \code{c("stud", "chisq", "chisq", "chisq")}. Available \code{"stud",
+#'   "wilcox", "kruskal", "chisq", "fish"}
+#' @param explicit_na Whether to display NA in description, Default \code{FALSE}
+#' @param digits Number of significant number to display, default \code{2}
 #' @param return_table Whether to return a dataframe or an object to customize
-#'   option easily, default TRUE
+#'   option easily, default \code{TRUE}
 #'
 #' @importFrom stats median quantile chisq.test fisher.test
 #'

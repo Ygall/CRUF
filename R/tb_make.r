@@ -158,7 +158,7 @@ make_result <-
       })]
     result <-
       result [, apply(result, 2, function(x) {
-        !any(x == "")
+        !all(x == "")
       })]
 
     result <- make_first_row(result, data, varint, test_yn)
