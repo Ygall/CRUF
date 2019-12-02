@@ -35,7 +35,7 @@
 #' @param return_table Whether to return a dataframe or an object to customize
 #'   option easily, default TRUE
 #'
-#' @importFrom stats median quantile
+#' @importFrom stats median quantile chisq.test fisher.test
 #'
 #' @return A dataframe or an object with all arguments to customize function
 #'   call

@@ -14,6 +14,7 @@ make_french <- function(data) {
 
   colonnes[colonnes == "Variable"] <- "Variable"
   colonnes[colonnes == "Modality"] <- "Modalit\u00E9"
+  colonnes[colonnes == "Statistics"] <- "Statistiques"
 
   colnames(data) <- colonnes
 
