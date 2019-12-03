@@ -67,20 +67,6 @@ make_varint <- function(data, varint = NULL) {
   return(res)
 }
 
-make_na <- function(data, explicit_na = FALSE) {
-  if (explicit_na != FALSE) {
-    method <- make_method(data, default_method = c("0", "1", "1", "1"))
-
-    method <- method[method == 1]
-
-    for (i in names(method)) {
-      data[, i] <- addNA(data[, i])
-    }
-  }
-
-  data
-}
-
 make_result <-
   function(data,
            names,
@@ -158,7 +144,10 @@ make_result <-
 
     lev <- attributes(data)$levels
 
-    result <- make_first_row(result, lev, varint, test_yn)
+    n <- sapply(data, function(x){nrow(x)})
+    names(n) <- lev
+
+    result <- make_first_row(result, lev, n, varint, test_yn)
 
     result
   }
@@ -200,7 +189,7 @@ make_first_column <- function(lev, name, method, explicit_na) {
   res
 }
 
-make_first_row    <- function(result, lev, varint, test_yn) {
+make_first_row    <- function(result, lev, n, varint, test_yn) {
   n_result <- dim(result)[2]
 
   n_varint <- length(lev)
@@ -210,7 +199,7 @@ make_first_row    <- function(result, lev, varint, test_yn) {
 
   varint_name <- as.vector(sapply(lev,
                                   function(x) {
-                                    c("", paste0(x, " (N = ", "TODO", ")"))
+                                    c("", paste0(x, " (N = ", n[x], ")"))
                                   }))
 
   if (exp == n_result & test_yn == TRUE) {
