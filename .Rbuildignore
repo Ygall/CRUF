@@ -3,3 +3,4 @@
 ^License$
 ^devtools_history\.R$
 ^workflow\.R$
+^\.travis\.yml$
