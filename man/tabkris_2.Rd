@@ -12,7 +12,7 @@ tabkris_2(
   method = NULL,
   test = FALSE,
   pres_quant = c("mean"),
-  pres_quali = c("n", "total", "per"),
+  pres_quali = c("n", "per"),
   default_method = c("cont", "bino", "cate", "ordo"),
   default_test = c("stud", "chisq", "chisq", "chisq"),
   explicit_na = FALSE,
@@ -24,7 +24,7 @@ tabkris_2(
 \item{data}{Dataframe to describe}
 
 \item{names}{Vectors of variables to display in the final table, length of
-data columns}
+\code{ncol(data)}}
 
 \item{varint}{Variable to stratify on, factor only}
 

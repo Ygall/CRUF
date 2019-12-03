@@ -1,6 +1,6 @@
 Package: YPJ
 Title: Fonctions Utilitaires Personnelles
-Version: 0.0.5.0000
+Version: 0.1.5.9000
 Authors@R: 
     person(given = "Yves",
            family = "Gallien",
@@ -22,4 +22,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2

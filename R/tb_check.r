@@ -1,11 +1,16 @@
-check_data <- function(data) {
+check_data <- function(data, env) {
     if (is.null(data)) {
         stop("Data not provided", call. = FALSE)
     }
 
-    if (!(is.matrix(data) || is.data.frame(data)))
-        stop("Data should be a matrix or data frame", call. = FALSE)
-    data <- as.data.frame(data)
+    if (attributes(data)$class == "desctable") {
+        list2env(data, env)
+        data <- data$data
+    } else {
+        if (!(is.matrix(data) || is.data.frame(data)))
+            stop("Data should be a matrix or data frame", call. = FALSE)
+        data <- as.data.frame(data)
+    }
 
     dup <- duplicated(colnames(data))
     if (any(dup))

@@ -15,7 +15,7 @@
 #'
 #' @param data Dataframe to describe
 #' @param names Vectors of variables to display in the final table, length of
-#'   data columns
+#'   \code{ncol(data)}
 #' @param varint Variable to stratify on, factor only
 #' @param lang Language to display, default \code{"en"}, \code{"fr"}
 #' @param method Vectors of variables to customize the methods used for
@@ -52,15 +52,20 @@ tabkris_2 <- function(data,
                       method = NULL,
                       test = FALSE,
                       pres_quant = c("mean"),
-                      pres_quali = c("n", "total", "per"),
+                      pres_quali = c("n", "per"),
                       default_method = c("cont", "bino", "cate", "ordo"),
                       default_test   = c("stud", "chisq", "chisq", "chisq"),
                       explicit_na = FALSE,
                       digits = 2,
                       return_table = TRUE) {
   # Check
-  data  <- check_data(data)
+  #
+  env <- environment()
+
+  data  <- check_data(data, env)
+
   names <- check_names(data, names)
+
 
   check_varint(data, varint)
   check_args(lang,
@@ -84,9 +89,9 @@ tabkris_2 <- function(data,
   }
 
   # Transform the data in list to iterate
-  data <- make_varint(data, varint)
 
   if (return_table == TRUE) {
+    data <- make_varint(data, varint)
     # Description
     result <-
       make_result(
@@ -106,9 +111,19 @@ tabkris_2 <- function(data,
     result <- make_language(result, lang)
 
   } else {
-    result <- list(names = names,
+    result <- list(data = data,
+                   names = names,
+                   varint = varint,
+                   lang = lang,
                    method = method,
-                   test = test)
+                   test = test,
+                   pres_quant = pres_quant,
+                   pres_quali = pres_quali,
+                   default_method = default_method,
+                   default_test   = default_test,
+                   explicit_na = explicit_na,
+                   digits = digits)
+    attr(result, "class") <- "desctable"
   }
 
   return(result)

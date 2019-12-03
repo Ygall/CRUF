@@ -1,11 +1,3 @@
-# Permet de sélectionner la méthode de description de tableau
-# Numérique : Description par med[IQR] ou moy(SD) +/- (min,max)
-# Binaire   : Choisir entre une description 0/1 (all) : Effectif + %
-#                                        ou 1 = (inline) : Effectif/total + %
-# Catégoriel
-#     - Ordonné : Effectif, % des modalités, dans l'ordre des modalités
-#     - Non ordonné : Selon la fréquence d'apparition : % + effectif
-
 assign_method <- function(y) {
   if (is.numeric(y))
     return(1)
@@ -24,13 +16,13 @@ make_method <- function(data,
                         default_method = c("cont", "bino", "cate", "ordo")) {
   # assign methods based on type,
   # use method 1 if there is no single
+  #
   method <- rep("", length(names(data)))
   names(method) <- names(data)
   for (j in names(data)) {
     y <- data[, j]
-    def <- sapply(y, assign_method)
-    k <- ifelse(all(diff(def) == 0), k <- def[1], 1)
-    method[j] <- default_method[k]
+    def2 <- assign_method(y)
+    method[j] <- default_method[def2]
   }
   method
 }
@@ -114,8 +106,11 @@ make_result <-
 
     for (i in names) {
       name <- names[names == i]
+
+      lev <- levels(data[[1]][, name])
+
       result_first <-
-        make_first_column(data, name, method, explicit_na)
+        make_first_column(lev, name, method, explicit_na)
 
       result_desc <-
         data.frame(matrix(NA, nrow = nrow(result_first), ncol = 1))
@@ -161,12 +156,14 @@ make_result <-
         !all(x == "")
       })]
 
-    result <- make_first_row(result, data, varint, test_yn)
+    lev <- attributes(data)$levels
+
+    result <- make_first_row(result, lev, varint, test_yn)
 
     result
   }
 
-make_first_column <- function(data, name, method, explicit_na) {
+make_first_column <- function(lev, name, method, explicit_na) {
   res <- NULL
 
   exp_na <- as.numeric(explicit_na)
@@ -175,8 +172,8 @@ make_first_column <- function(data, name, method, explicit_na) {
     method[name],
     cont = 1 + exp_na,
     bino = 1 + exp_na,
-    cate = 1 + exp_na + length(levels(data[[1]][, name])),
-    ordo = 1 + exp_na + length(levels(data[[1]][, name]))
+    cate = 1 + exp_na + length(lev),
+    ordo = 1 + exp_na + length(lev)
   )
 
   mat <- matrix("", ncol = 2, nrow = r)
@@ -187,13 +184,13 @@ make_first_column <- function(data, name, method, explicit_na) {
     cont = c("",
              if (exp_na == 1)
                "NA"),
-    bino = c(levels(data[[1]][, name])[2],
+    bino = c(lev[2],
              if (exp_na == 1)
                "NA"),
-    cate = c("", levels(data[[1]][, name]),
+    cate = c("", lev,
              if (exp_na == 1)
                "NA"),
-    ordo = c("", levels(data[[1]][, name]),
+    ordo = c("", lev,
              if (exp_na == 1)
                "NA")
   )
@@ -203,17 +200,17 @@ make_first_column <- function(data, name, method, explicit_na) {
   res
 }
 
-make_first_row    <- function(result, data, varint, test_yn) {
+make_first_row    <- function(result, lev, varint, test_yn) {
   n_result <- dim(result)[2]
 
-  n_varint <- length(attributes(data)$levels)
+  n_varint <- length(lev)
   n_test   <- as.numeric(test_yn)
 
   exp <- 4 + 2 * (n_varint - 1) + n_test
 
-  varint_name <- as.vector(sapply(attributes(data)$levels,
+  varint_name <- as.vector(sapply(lev,
                                   function(x) {
-                                    c("", x)
+                                    c("", paste0(x, " (N = ", "TODO", ")"))
                                   }))
 
   if (exp == n_result & test_yn == TRUE) {
@@ -266,36 +263,36 @@ make_description <-
            pres_quali) {
     exp_na <- as.numeric(explicit_na)
 
+    vec <- temp[, name]
+
     r <- switch(
       method[name],
       cont = 1 + exp_na,
       bino = 1 + exp_na,
-      cate = 1 + exp_na + length(levels(temp[, name])),
-      ordo = 1 + exp_na + length(levels(temp[, name]))
+      cate = 1 + exp_na + length(levels(vec)),
+      ordo = 1 + exp_na + length(levels(vec))
     )
 
     mat <- matrix("", ncol = 2, nrow = r)
 
     mat <- switch(
       method[name],
-      cont = make_desc_cont(r, temp, name, digits, pres_quant),
-      bino = make_desc_bino(r, temp, name, digits, pres_quali),
-      cate = make_desc_cate(r, temp, name, digits, pres_quali),
-      ordo = make_desc_ordo(r, temp, name, digits, pres_quali)
+      cont = make_desc_cont(r, vec, digits, pres_quant),
+      bino = make_desc_bino(r, vec, digits, pres_quali),
+      cate = make_desc_cate(r, vec, digits, pres_quali),
+      ordo = make_desc_ordo(r, vec, digits, pres_quali)
     )
 
     if (exp_na == 1) {
-      mat[r, 1] <- sum(is.na(temp[, name]))
+      mat[r, 1] <- sum(is.na(vec))
     }
 
     res <- data.frame(mat, stringsAsFactors = F)
     res
   }
 
-make_desc_cont <- function(r, temp, name, digits, pres_quant) {
+make_desc_cont <- function(r, vec, digits, pres_quant) {
   mat <- matrix("", nrow = r, ncol = 2)
-
-  vec <- temp[, name]
 
   res1 <- ""
   res2 <- ""
@@ -328,8 +325,8 @@ make_desc_cont <- function(r, temp, name, digits, pres_quant) {
   return(mat)
 }
 
-make_desc_bino <- function(r, temp, name, digits, pres_quali) {
-  vec <- factor(temp[, name])
+make_desc_bino <- function(r, vec, digits, pres_quali) {
+  vec <- factor(vec)
   mat <- matrix("", nrow = r, ncol = 2)
 
   n <- NULL
@@ -362,8 +359,8 @@ make_desc_bino <- function(r, temp, name, digits, pres_quali) {
   return(mat)
 }
 
-make_desc_cate <- function(r, temp, name, digits, pres_quali) {
-  vec <- factor(temp[, name])
+make_desc_cate <- function(r, vec, digits, pres_quali) {
+  vec <- factor(vec)
   mat <- matrix("", nrow = r, ncol = 2)
 
   for (i in seq_len(nlevels(vec))) {
@@ -396,8 +393,8 @@ make_desc_cate <- function(r, temp, name, digits, pres_quali) {
   return(mat)
 }
 
-make_desc_ordo <- function(r, temp, name, digits, pres_quali) {
-  make_desc_cate(r, temp, name, digits, pres_quali)
+make_desc_ordo <- function(r, vec, digits, pres_quali) {
+  make_desc_cate(r, vec, digits, pres_quali)
 }
 
 make_table_test <-
@@ -427,12 +424,8 @@ make_table_test <-
       stud   = "stud",
       wilcox = "wilcox",
       krusk  = "kruskal",
-      chisq  = signif(chisq.test(data[, name], data[, varint])$p.value, digits),
-      fish   = signif(
-        fisher.test(data[, name], data[, varint],
-                    simulate.p.value = T)$p.value,
-        digits
-      )
+      chisq  = "chisq",
+      fish   = "fisher"
     )
 
     res <- data.frame(mat, stringsAsFactors = F)
