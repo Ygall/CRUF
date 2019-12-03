@@ -39,7 +39,8 @@
 #' @param return_table Whether to return a dataframe or an object to customize
 #'   option easily, default \code{TRUE}
 #'
-#' @importFrom stats median quantile chisq.test fisher.test
+#' @importFrom stats median quantile chisq.test fisher.test kruskal.test t.test
+#'   wilcox.test
 #'
 #' @return A dataframe or an object with all arguments to customize function
 #'   call
@@ -75,15 +76,14 @@ tabkris_2 <- function(data,
              digits)
 
   if (!is.null(method)) {
-    check_method(data, method)
+    method <- check_method(data, method, names)
   } else {
     method <- make_method(data, default_method)
   }
 
-
   default_test <- check_default_test(data, varint, default_test)
 
-  test_yn <- check_test_yn(test, varint)
+  test_yn <- check_test_yn(data, test, varint)
 
   if (test_yn == TRUE) {
     test <- make_test(data, default_test)

@@ -109,7 +109,7 @@ check_args <- function(lang,
     }
 }
 
-check_method <- function(data, method) {
+check_method <- function(data, method, names) {
     if (!is.vector(method)) {
         stop("Argument method not a vector", call. = F)
     } else if (length(method) != dim(data)[2]) {
@@ -125,12 +125,33 @@ check_method <- function(data, method) {
             ),
             call. = FALSE)
         }
+
+        d <- switch(assign_method(data[, i]),
+                    "1" = "cont",
+                    "2" = c("bino", "cate", "ordo"),
+                    "3" = "cate",
+                    "4" = "ordo")
+
+        if (!(method[i] %in% d)) {
+            stop(paste0(
+                "Method\" ",
+                method[i],
+                "\" not supported for variable \"",
+                colnames(data)[i],
+                "\". Method should be in : ",
+                d
+            ),
+            call. = FALSE)
+        }
     }
 
-    #TODO Check l'adéquation entre les methods et les data
+    names(method) <- names
+
+    return(method)
+
 }
 
-check_test_yn <- function(test, varint) {
+check_test_yn <- function(data, test, varint) {
     if (test[1] == FALSE) {
         test_yn <- FALSE
         return(test_yn)

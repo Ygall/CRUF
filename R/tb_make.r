@@ -406,8 +406,8 @@ make_table_test <-
       method[name],
       cont = 1 + exp_na,
       bino = 1 + exp_na,
-      cate = 1 + exp_na + length(levels(data[, name])),
-      ordo = 1 + exp_na + length(levels(data[, name]))
+      cate = 1 + exp_na + length(levels(data_c[, name])),
+      ordo = 1 + exp_na + length(levels(data_c[, name]))
     )
 
     mat <- matrix("", ncol = 1, nrow = r)
