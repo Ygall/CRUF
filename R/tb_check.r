@@ -110,7 +110,6 @@ check_args <- function(lang,
 }
 
 check_method <- function(data, method) {
-    # Vérifier si l'input de l'utilisateur correspond à des méthodes viables
     if (!is.vector(method)) {
         stop("Argument method not a vector", call. = F)
     } else if (length(method) != dim(data)[2]) {
@@ -131,20 +130,18 @@ check_method <- function(data, method) {
     #TODO Check l'adéquation entre les methods et les data
 }
 
-check_test <- function(data, test, varint) {
-    # Vérifier si l'input de l'utilisateur correspond à des test viables
-
-    if (test == FALSE) {
+check_test_yn <- function(test, varint) {
+    if (test[1] == FALSE) {
         test_yn <- FALSE
         return(test_yn)
     }
 
-    if (test == TRUE & is.null(varint)) {
+    if (test[1] == TRUE & is.null(varint)) {
         test_yn <- FALSE
         warning("Argument test true but varint null, tests not executed",
                 call. = FALSE)
         return(test_yn)
-    } else if (test == TRUE) {
+    } else if (test[1] == TRUE) {
         test_yn <- TRUE
         return(test_yn)
     }
@@ -167,4 +164,61 @@ check_test <- function(data, test, varint) {
     test_yn <- TRUE
 
     return(test_yn)
+}
+
+check_default_test <- function(data, varint, default_test) {
+    nlev <- length(levels(data[, varint]))
+
+    if (default_test[1] == "stud" && nlev > 2) {
+        default_test[1] <- "kruskal"
+        warning("Argument varint is more than 2 levels, default test for continuous variables set to \"kruskal\"", call. = FALSE)
+    }
+
+    if (default_test[4] == "chisq" && nlev > 2) {
+        default_test[4] <- "kruskal"
+        warning("Argument varint is more than 2 levels, default test for ordinal variables set to \"kruskal\"", call. = FALSE)
+    }
+
+    return(default_test)
+}
+
+check_test <- function(data, test, default_test, varint, method) {
+    nlev <- length(levels(data[, varint]))
+
+    for (i in seq_along(test)) {
+        met <- method[i]
+        tes <- test[i]
+
+        ad <- ifelse(nlev > 2,
+                     switch(
+                         met,
+                         cont = c("kruskal"),
+                         bino = c("chisq"),
+                         cate = c("chisq"),
+                         ordo = c("kruskal")
+                     ),
+                     switch (
+                         met,
+                         cont = c("stud", "wilcox"),
+                         bino = c("chisq", "fisher"),
+                         cate = c("chisq"),
+                         ordo = c("chisq")
+                     ))
+
+        if (!(tes %in% ad)) {
+            stop(paste0(
+                "Test \"",
+                tes,
+                "\" not supported for variable \"",
+                names(tes),
+                "\" with method \"",
+                met,
+                "\" and with levels of varint ",
+                nlev,
+                "\". Test should be in : ",
+                ad
+            ),
+            call. = FALSE)
+        }
+    }
 }

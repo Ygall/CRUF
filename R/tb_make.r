@@ -21,8 +21,8 @@ make_method <- function(data,
   names(method) <- names(data)
   for (j in names(data)) {
     y <- data[, j]
-    def2 <- assign_method(y)
-    method[j] <- default_method[def2]
+    def <- assign_method(y)
+    method[j] <- default_method[def]
   }
   method
 }
@@ -69,6 +69,7 @@ make_varint <- function(data, varint = NULL) {
 
 make_result <-
   function(data,
+           data_c,
            names,
            varint,
            method,
@@ -121,7 +122,8 @@ make_result <-
 
       if (test_yn == TRUE) {
         tested <-
-          make_table_test(temp, name, method, test, explicit_na, digits, varint)
+          make_table_test(data_c, name, method, test, explicit_na, digits,
+                          varint)
 
         result_test <- cbind.data.frame(result_test, tested)
       }
@@ -144,7 +146,9 @@ make_result <-
 
     lev <- attributes(data)$levels
 
-    n <- sapply(data, function(x){nrow(x)})
+    n <- sapply(data, function(x) {
+      nrow(x)
+    })
     names(n) <- lev
 
     result <- make_first_row(result, lev, n, varint, test_yn)
@@ -387,7 +391,7 @@ make_desc_ordo <- function(r, vec, digits, pres_quali) {
 }
 
 make_table_test <-
-  function(data,
+  function(data_c,
            name,
            method,
            test,
@@ -410,11 +414,16 @@ make_table_test <-
 
     mat[1, 1] <- switch(
       test[name],
-      stud   = "stud",
-      wilcox = "wilcox",
-      krusk  = "kruskal",
-      chisq  = "chisq",
-      fish   = "fisher"
+      stud   = signif(t.test(data_c[, name] ~ data_c[, varint])$p.value,
+                      digits),
+      wilcox = signif(wilcox.test(data_c[, name] ~ data_c[, varint])$p.value,
+                      digits),
+      kruskal  = signif(kruskal.test(data_c[, name] ~ data_c[, varint])$p.value,
+                      digits),
+      chisq  = signif(chisq.test(table(data_c[, name],
+                                       data_c[, varint]))$p.value, digits),
+      fish   = signif(fisher.test(table(data_c[, name],
+                                       data_c[, varint]))$p.value, digits)
     )
 
     res <- data.frame(mat, stringsAsFactors = F)

@@ -58,14 +58,12 @@ tabkris_2 <- function(data,
                       explicit_na = FALSE,
                       digits = 2,
                       return_table = TRUE) {
-  # Check
-  #
-  env <- environment()
 
+  # Check
+  env <- environment()
   data  <- check_data(data, env)
 
   names <- check_names(data, names)
-
 
   check_varint(data, varint)
   check_args(lang,
@@ -76,26 +74,31 @@ tabkris_2 <- function(data,
              explicit_na,
              digits)
 
-  test_yn <- check_test(data, test, varint)
-
-  if (test_yn == TRUE) {
-    test <- make_test(data, default_test)
-  }
-
   if (!is.null(method)) {
     check_method(data, method)
   } else {
     method <- make_method(data, default_method)
   }
 
-  # Transform the data in list to iterate
+
+  default_test <- check_default_test(data, varint, default_test)
+
+  test_yn <- check_test_yn(test, varint)
+
+  if (test_yn == TRUE) {
+    test <- make_test(data, default_test)
+    check_test(data, test, default_test, varint, method)
+  }
 
   if (return_table == TRUE) {
+    # Transform the data in list to iterate
+    data_c <- data
     data <- make_varint(data, varint)
     # Description
     result <-
       make_result(
         data,
+        data_c,
         names,
         varint,
         method,
@@ -111,18 +114,20 @@ tabkris_2 <- function(data,
     result <- make_language(result, lang)
 
   } else {
-    result <- list(data = data,
-                   names = names,
-                   varint = varint,
-                   lang = lang,
-                   method = method,
-                   test = test,
-                   pres_quant = pres_quant,
-                   pres_quali = pres_quali,
-                   default_method = default_method,
-                   default_test   = default_test,
-                   explicit_na = explicit_na,
-                   digits = digits)
+    result <- list(
+      data = data,
+      names = names,
+      varint = varint,
+      lang = lang,
+      method = method,
+      test = test,
+      pres_quant = pres_quant,
+      pres_quali = pres_quali,
+      default_method = default_method,
+      default_test   = default_test,
+      explicit_na = explicit_na,
+      digits = digits
+    )
     attr(result, "class") <- "desctable"
   }
 
