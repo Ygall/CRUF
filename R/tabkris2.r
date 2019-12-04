@@ -46,6 +46,7 @@
 #'   call
 #' @export
 
+
 tabkris_2 <- function(data,
                       names = NULL,
                       varint = NULL,
