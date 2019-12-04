@@ -19,3 +19,6 @@ usethis::use_travis()
 
 # Initialiser une vignette
 usethis::use_vignette("manual")
+
+# Initialiser tests
+usethis::use_testthat()

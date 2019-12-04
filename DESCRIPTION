@@ -20,6 +20,7 @@ Imports:
     survival
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2
