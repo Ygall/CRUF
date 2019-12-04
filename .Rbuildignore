@@ -5,3 +5,5 @@
 ^workflow\.R$
 ^\.travis\.yml$
 ^data-raw$
+^README\.Rmd$
+^cran-comments\.md$

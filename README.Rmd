@@ -1,0 +1,58 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+
+library(mice)
+library(xtable)
+
+```
+
+# YPJ
+
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
+<!-- badges: end -->
+
+Fonctions utilitaires personnelles
+Le but de ce package est de réunir au même endroit les fonctions utilitaires pour les analyses de recherche clinique.
+
+## Fonctions disponibles
+
+### tabkris_2
+
+Fonction de description
+
+## Installation
+
+La version publiée d'YPJ peut être installée à partir de [CRAN](https://CRAN.R-project.org) avec :
+
+``` r
+install.packages("YPJ")
+```
+
+La version de développement est disponible sur [GitHub](https://github.com/) avec :
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Ygall/YPJ")
+```
+## Exemple
+
+
+```{r example}
+library(YPJ)
+
+desctable <- tabkris_2(boys)
+desctable
+
+```

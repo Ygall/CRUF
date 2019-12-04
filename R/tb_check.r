@@ -192,12 +192,16 @@ check_default_test <- function(data, varint, default_test) {
 
     if (default_test[1] == "stud" && nlev > 2) {
         default_test[1] <- "kruskal"
-        warning("Argument varint is more than 2 levels, default test for continuous variables set to \"kruskal\"", call. = FALSE)
+        warning("Argument varint is more than 2 levels.
+Default test for continuous variables set to \"kruskal\"",
+                call. = FALSE)
     }
 
     if (default_test[4] == "chisq" && nlev > 2) {
         default_test[4] <- "kruskal"
-        warning("Argument varint is more than 2 levels, default test for ordinal variables set to \"kruskal\"", call. = FALSE)
+        warning("Argument varint is more than 2 levels.
+Default test for ordinal variables set to \"kruskal\"",
+                call. = FALSE)
     }
 
     return(default_test)
@@ -218,7 +222,7 @@ check_test <- function(data, test, default_test, varint, method) {
                          cate = c("chisq"),
                          ordo = c("kruskal")
                      ),
-                     switch (
+                     switch(
                          met,
                          cont = c("stud", "wilcox"),
                          bino = c("chisq", "fisher"),

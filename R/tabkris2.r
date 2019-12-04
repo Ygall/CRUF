@@ -39,8 +39,8 @@
 #' @param return_table Whether to return a dataframe or an object to customize
 #'   option easily, default \code{TRUE}
 #'
-#' @importFrom stats median quantile chisq.test fisher.test kruskal.test t.test
-#'   wilcox.test
+#' @importFrom stats sd median quantile chisq.test fisher.test kruskal.test
+#'   t.test wilcox.test
 #'
 #' @return A dataframe or an object with all arguments to customize function
 #'   call
@@ -134,22 +134,3 @@ tabkris_2 <- function(data,
 
   return(result)
 }
-
-# data <- boys
-# names <- colnames(boys)
-# lang <- "en"
-#
-# varint <- NULL
-# explicit_na <- FALSE
-#
-#
-# method = NULL
-# default_method = c("cont", "bino", "cate", "ordo")
-# test = TRUE
-# default_test   = c("stud", "chisq", "chisq", "chisq")
-# digits <- 2
-# return_table = TRUE
-# pres_quant = c("mean", "med", "range")
-# pres_quali = c("n", "total", "per")
-#
-# tabkris_2(data = boys)

@@ -1,5 +1,5 @@
 Package: YPJ
-Title: Fonctions Utilitaires Personnelles
+Title: Clinical Research Utilitary functions
 Version: 0.1.7
 Authors@R: 
     person(given = "Yves",
@@ -8,7 +8,7 @@ Authors@R:
            email = "yves.gallien@gmail.com",
            comment = c(ORCID = "0000-0002-1245-9260"))
 BugReports: https://github.com/Ygall/YPJ/issues
-Description: Collection de fonctions utiles pour analyse de données de recherche clinique.
+Description: Useful functions for clinical research data analysis.
 Depends: R (>= 3.4)
 License: GPL-3
 Encoding: UTF-8

@@ -11,6 +11,8 @@ usethis::use_git_ignore("devtools_history.R")
 usethis::use_build_ignore("workflow.R")
 usethis::use_git_ignore("workflow.R")
 
+usethis::use_build_ignore("cran-comments.md")
+
 # Ignorer le .Rproj
 usethis::use_git_ignore("YPJ.Rproj")
 
@@ -25,3 +27,12 @@ usethis::use_testthat()
 
 # Initialiser raw data
 usethis::use_data_raw()
+
+# Checker sur win builder le package
+devtools::check_win_devel()
+
+release_questions <- function() {
+  c(
+    "Have you knitted Readme.rmd ?"
+  )
+}
