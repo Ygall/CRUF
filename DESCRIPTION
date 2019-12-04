@@ -1,5 +1,5 @@
 Package: YPJ
-Title: Clinical Research Utilitary Functions
+Title: Clinical Research Utilities Functions
 Version: 0.1.7
 Authors@R: 
     person(given = "Yves",
