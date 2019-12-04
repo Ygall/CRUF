@@ -1,6 +1,6 @@
 Package: YPJ
 Title: Fonctions Utilitaires Personnelles
-Version: 0.1.6.9000
+Version: 0.1.7
 Authors@R: 
     person(given = "Yves",
            family = "Gallien",
@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-1245-9260"))
 BugReports: https://github.com/Ygall/YPJ/issues
 Description: Collection de fonctions utiles pour analyse de données de recherche clinique.
-Depends: R (>= 3.5)
+Depends: R (>= 3.4)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
