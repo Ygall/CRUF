@@ -22,3 +22,6 @@ usethis::use_vignette("manual")
 
 # Initialiser tests
 usethis::use_testthat()
+
+# Initialiser raw data
+usethis::use_data_raw()

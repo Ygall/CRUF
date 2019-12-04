@@ -4,3 +4,4 @@
 ^devtools_history\.R$
 ^workflow\.R$
 ^\.travis\.yml$
+^data-raw$
