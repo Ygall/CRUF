@@ -82,6 +82,7 @@ tabkris_2 <- function(data,
     method <- check_method(data, method, names)
   } else {
     method <- make_method(data, default_method)
+    method <- check_method(data, method, names)
   }
 
   default_test <- check_default_test(data, varint, default_test)

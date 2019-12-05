@@ -24,6 +24,7 @@ make_method <- function(data,
     def <- assign_method(y)
     method[j] <- default_method[def]
   }
+
   method
 }
 

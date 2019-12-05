@@ -160,7 +160,7 @@ check_method <- function(data, method, names) {
                 "\" not supported for variable \"",
                 colnames(data)[i],
                 "\". Method should be in : ",
-                d
+                paste0(d, collapse = " "), "\n"
             ),
             call. = FALSE)
         }
