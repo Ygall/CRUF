@@ -76,6 +76,8 @@ tabkris_2 <- function(data,
              explicit_na,
              digits)
 
+  method <- check_default_method(data, method, default_method)
+
   if (!is.null(method)) {
     method <- check_method(data, method, names)
   } else {

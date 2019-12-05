@@ -109,6 +109,27 @@ check_args <- function(lang,
     }
 }
 
+check_default_method <- function(data, method, default_method) {
+    imp_method  <- c("cont", "bino", "cate", "chisq")
+
+    if (!all(default_method == imp_method)) {
+        method <- NULL
+    }
+
+    for (i in seq_along(default_method)) {
+        if (!(default_method[i] %in% c("cont", "bino", "cate", "ordo"))) {
+            stop(paste0(
+                "Argument method : ",
+                default_method[i],
+                " not in supported default_methods"
+            ),
+            call. = FALSE)
+        }
+    }
+
+    return(method)
+}
+
 check_method <- function(data, method, names) {
     if (!is.vector(method)) {
         stop("Argument method not a vector", call. = F)
