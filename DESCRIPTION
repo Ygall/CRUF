@@ -12,6 +12,7 @@ Description: Useful functions for clinical research data analysis.
 Depends: R (>= 3.4)
 License: GPL-3
 Encoding: UTF-8
+LazyLoad: true
 LazyData: true
 Imports: 
     utils,

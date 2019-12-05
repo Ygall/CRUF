@@ -23,36 +23,28 @@ library(xtable)
 [![Travis build status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
 <!-- badges: end -->
 
-Fonctions utilitaires personnelles
-Le but de ce package est de réunir au même endroit les fonctions utilitaires pour les analyses de recherche clinique.
+Clinical Research Utilities Functions
+Useful functions for clinical research data analysis.
 
-## Fonctions disponibles
+## Functions
 
-### tabkris_2
-
-Fonction de description
+- tabkris_2 : Description table with options
 
 ## Installation
 
-La version publiée d'YPJ peut être installée à partir de [CRAN](https://CRAN.R-project.org) avec :
+Released version is available on [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("YPJ")
 ```
 
-La version de développement est disponible sur [GitHub](https://github.com/) avec :
+Development version is available on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("Ygall/YPJ")
 ```
-## Exemple
+# Manual
 
-
-```{r example}
-library(YPJ)
-
-desctable <- tabkris_2(boys)
-desctable
-
+```{r child = 'vignettes/manual.Rmd'}
 ```

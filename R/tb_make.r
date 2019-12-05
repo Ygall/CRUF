@@ -423,7 +423,7 @@ make_table_test <-
                       digits),
       wilcox = signif(wilcox.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
-      kruskal  = signif(kruskal.test(data_c[, label] ~ data_c[, varint])$p.value,
+      kruskal = signif(kruskal.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
       chisq  = signif(chisq.test(table(data_c[, label],
                                        data_c[, varint]))$p.value, digits),
