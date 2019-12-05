@@ -166,8 +166,6 @@ check_method <- function(data, method, names) {
         }
     }
 
-    names(method) <- names
-
     return(method)
 
 }

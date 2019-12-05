@@ -99,7 +99,7 @@ make_result <-
       lev <- levels(data[[1]][, i])
 
       result_first <-
-        make_first_column(lev, name, label, method, explicit_na)
+        make_first_column(lev, label, name, method, explicit_na)
 
       result_desc <-
         data.frame(matrix(NA, nrow = nrow(result_first), ncol = 1))
@@ -110,6 +110,7 @@ make_result <-
         description <-
           make_description(temp,
                            name,
+                           label,
                            method,
                            explicit_na,
                            digits,
@@ -124,8 +125,8 @@ make_result <-
 
       if (test_yn == TRUE) {
         tested <-
-          make_table_test(data_c, name, method, test, explicit_na, digits,
-                          varint)
+          make_table_test(data_c, label, name, method, test, explicit_na,
+                          digits, varint)
 
         result_test <- cbind.data.frame(result_test, tested)
       }
@@ -158,7 +159,7 @@ make_result <-
     result
   }
 
-make_first_column <- function(lev, name, label, method, explicit_na) {
+make_first_column <- function(lev, label, name, method, explicit_na) {
   res <- NULL
 
   exp_na <- as.numeric(explicit_na)
@@ -251,6 +252,7 @@ make_first_row    <- function(result, lev, n, varint, test_yn) {
 make_description <-
   function(temp,
            name,
+           label,
            method,
            explicit_na,
            digits,
@@ -394,6 +396,7 @@ make_desc_ordo <- function(r, vec, digits, pres_quali) {
 
 make_table_test <-
   function(data_c,
+           label,
            name,
            method,
            test,
@@ -405,26 +408,26 @@ make_table_test <-
     exp_na <- as.numeric(explicit_na)
 
     r <- switch(
-      method[name],
+      method[label],
       cont = 1 + exp_na,
       bino = 1 + exp_na,
-      cate = 1 + exp_na + length(levels(data_c[, name])),
-      ordo = 1 + exp_na + length(levels(data_c[, name]))
+      cate = 1 + exp_na + length(levels(data_c[, label])),
+      ordo = 1 + exp_na + length(levels(data_c[, label]))
     )
 
     mat <- matrix("", ncol = 1, nrow = r)
 
     mat[1, 1] <- switch(
-      test[name],
-      stud   = signif(t.test(data_c[, name] ~ data_c[, varint])$p.value,
+      test[label],
+      stud   = signif(t.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
-      wilcox = signif(wilcox.test(data_c[, name] ~ data_c[, varint])$p.value,
+      wilcox = signif(wilcox.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
-      kruskal  = signif(kruskal.test(data_c[, name] ~ data_c[, varint])$p.value,
+      kruskal  = signif(kruskal.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
-      chisq  = signif(chisq.test(table(data_c[, name],
+      chisq  = signif(chisq.test(table(data_c[, label],
                                        data_c[, varint]))$p.value, digits),
-      fish   = signif(fisher.test(table(data_c[, name],
+      fish   = signif(fisher.test(table(data_c[, label],
                                        data_c[, varint]))$p.value, digits)
     )
 
