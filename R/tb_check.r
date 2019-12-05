@@ -129,8 +129,8 @@ check_method <- function(data, method, names) {
         d <- switch(assign_method(data[, i]),
                     "1" = "cont",
                     "2" = c("bino", "cate", "ordo"),
-                    "3" = "cate",
-                    "4" = "ordo")
+                    "3" = c("cate", "ordo"),
+                    "4" = c("ordo", "cate"))
 
         if (!(method[i] %in% d)) {
             stop(paste0(
