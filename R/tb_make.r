@@ -91,13 +91,14 @@ make_result <-
 
     result <- NULL
 
-    for (i in names) {
-      name <- names[names == i]
+    for (i in seq_along(names)) {
+      name  <- names(data[[1]])[i]
+      label <- names[i]
 
-      lev <- levels(data[[1]][, name])
+      lev <- levels(data[[1]][, i])
 
       result_first <-
-        make_first_column(lev, name, method, explicit_na)
+        make_first_column(lev, name, label, method, explicit_na)
 
       result_desc <-
         data.frame(matrix(NA, nrow = nrow(result_first), ncol = 1))
@@ -156,7 +157,7 @@ make_result <-
     result
   }
 
-make_first_column <- function(lev, name, method, explicit_na) {
+make_first_column <- function(lev, name, label, method, explicit_na) {
   res <- NULL
 
   exp_na <- as.numeric(explicit_na)
@@ -170,7 +171,7 @@ make_first_column <- function(lev, name, method, explicit_na) {
   )
 
   mat <- matrix("", ncol = 2, nrow = r)
-  mat[1, 1] <- name
+  mat[1, 1] <- label
 
   mat[, 2] <- switch(
     method[name],
