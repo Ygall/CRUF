@@ -5,10 +5,10 @@ vignette: >
   %\VignetteIndexEntry{manual}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{knitr}
 ---
 
 ```{r, include = FALSE}
-library(knitr)
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -42,7 +42,7 @@ It detects the type of each variable from the input dataframe. Variable types ar
 - **Continuous** for integer/double/numeric variables.
 - **Binomial** for logical or factor with 2 levels.
 - **Categorical** for factor with more than 2 levels and not ordered.
-- **Ordered for** factor with more than 2 levels and ordered.
+- **Ordered** for factor with more than 2 levels and ordered.
 
 The default presentation for quantitative variables is *"mean (SD)"* and for qualitative variable is *"n (percent %)"*. Binomial variables are displayed in one line, unordered and ordered categorical variables are displayed with one line for every level.
 
@@ -51,7 +51,7 @@ library(YPJ)
 
 desctable <- tabkris_2(mtcars)
 
-knitr::kable(desctable)
+# knitr::kable(desctable)
 ```
 
 ***
@@ -147,7 +147,7 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr")
 
-knitr::kable(desctable)
+# knitr::kable(desctable)
 
 ```
 
