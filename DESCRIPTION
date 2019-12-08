@@ -7,6 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "yves.gallien@gmail.com",
            comment = c(ORCID = "0000-0002-1245-9260"))
+URL: https://github.com/Ygall/YPJ
 BugReports: https://github.com/Ygall/YPJ/issues
 Description: Useful functions for clinical research data analysis.
 Depends: R (>= 3.4)

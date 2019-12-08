@@ -18,14 +18,15 @@ research data analysis.
 
 ## Installation
 
-Released version is available on [CRAN](https://CRAN.R-project.org)
-with:
+Future released version will be available on
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("YPJ")
 ```
 
-Development version is available on [GitHub](https://github.com/) with:
+For now, development version is available on
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -59,7 +60,7 @@ types are:
   - **Continuous** for integer/double/numeric variables.
   - **Binomial** for logical or factor with 2 levels.
   - **Categorical** for factor with more than 2 levels and not ordered.
-  - **Ordered for** factor with more than 2 levels and ordered.
+  - **Ordered** for factor with more than 2 levels and ordered.
 
 The default presentation for quantitative variables is *“mean (SD)”* and
 for qualitative variable is *“n (percent %)”*. Binomial variables are
@@ -69,36 +70,17 @@ displayed with one line for every level.
 ``` r
 library(YPJ)
 
+# Data must be prepared for variable type, here is the transformation of "cyl", "vs", "am", "gear" and "carb" in factors.
+mtcars <- datasets::mtcars
+
+for (i in c("cyl", "vs", "am", "gear", "carb")) {
+  mtcars[, i] <- factor(mtcars[, i])
+}
+
 desctable <- tabkris_2(mtcars)
 
-knitr::kable(desctable)
+# knitr::kable(desctable)
 ```
-
-| Variable | Modality | N  | Statistics      |
-| :------- | :------- | :- | :-------------- |
-| mpg      |          | 32 | 20.09 (6.03)    |
-| cyl      |          | 32 |                 |
-|          | 4        |    | 11 (34.38%)     |
-|          | 6        |    | 7 (21.88%)      |
-|          | 8        |    | 14 (43.75%)     |
-| disp     |          | 32 | 230.72 (123.94) |
-| hp       |          | 32 | 146.69 (68.56)  |
-| drat     |          | 32 | 3.6 (0.53)      |
-| wt       |          | 32 | 3.22 (0.98)     |
-| qsec     |          | 32 | 17.85 (1.79)    |
-| vs       | 1        | 32 | 14 (43.75%)     |
-| am       | 1        | 32 | 13 (40.62%)     |
-| gear     |          | 32 |                 |
-|          | 3        |    | 15 (46.88%)     |
-|          | 4        |    | 12 (37.5%)      |
-|          | 5        |    | 5 (15.62%)      |
-| carb     |          | 32 |                 |
-|          | 1        |    | 7 (21.88%)      |
-|          | 2        |    | 10 (31.25%)     |
-|          | 3        |    | 3 (9.38%)       |
-|          | 4        |    | 10 (31.25%)     |
-|          | 6        |    | 1 (3.12%)       |
-|          | 8        |    | 1 (3.12%)       |
 
 -----
 
@@ -227,45 +209,8 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr")
 
-knitr::kable(desctable)
+# knitr::kable(desctable)
 ```
-
-| Variable            | Modalité | N  | Statistiques             |
-| :------------------ | :------- | :- | :----------------------- |
-| Miles/US gallon     |          | 32 | 20.1 (6) {10.4;33.9}     |
-|                     | NA       | 0  |                          |
-| Number of cylinders |          | 32 |                          |
-|                     | 4        |    | 11/32 (34.4%)            |
-|                     | 6        |    | 7/32 (21.9%)             |
-|                     | 8        |    | 14/32 (43.8%)            |
-|                     | NA       | 0  |                          |
-| Displacement        |          | 32 | 230.7 (123.9) {71.1;472} |
-|                     | NA       | 0  |                          |
-| Horsepower          |          | 32 | 146.7 (68.6) {52;335}    |
-|                     | NA       | 0  |                          |
-| Rear axle ratio     |          | 32 | 3.6 (0.5) {2.8;4.9}      |
-|                     | NA       | 0  |                          |
-| Weight              |          | 32 | 3.2 (1) {1.5;5.4}        |
-|                     | NA       | 0  |                          |
-| 1/4 mile time       |          | 32 | 17.8 (1.8) {14.5;22.9}   |
-|                     | NA       | 0  |                          |
-| Engine              | 1        |    | 14/32 (43.8%)            |
-|                     | NA       | 0  |                          |
-| Transmission        | 1        |    | 13/32 (40.6%)            |
-|                     | NA       | 0  |                          |
-| N Forward gears     |          | 32 |                          |
-|                     | 3        |    | 15/32 (46.9%)            |
-|                     | 4        |    | 12/32 (37.5%)            |
-|                     | 5        |    | 5/32 (15.6%)             |
-|                     | NA       | 0  |                          |
-| N carburetors       |          | 32 |                          |
-|                     | 1        |    | 7/32 (21.9%)             |
-|                     | 2        |    | 10/32 (31.2%)            |
-|                     | 3        |    | 3/32 (9.4%)              |
-|                     | 4        |    | 10/32 (31.2%)            |
-|                     | 6        |    | 1/32 (3.1%)              |
-|                     | 8        |    | 1/32 (3.1%)              |
-|                     | NA       | 0  |                          |
 
 -----
 

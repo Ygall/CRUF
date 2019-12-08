@@ -49,6 +49,13 @@ The default presentation for quantitative variables is *"mean (SD)"* and for qua
 ```{r setup}
 library(YPJ)
 
+# Data must be prepared for variable type, here is the transformation of "cyl", "vs", "am", "gear" and "carb" in factors.
+mtcars <- datasets::mtcars
+
+for (i in c("cyl", "vs", "am", "gear", "carb")) {
+  mtcars[, i] <- factor(mtcars[, i])
+}
+
 desctable <- tabkris_2(mtcars)
 
 # knitr::kable(desctable)

@@ -32,13 +32,13 @@ Useful functions for clinical research data analysis.
 
 ## Installation
 
-Released version is available on [CRAN](https://CRAN.R-project.org) with:
+Future released version will be available on [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("YPJ")
 ```
 
-Development version is available on [GitHub](https://github.com/) with:
+For now, development version is available on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
