@@ -64,7 +64,6 @@ tabkris_2 <- function(data,
                       digits = 2,
                       return_table = TRUE,
                       auto_detect = FALSE) {
-
   # Check
   env <- environment()
   data  <- check_data(data, env)
@@ -93,7 +92,9 @@ tabkris_2 <- function(data,
     method <- check_method(data, method, names)
   }
 
-  default_test <- check_default_test(data, varint, default_test)
+  if (test == TRUE) {
+    default_test <- check_default_test(data, varint, default_test)
+  }
 
   test_yn <- check_test_yn(data, test, varint)
 

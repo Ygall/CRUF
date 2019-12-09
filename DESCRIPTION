@@ -1,6 +1,6 @@
 Package: YPJ
 Title: Clinical Research Utilities Functions
-Version: 0.1.8
+Version: 0.1.9
 Authors@R: 
     person(given = "Yves",
            family = "Gallien",

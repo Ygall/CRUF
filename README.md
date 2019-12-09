@@ -1,7 +1,7 @@
+YPJ
+================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# YPJ
 
 <!-- badges: start -->
 
@@ -273,7 +273,13 @@ desctable <- tabkris_2(mtcars, names = lab,
                        pres_quali = c("n", "total", "per"),
                        explicit_na = T,
                        digits = 1,
-                       lang = "fr")
+                       lang = "fr",
+                       auto_detect = T)
+# > Variable "cyl" have been coerced to factor, with method "cate"
+# > Variable "vs" have been coerced to factor, with method "bino"
+# > Variable "am" have been coerced to factor, with method "bino"
+# > Variable "gear" have been coerced to factor, with method "cate"
+# > Variable "carb" have been coerced to factor, with method "cate"
 
 knitr::kable(desctable)
 ```
@@ -282,7 +288,10 @@ knitr::kable(desctable)
 | :------------------ | :------- | :- | :----------------------- |
 | Miles/US gallon     |          | 32 | 20.1 (6) {10.4;33.9}     |
 |                     | NA       | 0  |                          |
-| Number of cylinders |          | 32 | 6.2 (1.8) {4;8}          |
+| Number of cylinders |          | 32 |                          |
+|                     | 4        |    | 11/32 (34.4%)            |
+|                     | 6        |    | 7/32 (21.9%)             |
+|                     | 8        |    | 14/32 (43.8%)            |
 |                     | NA       | 0  |                          |
 | Displacement        |          | 32 | 230.7 (123.9) {71.1;472} |
 |                     | NA       | 0  |                          |
@@ -294,13 +303,22 @@ knitr::kable(desctable)
 |                     | NA       | 0  |                          |
 | 1/4 mile time       |          | 32 | 17.8 (1.8) {14.5;22.9}   |
 |                     | NA       | 0  |                          |
-| Engine              |          | 32 | 0.4 (0.5) {0;1}          |
+| Engine              | 1        |    | 14/32 (43.8%)            |
 |                     | NA       | 0  |                          |
-| Transmission        |          | 32 | 0.4 (0.5) {0;1}          |
+| Transmission        | 1        |    | 13/32 (40.6%)            |
 |                     | NA       | 0  |                          |
-| N Forward gears     |          | 32 | 3.7 (0.7) {3;5}          |
+| N Forward gears     |          | 32 |                          |
+|                     | 3        |    | 15/32 (46.9%)            |
+|                     | 4        |    | 12/32 (37.5%)            |
+|                     | 5        |    | 5/32 (15.6%)             |
 |                     | NA       | 0  |                          |
-| N carburetors       |          | 32 | 2.8 (1.6) {1;8}          |
+| N carburetors       |          | 32 |                          |
+|                     | 1        |    | 7/32 (21.9%)             |
+|                     | 2        |    | 10/32 (31.2%)            |
+|                     | 3        |    | 3/32 (9.4%)              |
+|                     | 4        |    | 10/32 (31.2%)            |
+|                     | 6        |    | 1/32 (3.1%)              |
+|                     | 8        |    | 1/32 (3.1%)              |
 |                     | NA       | 0  |                          |
 
 -----

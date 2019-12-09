@@ -160,7 +160,8 @@ desctable <- tabkris_2(mtcars, names = lab,
                        pres_quali = c("n", "total", "per"),
                        explicit_na = T,
                        digits = 1,
-                       lang = "fr")
+                       lang = "fr",
+                       auto_detect = T)
 
 knitr::kable(desctable)
 
