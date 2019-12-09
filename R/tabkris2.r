@@ -6,12 +6,37 @@
 #' @details The \code{tabkris_2} function is a function to describe a set of
 #'   data. Main purpose is to create a typical table one in biomedical
 #'   litterature, either a patient characteristic table or population
-#'   characteristic table. \code{names} is a vector to name the variable of
-#'   data. Default will use the colnames of data. \code{varint} is a variable to
-#'   stratify the analysis. It must be included in the initial dataset. It will
-#'   not be displayed in the final table if chosen as the stratifying variable
+#'   characteristic table.
+#'
+#'   \code{names} is a vector to name the variable of data. Default will use the
+#'   colnames of data.
+#'
+#'   \code{varint} is a variable to stratify the analysis. It must be included
+#'   in the initial dataset. It will not be displayed in the final table if
+#'   chosen as the stratifying variable
+#'
 #'   \code{lang} is useful to choose the language for the final display. The
-#'   default is english. French is also supported. \code{explicit_na}.
+#'   default is english. French is also supported.
+#'
+#'   \code{default_method} and \code{method} are used to set the methods used
+#'   for display. default_method must be length 4, to set the default method for
+#'   continuous, binomial, categorical and ordered variable. \code{method} must
+#'   be length of data columns, used to fine-tune every method for each
+#'   variable.
+#'
+#'   \code{default_test} and \code{test}.
+#'
+#'   \code{pres_quant}.
+#'
+#'   \code{pres_quali}.
+#'
+#'   \code{explicit_na}.
+#'
+#'   \code{digits}.
+#'
+#'   \code{return_table}.
+#'
+#'   \code{auto_detect}.
 #'
 #' @param data Dataframe to describe
 #' @param names Vectors of variables to display in the final table, length of
@@ -68,6 +93,16 @@ tabkris_2 <- function(data,
   env <- environment()
   data  <- check_data(data, env)
 
+  check_args(lang,
+             pres_quant,
+             pres_quali,
+             default_method,
+             default_test,
+             explicit_na,
+             digits,
+             return_table,
+             auto_detect)
+
   if (auto_detect == TRUE) {
     data <- make_auto_detect(data)
   }
@@ -75,13 +110,7 @@ tabkris_2 <- function(data,
   names <- check_names(data, names)
 
   check_varint(data, varint)
-  check_args(lang,
-             pres_quant,
-             pres_quali,
-             default_method,
-             default_test,
-             explicit_na,
-             digits)
+
 
   method <- check_default_method(data, method, default_method)
 

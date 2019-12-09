@@ -61,7 +61,9 @@ check_args <- function(lang,
                        default_method,
                        default_test,
                        explicit_na,
-                       digits) {
+                       digits,
+                       return_table,
+                       auto_detect) {
     # Check le format de la langue
     lang <- match.arg(lang, c("english", "french"))
     if (!(lang %in% c("english", "french"))) {
@@ -106,6 +108,16 @@ check_args <- function(lang,
         stop("Argument digits not numeric", call. = FALSE)
     } else if (digits < 0 || digits > 15) {
         stop("Argument digits not between 0 and 15", call. = FALSE)
+    }
+
+    # Check le format de return_table
+    if (!is.logical(return_table)) {
+        stop("Argument explicit_na not logical", call. = FALSE)
+    }
+
+    # Check le format de auto_detect
+    if (!is.logical(auto_detect)) {
+        stop("Argument explicit_na not logical", call. = FALSE)
     }
 }
 
