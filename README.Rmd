@@ -23,8 +23,7 @@ library(xtable)
 [![Travis build status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
 <!-- badges: end -->
 
-Clinical Research Utilities Functions
-Useful functions for clinical research data analysis.
+Clinical Research Utilities Functions (CRUF) : Useful functions for clinical research data analysis.
 
 ## Functions
 

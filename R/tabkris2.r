@@ -38,6 +38,9 @@
 #' @param digits Number of significant number to display, default \code{2}
 #' @param return_table Whether to return a dataframe or an object to customize
 #'   option easily, default \code{TRUE}
+#' @param auto_detect Whether to automatically detect variable type,
+#'   transforming to factors numeric variable with moderate levels (< 10),
+#'   default \code{FALSE}
 #'
 #' @importFrom stats sd median quantile chisq.test fisher.test kruskal.test
 #'   t.test wilcox.test
@@ -59,11 +62,16 @@ tabkris_2 <- function(data,
                       default_test   = c("stud", "chisq", "chisq", "chisq"),
                       explicit_na = FALSE,
                       digits = 2,
-                      return_table = TRUE) {
+                      return_table = TRUE,
+                      auto_detect = FALSE) {
 
   # Check
   env <- environment()
   data  <- check_data(data, env)
+
+  if (auto_detect == TRUE) {
+    data <- make_auto_detect(data)
+  }
 
   names <- check_names(data, names)
 

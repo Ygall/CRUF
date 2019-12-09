@@ -17,7 +17,8 @@ tabkris_2(
   default_test = c("stud", "chisq", "chisq", "chisq"),
   explicit_na = FALSE,
   digits = 2,
-  return_table = TRUE
+  return_table = TRUE,
+  auto_detect = FALSE
 )
 }
 \arguments{
@@ -58,6 +59,10 @@ Default \code{default_method = c("cont", "bino", "cate", "ordo")}}
 
 \item{return_table}{Whether to return a dataframe or an object to customize
 option easily, default \code{TRUE}}
+
+\item{auto_detect}{Whether to automatically detect variable type,
+transforming to factors numeric variable with moderate levels (< 10),
+default \code{FALSE}}
 }
 \value{
 A dataframe or an object with all arguments to customize function

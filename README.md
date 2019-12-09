@@ -9,8 +9,8 @@
 status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
 <!-- badges: end -->
 
-Clinical Research Utilities Functions Useful functions for clinical
-research data analysis.
+Clinical Research Utilities Functions (CRUF) : Useful functions for
+clinical research data analysis.
 
 ## Functions
 
@@ -73,14 +73,75 @@ library(YPJ)
 # Data must be prepared for variable type, here is the transformation of "cyl", "vs", "am", "gear" and "carb" in factors.
 mtcars <- datasets::mtcars
 
-for (i in c("cyl", "vs", "am", "gear", "carb")) {
-  mtcars[, i] <- factor(mtcars[, i])
-}
-
 desctable <- tabkris_2(mtcars)
 
-# knitr::kable(desctable)
+knitr::kable(desctable)
 ```
+
+| Variable | N  | Statistics      |
+| :------- | :- | :-------------- |
+| mpg      | 32 | 20.09 (6.03)    |
+| cyl      | 32 | 6.19 (1.79)     |
+| disp     | 32 | 230.72 (123.94) |
+| hp       | 32 | 146.69 (68.56)  |
+| drat     | 32 | 3.6 (0.53)      |
+| wt       | 32 | 3.22 (0.98)     |
+| qsec     | 32 | 17.85 (1.79)    |
+| vs       | 32 | 0.44 (0.5)      |
+| am       | 32 | 0.41 (0.5)      |
+| gear     | 32 | 3.69 (0.74)     |
+| carb     | 32 | 2.81 (1.62)     |
+
+-----
+
+# Auto-detect variable type
+
+Using the argument **auto\_detect = TRUE** will test if each numeric
+variable can be coerced to a factor variable. It tests the potential
+levels of each variable and coerce to a factor type if the number of
+levels is moderate (i.e \< 10). For variable with two levels, method
+used will be “bino”, else it will be
+“cate”.
+
+``` r
+# In mtcars, "cyl", "vs", "am", "gear" and "carb" are encoded as numeric but they are factors in reality.
+# tabkris_2 changes each variable and display a message for each transformation.
+desctable <- tabkris_2(mtcars, auto_detect = T)
+# > Variable "cyl" have been coerced to factor, with method "cate"
+# > Variable "vs" have been coerced to factor, with method "bino"
+# > Variable "am" have been coerced to factor, with method "bino"
+# > Variable "gear" have been coerced to factor, with method "cate"
+# > Variable "carb" have been coerced to factor, with method "cate"
+
+
+knitr::kable(desctable)
+```
+
+| Variable | Modality | N  | Statistics      |
+| :------- | :------- | :- | :-------------- |
+| mpg      |          | 32 | 20.09 (6.03)    |
+| cyl      |          | 32 |                 |
+|          | 4        |    | 11 (34.38%)     |
+|          | 6        |    | 7 (21.88%)      |
+|          | 8        |    | 14 (43.75%)     |
+| disp     |          | 32 | 230.72 (123.94) |
+| hp       |          | 32 | 146.69 (68.56)  |
+| drat     |          | 32 | 3.6 (0.53)      |
+| wt       |          | 32 | 3.22 (0.98)     |
+| qsec     |          | 32 | 17.85 (1.79)    |
+| vs       | 1        | 32 | 14 (43.75%)     |
+| am       | 1        | 32 | 13 (40.62%)     |
+| gear     |          | 32 |                 |
+|          | 3        |    | 15 (46.88%)     |
+|          | 4        |    | 12 (37.5%)      |
+|          | 5        |    | 5 (15.62%)      |
+| carb     |          | 32 |                 |
+|          | 1        |    | 7 (21.88%)      |
+|          | 2        |    | 10 (31.25%)     |
+|          | 3        |    | 3 (9.38%)       |
+|          | 4        |    | 10 (31.25%)     |
+|          | 6        |    | 1 (3.12%)       |
+|          | 8        |    | 1 (3.12%)       |
 
 -----
 
@@ -99,7 +160,12 @@ parameter, change a parameter, compute a table and re-use the
 *desc\_prep* to rechange another parameter for another table.
 
 ``` r
-desc_prep <- tabkris_2(mtcars, return_table = F)
+desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
+# > Variable "cyl" have been coerced to factor, with method "cate"
+# > Variable "vs" have been coerced to factor, with method "bino"
+# > Variable "am" have been coerced to factor, with method "bino"
+# > Variable "gear" have been coerced to factor, with method "cate"
+# > Variable "carb" have been coerced to factor, with method "cate"
 
 # Change the method for variable "vs" from a binomial to a categorical method
 desc_prep$method["vs"] <- "cate"
@@ -209,8 +275,33 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr")
 
-# knitr::kable(desctable)
+knitr::kable(desctable)
 ```
+
+| Variable            | Modalité | N  | Statistiques             |
+| :------------------ | :------- | :- | :----------------------- |
+| Miles/US gallon     |          | 32 | 20.1 (6) {10.4;33.9}     |
+|                     | NA       | 0  |                          |
+| Number of cylinders |          | 32 | 6.2 (1.8) {4;8}          |
+|                     | NA       | 0  |                          |
+| Displacement        |          | 32 | 230.7 (123.9) {71.1;472} |
+|                     | NA       | 0  |                          |
+| Horsepower          |          | 32 | 146.7 (68.6) {52;335}    |
+|                     | NA       | 0  |                          |
+| Rear axle ratio     |          | 32 | 3.6 (0.5) {2.8;4.9}      |
+|                     | NA       | 0  |                          |
+| Weight              |          | 32 | 3.2 (1) {1.5;5.4}        |
+|                     | NA       | 0  |                          |
+| 1/4 mile time       |          | 32 | 17.8 (1.8) {14.5;22.9}   |
+|                     | NA       | 0  |                          |
+| Engine              |          | 32 | 0.4 (0.5) {0;1}          |
+|                     | NA       | 0  |                          |
+| Transmission        |          | 32 | 0.4 (0.5) {0;1}          |
+|                     | NA       | 0  |                          |
+| N Forward gears     |          | 32 | 3.7 (0.7) {3;5}          |
+|                     | NA       | 0  |                          |
+| N carburetors       |          | 32 | 2.8 (1.6) {1;8}          |
+|                     | NA       | 0  |                          |
 
 -----
 

@@ -1,3 +1,39 @@
+make_auto_detect <- function(data) {
+  detect <- NULL
+  type   <- NULL
+
+
+  for (i in colnames(data)) {
+    detect <- c(detect, !is.factor(data[, i]))
+    lev <- nlevels(factor(data[, i]))
+
+    if (lev == 2) {
+      type <- c(type, "bino")
+    } else if (lev < 10 & lev > 2) {
+      type <- c(type, "cate")
+    } else {
+      type <- c(type, "unch")
+    }
+  }
+
+  for (i in seq_along(data)) {
+    if (detect[i] & type[i] != "unch") {
+      data[, i] <- factor(data[, i])
+      message(
+        paste0(
+          "Variable \"",
+          names(data)[i],
+          "\" have been coerced to factor, with method \"",
+          type[i]
+        ),
+        "\"", appendLF = T
+      )
+    }
+  }
+
+  return(data)
+}
+
 assign_method <- function(y) {
   if (is.numeric(y))
     return(1)
@@ -125,8 +161,14 @@ make_result <-
 
       if (test_yn == TRUE) {
         tested <-
-          make_table_test(data_c, label, name, method, test, explicit_na,
-                          digits, varint)
+          make_table_test(data_c,
+                          label,
+                          name,
+                          method,
+                          test,
+                          explicit_na,
+                          digits,
+                          varint)
 
         result_test <- cbind.data.frame(result_test, tested)
       }
@@ -159,42 +201,43 @@ make_result <-
     result
   }
 
-make_first_column <- function(lev, label, name, method, explicit_na) {
-  res <- NULL
+make_first_column <-
+  function(lev, label, name, method, explicit_na) {
+    res <- NULL
 
-  exp_na <- as.numeric(explicit_na)
+    exp_na <- as.numeric(explicit_na)
 
-  r <- switch(
-    method[name],
-    cont = 1 + exp_na,
-    bino = 1 + exp_na,
-    cate = 1 + exp_na + length(lev),
-    ordo = 1 + exp_na + length(lev)
-  )
+    r <- switch(
+      method[name],
+      cont = 1 + exp_na,
+      bino = 1 + exp_na,
+      cate = 1 + exp_na + length(lev),
+      ordo = 1 + exp_na + length(lev)
+    )
 
-  mat <- matrix("", ncol = 2, nrow = r)
-  mat[1, 1] <- label
+    mat <- matrix("", ncol = 2, nrow = r)
+    mat[1, 1] <- label
 
-  mat[, 2] <- switch(
-    method[name],
-    cont = c("",
-             if (exp_na == 1)
-               "NA"),
-    bino = c(lev[2],
-             if (exp_na == 1)
-               "NA"),
-    cate = c("", lev,
-             if (exp_na == 1)
-               "NA"),
-    ordo = c("", lev,
-             if (exp_na == 1)
-               "NA")
-  )
+    mat[, 2] <- switch(
+      method[name],
+      cont = c("",
+               if (exp_na == 1)
+                 "NA"),
+      bino = c(lev[2],
+               if (exp_na == 1)
+                 "NA"),
+      cate = c("", lev,
+               if (exp_na == 1)
+                 "NA"),
+      ordo = c("", lev,
+               if (exp_na == 1)
+                 "NA")
+    )
 
-  res <- data.frame(mat, stringsAsFactors = F)
+    res <- data.frame(mat, stringsAsFactors = F)
 
-  res
-}
+    res
+  }
 
 make_first_row    <- function(result, lev, n, varint, test_yn) {
   n_result <- dim(result)[2]
@@ -424,11 +467,11 @@ make_table_test <-
       wilcox = signif(wilcox.test(data_c[, label] ~ data_c[, varint])$p.value,
                       digits),
       kruskal = signif(kruskal.test(data_c[, label] ~ data_c[, varint])$p.value,
-                      digits),
+                       digits),
       chisq  = signif(chisq.test(table(data_c[, label],
                                        data_c[, varint]))$p.value, digits),
       fish   = signif(fisher.test(table(data_c[, label],
-                                       data_c[, varint]))$p.value, digits)
+                                        data_c[, varint]))$p.value, digits)
     )
 
     res <- data.frame(mat, stringsAsFactors = F)

@@ -12,15 +12,11 @@ vignette: >
 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = ""
+  comment = "# >"
 )
 
-# Préparation des données de mtcars
 mtcars <- datasets::mtcars
 
-for (i in c("cyl", "vs", "am", "gear", "carb")) {
-  mtcars[, i] <- factor(mtcars[, i])
-}
 
 ```
 
@@ -52,14 +48,26 @@ library(YPJ)
 # Data must be prepared for variable type, here is the transformation of "cyl", "vs", "am", "gear" and "carb" in factors.
 mtcars <- datasets::mtcars
 
-for (i in c("cyl", "vs", "am", "gear", "carb")) {
-  mtcars[, i] <- factor(mtcars[, i])
-}
-
 desctable <- tabkris_2(mtcars)
 
-# knitr::kable(desctable)
+knitr::kable(desctable)
 ```
+
+***
+
+# Auto-detect variable type
+
+Using the argument **auto_detect = TRUE** will test if each numeric variable can be coerced to a factor variable. It tests the potential levels of each variable and coerce to a factor type if the number of levels is moderate (i.e < 10). For variable with two levels, method used will be "bino", else it will be "cate".
+
+```{r auto_detect}
+# In mtcars, "cyl", "vs", "am", "gear" and "carb" are encoded as numeric but they are factors in reality.
+# tabkris_2 changes each variable and display a message for each transformation.
+desctable <- tabkris_2(mtcars, auto_detect = T)
+
+
+knitr::kable(desctable)
+```
+
 
 ***
 
@@ -73,7 +81,7 @@ The user can modify only the argument he wants without needing to specify for ev
 It is possbile to create a *desc_prep* object with every default parameter, change a parameter, compute a table and re-use the *desc_prep* to rechange another parameter for another table.
 
 ```{r return_table}
-desc_prep <- tabkris_2(mtcars, return_table = F)
+desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
 
 # Change the method for variable "vs" from a binomial to a categorical method
 desc_prep$method["vs"] <- "cate"
@@ -154,7 +162,7 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr")
 
-# knitr::kable(desctable)
+knitr::kable(desctable)
 
 ```
 
