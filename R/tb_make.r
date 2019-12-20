@@ -53,12 +53,21 @@ make_method <- function(data,
   # assign methods based on type,
   # use method 1 if there is no single
   #
+  #
   method <- rep("", length(names(data)))
   names(method) <- names(data)
   for (j in names(data)) {
     y <- data[, j]
     def <- assign_method(y)
-    method[j] <- default_method[def]
+    if (def == 5) {
+      stop(paste0(
+                "Argument : ",
+                j,
+                " not in supported variable type"
+            ))
+    } else {
+      method[j] <- default_method[def]
+    }
   }
 
   method
