@@ -3,7 +3,7 @@ check_data <- function(data, env) {
         stop("Data not provided", call. = FALSE)
     }
 
-    if (attributes(data)$class == "desctable") {
+    if ("desctable" %in% attributes(data)$class) {
         list2env(data, env)
         data <- data$data
     } else {

@@ -11,7 +11,7 @@ tabkris_2(
   lang = "en",
   method = NULL,
   test = FALSE,
-  pres_quant = c("mean"),
+  pres_quant = c("med"),
   pres_quali = c("n", "per"),
   default_method = c("cont", "bino", "cate", "ordo"),
   default_test = c("stud", "chisq", "chisq", "chisq"),
