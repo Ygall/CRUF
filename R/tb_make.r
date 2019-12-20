@@ -45,6 +45,8 @@ assign_method <- function(y) {
     return(3)
   if (is.logical(y))
     return(2)
+  if (is.character(y))
+    return(3)
   return(5)
 }
 
