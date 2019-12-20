@@ -21,12 +21,12 @@ make_auto_detect <- function(data) {
       data[, i] <- factor(data[, i])
       message(
         paste0(
-          "Variable \"",
+          "\"",
           names(data)[i],
-          "\" have been coerced to factor, with method \"",
+          "\" -> ",
           type[i]
         ),
-        "\"", appendLF = T
+        "", appendLF = T
       )
     }
   }
