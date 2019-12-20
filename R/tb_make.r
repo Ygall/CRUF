@@ -19,15 +19,11 @@ make_auto_detect <- function(data) {
   for (i in seq_along(data)) {
     if (detect[i] & type[i] != "unch") {
       data[, i] <- factor(data[, i])
-      message(
-        paste0(
-          "\"",
-          names(data)[i],
-          "\" -> ",
-          type[i]
-        ),
-        "", appendLF = T
-      )
+      message(paste0("\"",
+                     names(data)[i],
+                     "\" -> ",
+                     type[i]),
+              "", appendLF = T)
     }
   }
 
@@ -62,11 +58,9 @@ make_method <- function(data,
     y <- data[, j]
     def <- assign_method(y)
     if (def == 5) {
-      stop(paste0(
-                "Argument : ",
-                j,
-                " not in supported variable type"
-            ))
+      stop(paste0("Argument : ",
+                  j,
+                  " not in supported variable type"))
     } else {
       method[j] <- default_method[def]
     }
@@ -298,6 +292,8 @@ make_first_row    <- function(result, lev, n, varint, test_yn) {
 
   if (!is.null(varint)) {
     result <- rbind.data.frame(first_row, result, stringsAsFactors = F)
+  } else {
+    attributes(result)$names[grep("N", colnames(result))] <- paste0("N = ", n)
   }
 
   result
@@ -370,7 +366,10 @@ make_desc_cont <- function(r, vec, digits, pres_quant) {
                    round(max(vec, na.rm = T), digits), "}")
   }
 
-  mat[1, 1] <- sum(!is.na(vec))
+  if (sum(is.na(vec)) != 0) {
+    mat[1, 1] <- sum(!is.na(vec))
+  }
+
   mat[1, 2] <- paste0(res1, res2, res3)
 
   return(mat)
@@ -402,7 +401,7 @@ make_desc_bino <- function(r, vec, digits, pres_quali) {
              ), "%)")
   }
 
-  if (!("total" %in% pres_quali)) {
+  if (!("total" %in% pres_quali) && (sum(is.na(vec)) != 0)) {
     mat[1, 1] <- sum(!is.na(vec), na.rm = T)
   }
   mat[1, 2] <- paste0(n, tot, per)
@@ -439,8 +438,9 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
     mat[i + 1, 2] <- (paste0(n, tot, per))
   }
 
-  mat[1, 1] <- sum(!is.na(vec), na.rm = T)
-
+  if (sum(is.na(vec)) != 0) {
+    mat[1, 1] <- sum(!is.na(vec), na.rm = T)
+  }
   return(mat)
 }
 
