@@ -1,5 +1,5 @@
 ---
-title: "YPJ"
+title: "CRUF"
 output: github_document
 ---
 
@@ -20,7 +20,7 @@ library(xtable)
 
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
+[![Travis build status](https://travis-ci.org/Ygall/CRUF.svg?branch=master)](https://travis-ci.org/Ygall/CRUF)
 <!-- badges: end -->
 
 Clinical Research Utilities Functions (CRUF) : Useful functions for clinical research data analysis.
@@ -34,14 +34,14 @@ Clinical Research Utilities Functions (CRUF) : Useful functions for clinical res
 Future released version will be available on [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("YPJ")
+install.packages("CRUF")
 ```
 
 For now, development version is available on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Ygall/YPJ")
+devtools::install_github("Ygall/CRUF")
 ```
 # Manual
 

@@ -1,4 +1,4 @@
-YPJ
+CRUF
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -6,7 +6,7 @@ YPJ
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/Ygall/YPJ.svg?branch=master)](https://travis-ci.org/Ygall/YPJ)
+status](https://travis-ci.org/Ygall/CRUF.svg?branch=master)](https://travis-ci.org/Ygall/CRUF)
 <!-- badges: end -->
 
 Clinical Research Utilities Functions (CRUF) : Useful functions for
@@ -22,7 +22,7 @@ Future released version will be available on
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("YPJ")
+install.packages("CRUF")
 ```
 
 For now, development version is available on
@@ -30,7 +30,7 @@ For now, development version is available on
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Ygall/YPJ")
+devtools::install_github("Ygall/CRUF")
 ```
 
 # Manual
@@ -68,7 +68,7 @@ displayed in one line, unordered and ordered categorical variables are
 displayed with one line for every level.
 
 ``` r
-library(YPJ)
+library(CRUF)
 
 mtcars <- datasets::mtcars
 
