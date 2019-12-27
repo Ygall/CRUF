@@ -1,7 +1,6 @@
-#' Description of data
+#' Data description function
 #'
-#' \code{tabkris_2} returns a dataframe with descriptive statistics for each
-#' variable
+#' \code{tabkris_2} computes descriptive statistics for data
 #'
 #' @details The \code{tabkris_2} function is a function to describe a set of
 #'   data. Main purpose is to create a typical table one in biomedical
@@ -24,21 +23,33 @@
 #'   be length of data columns, used to fine-tune every method for each
 #'   variable.
 #'
-#'   \code{default_test} and \code{test}.
+#'   \code{default_test} and \code{test} are used to set the tests performed.
+#'   default_test must be lenght 4, to set the default method for continuous,
+#'   binomial, categorical and ordered variable. \code{test} must be length of
+#'   data columns, used to fine-tune every test for each variable.
 #'
-#'   \code{pres_quant}.
+#'   \code{pres_quant} is used to set the display of quantitative variable.
+#'   \code{mean (SD)}, \code{median [IQR]} and \code{range} are available,
+#'   default is \code{median}.
 #'
-#'   \code{pres_quali}.
+#'   \code{pres_quali} is used to set the display of qualitative variable.
+#'   \code{"n"} for number, \code{"total"} to add "/ total" and \code{"per"} for
+#'   percentages, default is \code{"n / per"}.
 #'
-#'   \code{explicit_na}.
+#'   \code{explicit_na} is used to display.
 #'
-#'   \code{digits}.
+#'   \code{digits} is the number of digits to display for numbers. Usually if
+#'   \code{n < 100}, \code{digits = 0} if \code{100< n < 200}, \code{digits = 1}
+#'   else \code{digits = 2}.
 #'
-#'   \code{return_table}.
+#'   \code{return_table} choose if the user wants to directly display a table or
+#'   if the user wants to get an object with parametrable objects.
 #'
-#'   \code{auto_detect}.
+#'   \code{auto_detect} will test if each column can be coerced to a factor
+#'   (i.e. having between 2 and 10 levels) and change the type of variable if
+#'   so.
 #'
-#' @param data Dataframe to describe
+#' @param data Dataframe to describe or a "desctable" object
 #' @param names Vectors of variables to display in the final table, length of
 #'   \code{ncol(data)}
 #' @param varint Variable to stratify on, factor only
@@ -70,8 +81,15 @@
 #' @importFrom stats sd median quantile chisq.test fisher.test kruskal.test
 #'   t.test wilcox.test
 #'
-#' @return A dataframe or an object with all arguments to customize function
-#'   call
+#' @return Depending on argument \code{return_table}, an object of class
+#'   data.frame, which is the descriptive table or an object of class
+#'   \code{"desctable"}, which is a customizable object.
+#'
+#' @author Yves Gallien \email{yves.gallien@@gmail.com}, 2019
+#'
+#' @seealso \href{https://github.com/Ygall/CRUF}
+#'
+#' @keywords descriptive, table one
 #' @export
 
 

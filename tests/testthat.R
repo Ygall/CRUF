@@ -1,4 +1,4 @@
 library(testthat)
-library(YPJ)
+library(CRUF)
 
-test_check("YPJ")
+test_check("CRUF")
