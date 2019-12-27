@@ -70,7 +70,6 @@ displayed with one line for every level.
 ``` r
 library(YPJ)
 
-# Data must be prepared for variable type, here is the transformation of "cyl", "vs", "am", "gear" and "carb" in factors.
 mtcars <- datasets::mtcars
 
 desctable <- tabkris_2(mtcars)
@@ -78,19 +77,19 @@ desctable <- tabkris_2(mtcars)
 knitr::kable(desctable)
 ```
 
-| Variable | N  | Statistics      |
-| :------- | :- | :-------------- |
-| mpg      | 32 | 20.09 (6.03)    |
-| cyl      | 32 | 6.19 (1.79)     |
-| disp     | 32 | 230.72 (123.94) |
-| hp       | 32 | 146.69 (68.56)  |
-| drat     | 32 | 3.6 (0.53)      |
-| wt       | 32 | 3.22 (0.98)     |
-| qsec     | 32 | 17.85 (1.79)    |
-| vs       | 32 | 0.44 (0.5)      |
-| am       | 32 | 0.41 (0.5)      |
-| gear     | 32 | 3.69 (0.74)     |
-| carb     | 32 | 2.81 (1.62)     |
+| Variable | Statistics           |
+| :------- | :------------------- |
+| mpg      | 19.2 \[15.43;22.8\]  |
+| cyl      | 6 \[4;8\]            |
+| disp     | 196.3 \[120.83;326\] |
+| hp       | 123 \[96.5;180\]     |
+| drat     | 3.7 \[3.08;3.92\]    |
+| wt       | 3.33 \[2.58;3.61\]   |
+| qsec     | 17.71 \[16.89;18.9\] |
+| vs       | 0 \[0;1\]            |
+| am       | 0 \[0;1\]            |
+| gear     | 4 \[3;4\]            |
+| carb     | 2 \[2;4\]            |
 
 -----
 
@@ -107,41 +106,41 @@ used will be “bino”, else it will be
 # In mtcars, "cyl", "vs", "am", "gear" and "carb" are encoded as numeric but they are factors in reality.
 # tabkris_2 changes each variable and display a message for each transformation.
 desctable <- tabkris_2(mtcars, auto_detect = T)
-# > Variable "cyl" have been coerced to factor, with method "cate"
-# > Variable "vs" have been coerced to factor, with method "bino"
-# > Variable "am" have been coerced to factor, with method "bino"
-# > Variable "gear" have been coerced to factor, with method "cate"
-# > Variable "carb" have been coerced to factor, with method "cate"
+# > "cyl" -> cate
+# > "vs" -> bino
+# > "am" -> bino
+# > "gear" -> cate
+# > "carb" -> cate
 
 
 knitr::kable(desctable)
 ```
 
-| Variable | Modality | N  | Statistics      |
-| :------- | :------- | :- | :-------------- |
-| mpg      |          | 32 | 20.09 (6.03)    |
-| cyl      |          | 32 |                 |
-|          | 4        |    | 11 (34.38%)     |
-|          | 6        |    | 7 (21.88%)      |
-|          | 8        |    | 14 (43.75%)     |
-| disp     |          | 32 | 230.72 (123.94) |
-| hp       |          | 32 | 146.69 (68.56)  |
-| drat     |          | 32 | 3.6 (0.53)      |
-| wt       |          | 32 | 3.22 (0.98)     |
-| qsec     |          | 32 | 17.85 (1.79)    |
-| vs       | 1        | 32 | 14 (43.75%)     |
-| am       | 1        | 32 | 13 (40.62%)     |
-| gear     |          | 32 |                 |
-|          | 3        |    | 15 (46.88%)     |
-|          | 4        |    | 12 (37.5%)      |
-|          | 5        |    | 5 (15.62%)      |
-| carb     |          | 32 |                 |
-|          | 1        |    | 7 (21.88%)      |
-|          | 2        |    | 10 (31.25%)     |
-|          | 3        |    | 3 (9.38%)       |
-|          | 4        |    | 10 (31.25%)     |
-|          | 6        |    | 1 (3.12%)       |
-|          | 8        |    | 1 (3.12%)       |
+| Variable | N = 32 | Statistics           |
+| :------- | :----- | :------------------- |
+| mpg      |        | 19.2 \[15.43;22.8\]  |
+| cyl      |        |                      |
+|          | 4      | 11 (34.38%)          |
+|          | 6      | 7 (21.88%)           |
+|          | 8      | 14 (43.75%)          |
+| disp     |        | 196.3 \[120.83;326\] |
+| hp       |        | 123 \[96.5;180\]     |
+| drat     |        | 3.7 \[3.08;3.92\]    |
+| wt       |        | 3.33 \[2.58;3.61\]   |
+| qsec     |        | 17.71 \[16.89;18.9\] |
+| vs       | 1      | 14 (43.75%)          |
+| am       | 1      | 13 (40.62%)          |
+| gear     |        |                      |
+|          | 3      | 15 (46.88%)          |
+|          | 4      | 12 (37.5%)           |
+|          | 5      | 5 (15.62%)           |
+| carb     |        |                      |
+|          | 1      | 7 (21.88%)           |
+|          | 2      | 10 (31.25%)          |
+|          | 3      | 3 (9.38%)            |
+|          | 4      | 10 (31.25%)          |
+|          | 6      | 1 (3.12%)            |
+|          | 8      | 1 (3.12%)            |
 
 -----
 
@@ -161,11 +160,11 @@ parameter, change a parameter, compute a table and re-use the
 
 ``` r
 desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
-# > Variable "cyl" have been coerced to factor, with method "cate"
-# > Variable "vs" have been coerced to factor, with method "bino"
-# > Variable "am" have been coerced to factor, with method "bino"
-# > Variable "gear" have been coerced to factor, with method "cate"
-# > Variable "carb" have been coerced to factor, with method "cate"
+# > "cyl" -> cate
+# > "vs" -> bino
+# > "am" -> bino
+# > "gear" -> cate
+# > "carb" -> cate
 
 # Change the method for variable "vs" from a binomial to a categorical method
 desc_prep$method["vs"] <- "cate"
@@ -275,51 +274,51 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr",
                        auto_detect = T)
-# > Variable "cyl" have been coerced to factor, with method "cate"
-# > Variable "vs" have been coerced to factor, with method "bino"
-# > Variable "am" have been coerced to factor, with method "bino"
-# > Variable "gear" have been coerced to factor, with method "cate"
-# > Variable "carb" have been coerced to factor, with method "cate"
+# > "cyl" -> cate
+# > "vs" -> bino
+# > "am" -> bino
+# > "gear" -> cate
+# > "carb" -> cate
 
 knitr::kable(desctable)
 ```
 
-| Variable            | Modalité | N  | Statistiques             |
-| :------------------ | :------- | :- | :----------------------- |
-| Miles/US gallon     |          | 32 | 20.1 (6) {10.4;33.9}     |
-|                     | NA       | 0  |                          |
-| Number of cylinders |          | 32 |                          |
-|                     | 4        |    | 11/32 (34.4%)            |
-|                     | 6        |    | 7/32 (21.9%)             |
-|                     | 8        |    | 14/32 (43.8%)            |
-|                     | NA       | 0  |                          |
-| Displacement        |          | 32 | 230.7 (123.9) {71.1;472} |
-|                     | NA       | 0  |                          |
-| Horsepower          |          | 32 | 146.7 (68.6) {52;335}    |
-|                     | NA       | 0  |                          |
-| Rear axle ratio     |          | 32 | 3.6 (0.5) {2.8;4.9}      |
-|                     | NA       | 0  |                          |
-| Weight              |          | 32 | 3.2 (1) {1.5;5.4}        |
-|                     | NA       | 0  |                          |
-| 1/4 mile time       |          | 32 | 17.8 (1.8) {14.5;22.9}   |
-|                     | NA       | 0  |                          |
-| Engine              | 1        |    | 14/32 (43.8%)            |
-|                     | NA       | 0  |                          |
-| Transmission        | 1        |    | 13/32 (40.6%)            |
-|                     | NA       | 0  |                          |
-| N Forward gears     |          | 32 |                          |
-|                     | 3        |    | 15/32 (46.9%)            |
-|                     | 4        |    | 12/32 (37.5%)            |
-|                     | 5        |    | 5/32 (15.6%)             |
-|                     | NA       | 0  |                          |
-| N carburetors       |          | 32 |                          |
-|                     | 1        |    | 7/32 (21.9%)             |
-|                     | 2        |    | 10/32 (31.2%)            |
-|                     | 3        |    | 3/32 (9.4%)              |
-|                     | 4        |    | 10/32 (31.2%)            |
-|                     | 6        |    | 1/32 (3.1%)              |
-|                     | 8        |    | 1/32 (3.1%)              |
-|                     | NA       | 0  |                          |
+| Variable            | Modalité | N = 32 | Statistiques             |
+| :------------------ | :------- | :----- | :----------------------- |
+| Miles/US gallon     |          |        | 20.1 (6) {10.4;33.9}     |
+|                     | NA       | 0      |                          |
+| Number of cylinders |          |        |                          |
+|                     | 4        |        | 11/32 (34.4%)            |
+|                     | 6        |        | 7/32 (21.9%)             |
+|                     | 8        |        | 14/32 (43.8%)            |
+|                     | NA       | 0      |                          |
+| Displacement        |          |        | 230.7 (123.9) {71.1;472} |
+|                     | NA       | 0      |                          |
+| Horsepower          |          |        | 146.7 (68.6) {52;335}    |
+|                     | NA       | 0      |                          |
+| Rear axle ratio     |          |        | 3.6 (0.5) {2.8;4.9}      |
+|                     | NA       | 0      |                          |
+| Weight              |          |        | 3.2 (1) {1.5;5.4}        |
+|                     | NA       | 0      |                          |
+| 1/4 mile time       |          |        | 17.8 (1.8) {14.5;22.9}   |
+|                     | NA       | 0      |                          |
+| Engine              | 1        |        | 14/32 (43.8%)            |
+|                     | NA       | 0      |                          |
+| Transmission        | 1        |        | 13/32 (40.6%)            |
+|                     | NA       | 0      |                          |
+| N Forward gears     |          |        |                          |
+|                     | 3        |        | 15/32 (46.9%)            |
+|                     | 4        |        | 12/32 (37.5%)            |
+|                     | 5        |        | 5/32 (15.6%)             |
+|                     | NA       | 0      |                          |
+| N carburetors       |          |        |                          |
+|                     | 1        |        | 7/32 (21.9%)             |
+|                     | 2        |        | 10/32 (31.2%)            |
+|                     | 3        |        | 3/32 (9.4%)              |
+|                     | 4        |        | 10/32 (31.2%)            |
+|                     | 6        |        | 1/32 (3.1%)              |
+|                     | 8        |        | 1/32 (3.1%)              |
+|                     | NA       | 0      |                          |
 
 -----
 

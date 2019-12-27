@@ -122,7 +122,7 @@ check_args <- function(lang,
 }
 
 check_default_method <- function(data, method, default_method) {
-    imp_method  <- c("cont", "bino", "cate", "chisq")
+    imp_method  <- c("cont", "bino", "cate", "ordo")
 
     if (!all(default_method == imp_method)) {
         method <- NULL

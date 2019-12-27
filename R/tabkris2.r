@@ -89,9 +89,18 @@ tabkris_2 <- function(data,
                       digits = 2,
                       return_table = TRUE,
                       auto_detect = FALSE) {
-  # Check
-  env <- environment()
-  data  <- check_data(data, env)
+  # Logical junction
+
+  if ("desctable" %in% attributes(data)$class) {
+    # Make argument in environment
+    env <- environment()
+    data  <- check_data(data, env)
+  }
+
+  if (auto_detect == TRUE) {
+    # Make auto_detect
+    data <- make_auto_detect(data)
+  }
 
   check_args(lang,
              pres_quant,
@@ -103,14 +112,9 @@ tabkris_2 <- function(data,
              return_table,
              auto_detect)
 
-  if (auto_detect == TRUE) {
-    data <- make_auto_detect(data)
-  }
-
   names <- check_names(data, names)
 
   check_varint(data, varint)
-
 
   method <- check_default_method(data, method, default_method)
 
