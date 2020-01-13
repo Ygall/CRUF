@@ -15,6 +15,7 @@ usethis::use_build_ignore("cran-comments.md")
 
 # Ignorer le .Rproj
 usethis::use_git_ignore("YPJ.Rproj")
+usethis::use_git_ignore("data-raw")
 
 # Utiliser Travis
 usethis::use_travis()

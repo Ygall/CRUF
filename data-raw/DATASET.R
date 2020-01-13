@@ -9,4 +9,9 @@ library(mice)
 
 boys <- boys
 
+B7 <- readRDS("data-raw/data.rds")
+
 usethis::use_data(boys, overwrite = T, compress = "gzip")
+
+usethis::use_data(B7, overwrite = T, compress = "gzip")
+

@@ -8,3 +8,4 @@ devtools_history.R
 CRUF.Rproj
 workflow.R
 .Rbuildignore
+data-raw
