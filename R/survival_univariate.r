@@ -173,8 +173,8 @@ as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
 post_process_result_uni <- function(result, data, nevent) {
     # Delete N event and N group if identical to the sum of event or group
 
-  result$`N Event` <- ifelse(result$`N Event` == nevent, "", result$`N Event`)
-  result$`N Group` <- ifelse(result$`N Group` == nrow(data), "", result$`N Group`)
+  result$`N Event` <- ifelse(result$`N Event` == nevent & result$`N Group` == nrow(data), "", result$`N Event`)
+  result$`N Group` <- ifelse(result$`N Event` == nevent & result$`N Group` == nrow(data), "", result$`N Group`)
 
     # Delete HR estimand if non convergence
   result$HR <- ifelse(result$CI.Upper == "Inf", "Inf HR", result$HR)
