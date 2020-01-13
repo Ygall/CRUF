@@ -4,7 +4,7 @@
 \name{B7}
 \alias{B7}
 \title{Growth of Dutch boys}
-\format{A data frame with 53 rows of 94 variables of a Behcet disease}
+\format{A data frame with 53 rows of 46 variables of a Behcet disease}
 \description{
 Height, weight, head circumference and puberty of 748 Dutch boys.
 }
