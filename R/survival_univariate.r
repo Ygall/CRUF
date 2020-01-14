@@ -14,7 +14,7 @@
 #'   data.
 #' @export
 #'
-survival_univariate <- function(data, time, event, test = "LRT") {
+survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   # Workflow :
   #
   # - Check si time et event sont dans data, si data est une dataframe, si test
@@ -35,7 +35,9 @@ survival_univariate <- function(data, time, event, test = "LRT") {
   ##  -- Pour factorielles : une ligne par modalité, la première ligne étant spéciale
 
   # Check sanity
-  check_args_uni(data, time, event, test)
+  check_args_uni(data, time, event, names, test)
+
+  browser()
 
   # Prepare data
   vecnames      <- subset(colnames(data), !(colnames(data) %in% c(time, event)))
@@ -55,7 +57,7 @@ survival_univariate <- function(data, time, event, test = "LRT") {
   veclevel <- ifelse(veclevel == 0, 1, veclevel)
 
   # Make the result table
-  result <- make_result_uni(res_list, vecnames, veclevel, test, data, event)
+  result <- make_result_uni(res_list, vecnames, names, veclevel, test, data, event)
 
   # Post process : Display N only if different from
   result <- post_process_result_uni(result, data, nevent)
@@ -63,9 +65,18 @@ survival_univariate <- function(data, time, event, test = "LRT") {
   return(result)
 }
 
-check_args_uni <- function(data, time, event, test) {
+check_args_uni <- function(data, time, event, names, test) {
   if (!("data.frame" %in% attributes(data)$class)) {
     stop("Data should be a data frame", call. = FALSE)
+  }
+
+  if (!is.null(names)) {
+    if (length(names) != (length(colnames(data)) - 2)) {
+      stop(paste0("Names must be length of ",
+                  length(colnames(data)) - 2),
+           call. = FALSE)
+    }
+
   }
 
   if (missing(time)) {
@@ -89,18 +100,19 @@ check_args_uni <- function(data, time, event, test) {
   }
 }
 
-make_result_uni <- function(res_list, vecnames, veclevel, test, data, event) {
+make_result_uni <- function(res_list, vecnames, names, veclevel, test, data, event) {
   result <- data.frame()
 
   for (i in seq_along(res_list)) {
     model   <- res_list[[i]]
     level   <- veclevel[i]
     vecname <- vecnames[i]
+    name    <- names[i]
 
     if (level == 1) {
-      res <- make_result_cont(model, vecname, test)
+      res <- make_result_cont(model, vecname, name, test)
     } else {
-      res <- make_result_fact(model, vecname, level, test, data, event)
+      res <- make_result_fact(model, vecname, name, level, test, data, event)
     }
 
     result <- rbind.data.frame(result, res, stringsAsFactors = F)
@@ -114,7 +126,7 @@ make_result_uni <- function(res_list, vecnames, veclevel, test, data, event) {
   result
 }
 
-make_result_cont <- function(model, vecname, test) {
+make_result_cont <- function(model, vecname, name, test) {
   t.switch <- switch (test,
                       "LRT"     = summary(model)$logtest[3],
                       "Wald"    = summary(model)$waldtest[3],
@@ -123,7 +135,7 @@ make_result_cont <- function(model, vecname, test) {
 
   result <- matrix("", nrow = 1, ncol = 10)
 
-  result[1, 1]   <- vecname
+  result[1, 1]   <- name
   result[1, 3]   <- model$nevent
   result[1, 4]   <- model$n
   result[1, 5:7] <- round(summary(model)$conf.int[-2], 3)
@@ -135,7 +147,7 @@ make_result_cont <- function(model, vecname, test) {
   result
 }
 
-make_result_fact <- function(model, vecname, level, test, data, event) {
+make_result_fact <- function(model, vecname, name, level, test, data, event) {
   t.switch <- switch (test,
                       "LRT"     = summary(model)$logtest[3],
                       "Wald"    = summary(model)$waldtest[3],
@@ -143,7 +155,7 @@ make_result_fact <- function(model, vecname, level, test, data, event) {
   )
 
   result <- matrix("", nrow = level, ncol = 10)
-  result[1, 1]   <- vecname
+  result[1, 1]   <- name
 
   result[, 2] <- model$xlevels[[1]]
 
