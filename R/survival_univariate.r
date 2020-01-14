@@ -39,10 +39,10 @@ survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   # Check sanity
   check_args_uni(data, time, event, names, test)
 
-  browser()
-
   # Prepare data
   vecnames      <- subset(colnames(data), !(colnames(data) %in% c(time, event)))
+  if (is.null(names)) names <- vecnames
+
   data[, event] <- as.numeric.factor(factor(data[, event]))
   nevent        <- sum(data[, event])
 
