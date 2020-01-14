@@ -4,7 +4,7 @@
 \alias{survival_univariate}
 \title{Univariate Surival}
 \usage{
-survival_univariate(data, time, event, test = "LRT")
+survival_univariate(data, time, event, names = NULL, test = "LRT")
 }
 \arguments{
 \item{data}{A dataframe inclunding all the variable needed, one variable for
@@ -13,6 +13,9 @@ time to event and one variable for event indicator.}
 \item{time}{Name of the variable used for time to event.}
 
 \item{event}{Name of the column used for event indicator.}
+
+\item{names}{Names of the variables to display. Lenght must be minus 2 the
+number of column of data, excluding time and event}
 
 \item{test}{Which test to use for p-value, possible values are "LRT" for
 Likelihood Ratio Test, "Wald" for Wald Test and "LogRank" for Log-Rank
