@@ -4,7 +4,7 @@
 \alias{logistic_univariate}
 \title{Univariate Logistic}
 \usage{
-logistic_univariate(data, y, x)
+logistic_univariate(data, y, x, twobytwo = TRUE, formula = "(y ~ x)")
 }
 \arguments{
 \item{data}{A dataframe including all the variable needed in all the models}
@@ -12,6 +12,10 @@ logistic_univariate(data, y, x)
 \item{y}{A vector of the names of response variable}
 
 \item{x}{A vector of the names of predictor variable}
+
+\item{twobytwo}{Either to display the two by two table for each. Default is \code{TRUE}}
+
+\item{formula}{Formula for logistic regression to customize. Default is \code{(x ~ y)}}
 }
 \value{
 If \code{lenght(y) > 1}, the returned value is a list including all
