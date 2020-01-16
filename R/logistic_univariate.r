@@ -42,6 +42,10 @@ logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula
     res_uni[[j]] <- res
   }
 
+  if (length(y) == 1) {
+    res_uni <- data.frame(res_uni)
+  }
+
   res_uni
 }
 
