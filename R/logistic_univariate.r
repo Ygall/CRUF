@@ -33,6 +33,7 @@ logistic_univariate <- function(data, y, x) {
     res_uni[[j]] <- res
   }
 
+  res_uni
 }
 
 glm.univar <- function(y, x, data) {
@@ -54,7 +55,7 @@ glm.univar <- function(y, x, data) {
   if (!any(table(fit$model) %in% 0)) {
     res[1, 5] <- 1
     res[2:nlev, 5] <- round(exp(fit$coefficients), 2)[2:nlev]
-    res[2:nlev, 6:7] <- round(exp(confint(fit)), 2)[2:nlev, ]
+    res[2:nlev, 6:7] <- suppressMessages(round(exp(confint(fit)), 2)[2:nlev, ])
     res[2:nlev, 8] <- signif(coef(summary(fit))[2:nlev, 4], 2)
     res[2:nlev, 9] <- pval_format(coef(summary(fit))[2:nlev, 4])
   }
