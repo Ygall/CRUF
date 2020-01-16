@@ -2,28 +2,35 @@
 % Please edit documentation in R/logistic_univariate.r
 \name{logistic_univariate}
 \alias{logistic_univariate}
-\title{Univariate Logistic}
+\title{Univariate Logistic Regression}
 \usage{
-logistic_univariate(data, y, x, twobytwo = TRUE, formula = "(y ~ x)")
+logistic_univariate(
+  data,
+  y_names,
+  x_names,
+  twobytwo = TRUE,
+  formula = "(y ~ x)"
+)
 }
 \arguments{
-\item{data}{A dataframe including all the variable needed in all the models}
+\item{data}{A dataframe including all the variables needed in all the models}
 
-\item{y}{A vector of the names of response variable}
+\item{y_names}{Vector, name(s) of response variable(s)}
 
-\item{x}{A vector of the names of predictor variable}
+\item{x_names}{Vector, name(s) of predictor variable(s)}
 
-\item{twobytwo}{Either to display the two by two table for each. Default is \code{TRUE}}
+\item{twobytwo}{Either to include the two by two table for each variable.
+Default is \code{TRUE}.}
 
-\item{formula}{Formula for logistic regression to customize. Default is \code{(x ~ y)}}
+\item{formula}{Formula for logistic regression to customize. Default is
+\code{(y ~ x)}.}
 }
 \value{
-If \code{lenght(y) > 1}, the returned value is a list including all
-  table result for each response variable. If \code{lenght(y) > 1}, the
-  returned value is a dataframe object, the table result.
+The returned value is a list of length \code{y_names}, which consists of a
+  dataframe having the univariate logistic regressions of the \code{x_names}.
 }
 \description{
-A function used to generate multiple result table for univariate logistic
-regression model with \code{y ~ x}. For each specified \code{y}, a result
-table is computed, including every \code{x} variable.
+A function used to generate multiple table result for univariate logistic
+regression model with \code{y ~ x}. For each specified \code{y_names}, a table
+result is computed, including all \code{x_names} variables.
 }

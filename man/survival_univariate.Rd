@@ -2,7 +2,7 @@
 % Please edit documentation in R/survival_univariate.r
 \name{survival_univariate}
 \alias{survival_univariate}
-\title{Univariate Surival}
+\title{Univariate Surival Regression}
 \usage{
 survival_univariate(data, time, event, names = NULL, test = "LRT")
 }
@@ -26,5 +26,5 @@ Return a table with model parameters for every variable included in
   data.
 }
 \description{
-Univariate Surival
+Univariate Surival Regression
 }

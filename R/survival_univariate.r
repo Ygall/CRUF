@@ -1,4 +1,4 @@
-#' Univariate Surival
+#' Univariate Surival Regression
 #'
 #' @param data A dataframe including all the variable needed, one variable for
 #'   time to event and one variable for event indicator.

@@ -1,24 +1,29 @@
-#' Univariate Logistic
+#' Univariate Logistic Regression
 #'
-#' A function used to generate multiple result table for univariate logistic
-#' regression model with \code{y ~ x}. For each specified \code{y}, a result
-#' table is computed, including every \code{x} variable.
+#' A function used to generate multiple table result for univariate logistic
+#' regression model with \code{y ~ x}. For each specified \code{y_names}, a table
+#' result is computed, including all \code{x_names} variables.
 #'
-#' @param data A dataframe including all the variable needed in all the models
-#' @param y A vector of the names of response variable
-#' @param x A vector of the names of predictor variable
-#' @param twobytwo Either to display the two by two table for each. Default is \code{TRUE}
-#' @param formula Formula for logistic regression to customize. Default is \code{(x ~ y)}
+#' @param data A dataframe including all the variables needed in all the models
+#' @param y_names Vector, name(s) of response variable(s)
+#' @param x_names Vector, name(s) of predictor variable(s)
+#' @param twobytwo Either to include the two by two table for each variable.
+#'   Default is \code{TRUE}.
+#' @param formula Formula for logistic regression to customize. Default is
+#'   \code{(y ~ x)}.
 #'
-#' @return If \code{lenght(y) > 1}, the returned value is a list including all
-#'   table result for each response variable. If \code{lenght(y) > 1}, the
-#'   returned value is a dataframe object, the table result.
+#' @return The returned value is a list of length \code{y_names}, which consists of a
+#'   dataframe having the univariate logistic regressions of the \code{x_names}.
 #'
 #' @importFrom stats as.formula glm confint coef anova
 #'
 #' @export
 
-logistic_univariate <- function(data, y, x, twobytwo = TRUE, formula = "(y ~ x)") {
+logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula = "(y ~ x)") {
+  y <- y_names
+  x <- x_names
+  rm(y_names, x_names)
+
   check_args_log(data, y, x, twobytwo, formula)
 
   dep <- y
