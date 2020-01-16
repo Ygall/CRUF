@@ -7,7 +7,7 @@
 survival_univariate(data, time, event, names = NULL, test = "LRT")
 }
 \arguments{
-\item{data}{A dataframe inclunding all the variable needed, one variable for
+\item{data}{A dataframe including all the variable needed, one variable for
 time to event and one variable for event indicator.}
 
 \item{time}{Name of the variable used for time to event.}

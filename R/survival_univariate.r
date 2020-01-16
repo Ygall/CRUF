@@ -1,6 +1,6 @@
 #' Univariate Surival
 #'
-#' @param data A dataframe inclunding all the variable needed, one variable for
+#' @param data A dataframe including all the variable needed, one variable for
 #'   time to event and one variable for event indicator.
 #' @param time Name of the variable used for time to event.
 #' @param event Name of the column used for event indicator.
