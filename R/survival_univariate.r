@@ -191,7 +191,7 @@ post_process_result_uni <- function(result, data, nevent) {
   result$`N Group` <- ifelse(result$`N Event` == nevent & result$`N Group` == nrow(data), "", result$`N Group`)
 
     # Delete HR estimand if non convergence
-  result$HR <- ifelse(result$CI.Upper == "Inf", "Inf HR", result$HR)
+  result$HR <- ifelse(result$CI.Upper == "Inf", "", result$HR)
   result$CI.Lower <- ifelse(result$CI.Upper == "Inf", "", result$CI.Lower)
   result$CI.Upper <- ifelse(result$CI.Upper == "Inf", "", result$CI.Upper)
 
