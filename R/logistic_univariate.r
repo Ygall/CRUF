@@ -1,8 +1,8 @@
 #' Univariate Logistic Regression
 #'
 #' A function used to generate multiple table result for univariate logistic
-#' regression model with \code{y ~ x}. For each specified \code{y_names}, a table
-#' result is computed, including all \code{x_names} variables.
+#' regression model with \code{y ~ x}. For each specified \code{y_names}, a
+#' table result is computed, including all \code{x_names} variables.
 #'
 #' @param data A dataframe including all the variables needed in all the models
 #' @param y_names Vector, name(s) of response variable(s)
@@ -12,14 +12,16 @@
 #' @param formula Formula for logistic regression to customize. Default is
 #'   \code{(y ~ x)}.
 #'
-#' @return The returned value is a list of length \code{y_names}, which consists of a
-#'   dataframe having the univariate logistic regressions of the \code{x_names}.
+#' @return The returned value is a list of length \code{y_names}, which consists
+#'   of a dataframe having the univariate logistic regressions of the
+#'   \code{x_names}.
 #'
 #' @importFrom stats as.formula glm confint coef anova
 #'
 #' @export
 
-logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula = "(y ~ x)") {
+logistic_univariate <- function(data, y_names, x_names,
+                                twobytwo = TRUE, formula = "(y ~ x)") {
   y <- y_names
   x <- x_names
 
@@ -36,7 +38,8 @@ logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula
     for (i in seq_along(col)) {
       x <- col[i]
       y <- dep[j]
-      res <- rbind.data.frame(res, glm.univar(y, x, data, twobytwo, formula), stringsAsFactors = F)
+      res <- rbind.data.frame(res, glm_univar(y, x, data, twobytwo, formula),
+                              stringsAsFactors = F)
     }
     res_uni[[j]] <- res
   }
@@ -48,7 +51,7 @@ logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula
   res_uni
 }
 
-glm.univar <- function(y, x, data, twobytwo, formula) {
+glm_univar <- function(y, x, data, twobytwo, formula) {
 
   formula <- sub("y", y, formula)
   formula <- sub("x", x, formula)
@@ -71,7 +74,8 @@ glm.univar <- function(y, x, data, twobytwo, formula) {
     res[2:nlev, 6:7] <- suppressMessages(round(exp(confint(fit)), 2)[2:nlev, ])
 
     if (nlev > 2) {
-      res[1, 8] <- paste0("Global: " , signif(anova(fit, test = "Chisq")[2, 5], 2))
+      res[1, 8] <- paste0("Global: ",
+                          signif(anova(fit, test = "Chisq")[2, 5], 2))
       res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
     }
     res[2:nlev, 8] <- signif(coef(summary(fit))[2:nlev, 4], 2)

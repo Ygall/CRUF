@@ -24,7 +24,8 @@ survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   #
   # - Préparation des données : Faire un vecteur de names en enlevant time et
   # event. Repérer celles qui sont continues et celle qui sont des facteurs +
-  # ajouter le nombre de facteur. Calculer le nombre d'événement total et le nombre d'observations
+  # ajouter le nombre de facteur. Calculer le nombre d'événement total et
+  # le nombre d'observations
   #
   # - Faire les fit avec itération sur les vecteur de names, storer dans une
   # liste, laisse la possibilité de rendre la liste de tous les fits fait pour
@@ -34,7 +35,8 @@ survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   #
   ##  -- Commencer par le header
   ##  -- Pour continues : une seule ligne donnée
-  ##  -- Pour factorielles : une ligne par modalité, la première ligne étant spéciale
+  ##  -- Pour factorielles : une ligne par modalité, la première ligne étant
+  ##  spéciale
 
   # Check sanity
   check_args_uni(data, time, event, names, test)
@@ -50,16 +52,19 @@ survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   res_list <- list()
 
   for (i in seq_along(vecnames)) {
-    formula <-  as.formula(paste0("Surv(", time, ",", event, ") ~ " , vecnames[i]))
+    formula <-  as.formula(paste0("Surv(", time, ",", event, ") ~ ",
+                                  vecnames[i]))
     res_list[[i]] <- coxph(formula = formula, data = data)
   }
 
   # Get the number of level for each model
-  veclevel <- unlist(lapply(res_list, function(x){(length(x$xlevels[[1]]))}))
+  veclevel <- unlist(lapply(res_list, function(x) {
+    (length(x$xlevels[[1]]))}))
   veclevel <- ifelse(veclevel == 0, 1, veclevel)
 
   # Make the result table
-  result <- make_result_uni(res_list, vecnames, names, veclevel, test, data, event)
+  result <- make_result_uni(res_list, vecnames, names,
+                            veclevel, test, data, event)
 
   # Post process : Display N only if different from
   result <- post_process_result_uni(result, data, nevent)
@@ -102,7 +107,8 @@ check_args_uni <- function(data, time, event, names, test) {
   }
 }
 
-make_result_uni <- function(res_list, vecnames, names, veclevel, test, data, event) {
+make_result_uni <- function(res_list, vecnames, names,
+                            veclevel, test, data, event) {
   result <- data.frame()
 
   for (i in seq_along(res_list)) {
@@ -129,7 +135,7 @@ make_result_uni <- function(res_list, vecnames, names, veclevel, test, data, eve
 }
 
 make_result_cont <- function(model, vecname, name, test) {
-  t.switch <- switch (test,
+  t.switch <- switch(test,
                       "LRT"     = summary(model)$logtest[3],
                       "Wald"    = summary(model)$waldtest[3],
                       "LogRank" = summary(model)$sctest[3]
@@ -150,7 +156,7 @@ make_result_cont <- function(model, vecname, name, test) {
 }
 
 make_result_fact <- function(model, vecname, name, level, test, data, event) {
-  t.switch <- switch (test,
+  t.switch <- switch(test,
                       "LRT"     = summary(model)$logtest[3],
                       "Wald"    = summary(model)$waldtest[3],
                       "LogRank" = summary(model)$sctest[3]
@@ -182,13 +188,19 @@ pval_format <- function(pval) {
       ifelse(pval < 0.05,  "*",
       ifelse(pval < 0.1,   ".", ""))))
 }
-as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
+as.numeric.factor <- function(x) {
+  as.numeric(levels(x))[x]
+}
 
 post_process_result_uni <- function(result, data, nevent) {
     # Delete N event and N group if identical to the sum of event or group
 
-  result$`N Event` <- ifelse(result$`N Event` == nevent & result$`N Group` == nrow(data), "", result$`N Event`)
-  result$`N Group` <- ifelse(result$`N Event` == nevent & result$`N Group` == nrow(data), "", result$`N Group`)
+  result$`N Event` <- ifelse(result$`N Event` == nevent &
+                               result$`N Group` == nrow(data), "",
+                             result$`N Event`)
+  result$`N Group` <- ifelse(result$`N Event` == nevent &
+                               result$`N Group` == nrow(data), "",
+                             result$`N Group`)
 
     # Delete HR estimand if non convergence
   result$HR <- ifelse(result$CI.Upper == "Inf", "", result$HR)
