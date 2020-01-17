@@ -22,7 +22,6 @@
 logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula = "(y ~ x)") {
   y <- y_names
   x <- x_names
-  rm(y_names, x_names)
 
   check_args_log(data, y, x, twobytwo, formula)
 
@@ -42,7 +41,7 @@ logistic_univariate <- function(data, y_names, x_names, twobytwo = TRUE, formula
     res_uni[[j]] <- res
   }
 
-  if (length(y) == 1) {
+  if (length(y_names) == 1) {
     res_uni <- data.frame(res_uni)
   }
 
