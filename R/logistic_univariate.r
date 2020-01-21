@@ -173,7 +173,7 @@ collapse_table <- function(data, collapse) {
     return(data)
   } else if (collapse == "CI") {
     data$`CI Lower` <- paste0("[", data$`CI Lower`, ";", data$`CI Upper`, "]")
-    data$`CI Lower` <- ifelse(data$`CI Lower` == "[ ; ]", "", data$`CI Lower`)
+    data$`CI Lower` <- ifelse(data$`CI Lower` == "[;]", "", data$`CI Lower`)
     names(data)[names(data) == "CI Lower"] <- "CI"
     data$`CI Upper` <- NULL
 
