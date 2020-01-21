@@ -26,11 +26,12 @@ Default is \code{TRUE}.}
 \code{(y ~ x)}.}
 }
 \value{
-The returned value is a list of length \code{y_names}, which consists of a
-  dataframe having the univariate logistic regressions of the \code{x_names}.
+The returned value is a list of length \code{y_names}, which consists
+  of a dataframe having the univariate logistic regressions of the
+  \code{x_names}.
 }
 \description{
-A function used to generate multiple table result for univariate logistic
-regression model with \code{y ~ x}. For each specified \code{y_names}, a table
-result is computed, including all \code{x_names} variables.
+A function used to generate multiple result table for univariate logistic
+regression model with \code{y ~ x}. For each specified \code{y_names}, a
+result table is computed, including all \code{x_names} variables.
 }

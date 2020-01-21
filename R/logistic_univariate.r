@@ -1,8 +1,8 @@
 #' Univariate Logistic Regression
 #'
-#' A function used to generate multiple table result for univariate logistic
+#' A function used to generate multiple result table for univariate logistic
 #' regression model with \code{y ~ x}. For each specified \code{y_names}, a
-#' table result is computed, including all \code{x_names} variables.
+#' result table is computed, including all \code{x_names} variables.
 #'
 #' @param data A dataframe including all the variables needed in all the models
 #' @param y_names Vector, name(s) of response variable(s)
@@ -45,7 +45,7 @@ logistic_univariate <- function(data, y_names, x_names,
   }
 
   if (length(y_names) == 1) {
-    res_uni <- data.frame(res_uni)
+    res_uni <- data.frame(res_uni, check.names = F)
   }
 
   res_uni
@@ -98,20 +98,46 @@ check_args_log <- function(data, y, x, twobytwo, formula) {
     stop("Data should be a data frame", call. = FALSE)
   }
 
-  # Ajouter le check de chaque X et chaque Y
+  x_error <- NULL
+  for (i in seq_along(x)) {
+    if (!(x[i] %in% colnames(data))) {
+      x_error <- c(x_error, x[i])
+    }
+  }
+  if (!is.null(x_error)) {
+    stop(paste0("Arg for x not in data : ",
+                paste(x_error, collapse = ", "),
+                collapse = ""), call. = FALSE)
+  }
 
-  # if (!(x %in% colnames(data))) {
-  #   stop("Time to event name is not in dataframe", call. = FALSE)
-  # } else if (!is.factor(data[, x])) {
-  #   stop("Time to event is not numeric", call. = FALSE)
-  # }
-  #
+  y_error <- NULL
+  for (i in seq_along(y)) {
+    if (!(y[i] %in% colnames(data))) {
+      y_error <- c(y_error, y[i])
+    }
+  }
+  if (!is.null(y_error)) {
+    stop(paste0("Arg for y not in data : ",
+                paste(y_error, collapse = ", "),
+                collapse = ""), call. = FALSE)
+  }
+
+
+  if (any(x %in% y) | any(x %in% y)) {
+    stop("A common variable has been found for x and y.
+         All x and y must differ.", call. = FALSE)
+  }
 
   if (!is.logical(twobytwo)) {
     stop("Arg twobytwo must be logical", call. = FALSE)
   }
 
+
   if (!is.character(formula)) {
     stop("Arg formula must be specified as character")
+  } else if (!grepl("y", formula)) { # Modif possible du regexp
+    stop("Arg formula must include a y character")
+  } else if (!grepl("x", formula)) {
+    stop("Arg formula must include a x character")
   }
 }
