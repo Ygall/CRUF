@@ -9,21 +9,32 @@ logistic_univariate(
   y_names,
   x_names,
   twobytwo = TRUE,
-  formula = "(y ~ x)"
+  formula = "(y ~ x)",
+  collapse = FALSE,
+  ref.label = "1",
+  digits = 2
 )
 }
 \arguments{
 \item{data}{A dataframe including all the variables needed in all the models}
 
-\item{y_names}{Vector, name(s) of response variable(s)}
+\item{y_names}{Vector. Name(s) of response variable(s)}
 
-\item{x_names}{Vector, name(s) of predictor variable(s)}
+\item{x_names}{Vector. Name(s) of predictor variable(s)}
 
-\item{twobytwo}{Either to include the two by two table for each variable.
-Default is \code{TRUE}.}
+\item{twobytwo}{Logical. Either to include the two by two table for each
+variable. Default is \code{TRUE}.}
 
 \item{formula}{Formula for logistic regression to customize. Default is
 \code{(y ~ x)}.}
+
+\item{collapse}{\code{"NULL"}, \code{"OR"}, \code{"CI"}. Collapse columns in
+one column. \code{"OR"} collapses OR, Upper and Lower CI. \code{"CI"}
+collapses Upper and Lower CI.}
+
+\item{ref.label}{Character. Set the label for reference estimate.}
+
+\item{digits}{Numeric. Number of digits to display.}
 }
 \value{
 The returned value is a list of length \code{y_names}, which consists
