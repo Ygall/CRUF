@@ -94,6 +94,7 @@ logistic_univariate <- function(data, y_names, x_names,
 #' @importFrom stats as.formula glm confint coef anova
 #' @importFrom miceadds glm.cluster
 #' @importFrom utils capture.output
+#' @importFrom aod wald.test
 #'
 #' @export
 logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
@@ -266,7 +267,7 @@ glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits, ref.la
 
     if (nlev > 2) {
       res[1, 8] <- paste0("Global: ",
-                          pval_format_r(signif(anova(fit, test = "Chisq")[2, 5], 2)))
+                          pval_format_r(signif(wald.test(fitcl$vcov, fit$coefficients, 2:nlev)$result$chi2[3], 2)))
       res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
     }
 

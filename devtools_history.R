@@ -4,6 +4,7 @@ usethis::use_package("survival")
 usethis::use_package("survminer")
 usethis::use_package("utils") # Utile uniquement pour les fonctions de select
 usethis::use_package("miceadds")
+usethis::use_package("aod")
 
 # Ignorer ces documents
 usethis::use_build_ignore("devtools_history.R")
