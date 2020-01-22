@@ -188,6 +188,10 @@ pval_format <- function(pval) {
       ifelse(pval < 0.05,  "*",
       ifelse(pval < 0.1,   ".", ""))))
 }
+pval_format_r <- function(pval) {
+  res <-
+    ifelse(pval < 0.001, "< 0.001", pval)
+}
 as.numeric.factor <- function(x) {
   as.numeric(levels(x))[x]
 }

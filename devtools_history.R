@@ -3,6 +3,7 @@ usethis::use_package("stats")
 usethis::use_package("survival")
 usethis::use_package("survminer")
 usethis::use_package("utils") # Utile uniquement pour les fonctions de select
+usethis::use_package("miceadds")
 
 # Ignorer ces documents
 usethis::use_build_ignore("devtools_history.R")

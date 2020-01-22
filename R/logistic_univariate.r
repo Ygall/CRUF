@@ -66,6 +66,77 @@ logistic_univariate <- function(data, y_names, x_names,
   res_uni
 }
 
+#' Univariate Logistic Regression with cluster
+#'
+#' A function used to generate multiple result table for univariate logistic
+#' regression model with \code{y ~ x} using a cluster variable. For each
+#' specified \code{y_names}, a result table is computed, including all
+#' \code{x_names} variables. Compute robust variance using sandwich
+#'
+#' @param data A dataframe including all the variables needed in all the models
+#' @param y_names Vector. Name(s) of response variable(s)
+#' @param x_names Vector. Name(s) of predictor variable(s)
+#' @param twobytwo Logical. Either to include the two by two table for each
+#'   variable. Default is \code{TRUE}.
+#' @param formula Formula for logistic regression to customize. Default is
+#'   \code{(y ~ x)}.
+#' @param collapse \code{"NULL"}, \code{"OR"}, \code{"CI"}. Collapse columns in
+#'   one column. \code{"OR"} collapses OR, Upper and Lower CI. \code{"CI"}
+#'   collapses Upper and Lower CI.
+#' @param ref.label Character. Set the label for reference estimate.
+#' @param digits Numeric. Number of digits to display.
+#' @param cluster Character. Name of the clustering variable.
+#'
+#' @return The returned value is a list of length \code{y_names}, which consists
+#'   of a dataframe having the univariate logistic regressions of the
+#'   \code{x_names}.
+#'
+#' @importFrom stats as.formula glm confint coef anova
+#' @importFrom miceadds glm.cluster
+#' @importFrom utils capture.output
+#'
+#' @export
+logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
+                                twobytwo = TRUE, formula = "(y ~ x)",
+                                collapse = FALSE, ref.label = "1",
+                                digits = 2) {
+  y <- y_names
+  x <- x_names
+
+  check_args_log(data, y, x, twobytwo, formula, collapse, ref.label, digits)
+
+  dep <- y
+  col <- x
+
+  res_uni <- list()
+
+  for (j in seq_along(dep)) {
+    res <- data.frame()
+
+    for (i in seq_along(col)) {
+      x <- col[i]
+      y <- dep[j]
+
+      res_one <- data.frame(glm_cluster_univar(y, x, data, twobytwo, formula,
+                                       digits, ref.label, cluster),
+                            check.names = F, stringsAsFactors = F)
+
+      res_one <- collapse_table(res_one, collapse)
+
+      res <- rbind.data.frame(res,
+                              res_one,
+                              stringsAsFactors = F)
+    }
+    res_uni[[j]] <- res
+  }
+
+  if (length(y_names) == 1) {
+    res_uni <- data.frame(res_uni, check.names = F)
+  }
+
+  res_uni
+}
+
 check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref.label, digits) {
   if (!("data.frame" %in% attributes(data)$class)) {
     stop("Data should be a data frame", call. = FALSE)
@@ -126,7 +197,7 @@ check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref.label, d
     stop("Arg digits must be numeric", call. = FALSE)
   }
 }
-glm_univar     <- function(y, x, data, twobytwo, formula, digits, ref.label) {
+glm_univar             <- function(y, x, data, twobytwo, formula, digits, ref.label) {
 
   formula <- sub("y", y, formula)
   formula <- sub("x", x, formula)
@@ -151,11 +222,58 @@ glm_univar     <- function(y, x, data, twobytwo, formula, digits, ref.label) {
 
     if (nlev > 2) {
       res[1, 8] <- paste0("Global: ",
-                          signif(anova(fit, test = "Chisq")[2, 5], 2))
+                          pval_format_r(signif(anova(fit, test = "Chisq")[2, 5], 2)))
       res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
     }
-    res[2:nlev, 8] <- signif(coef(summary(fit))[2:nlev, 4], 2)
+    res[2:nlev, 8] <- pval_format_r(signif(coef(summary(fit))[2:nlev, 4], 2))
     res[2:nlev, 9] <- pval_format(coef(summary(fit))[2:nlev, 4])
+  }
+
+  colnames(res) <- c(y, "Modality", levels(data[, y])[1], levels(data[, y])[2],
+                     "OR", "CI Lower", "CI Upper", "p-value", "Sign")
+
+  if (!twobytwo) {
+    res <- res[, -3:-4]
+  }
+
+  res
+
+}
+glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits, ref.label, cluster) {
+
+  formula <- sub("y", y, formula)
+  formula <- sub("x", x, formula)
+  formula <- as.formula(formula)
+
+  nlev <- length(levels(data[, x]))
+
+  fitcl <- glm.cluster(formula, data = data, family = "binomial", cluster = cluster)
+
+  fit <- fitcl$glm_res
+
+  res <- matrix("", ncol = 9, nrow = nlev)
+
+  res[1, 1] <- x
+  res[, 2]  <- fit$xlevels[[1]]
+  res[, 3]  <- table(fit$model[, c(x, y)])[, 1]
+  res[, 4]  <- table(fit$model[, c(x, y)])[, 2]
+
+  if (!any(table(fit$model[, c(x, y)]) %in% 0)) {
+    res[1, 5] <- ref.label
+    res[2:nlev, 5] <- round(exp(fit$coefficients), digits)[2:nlev]
+    res[2:nlev, 6:7] <- suppressMessages(round(exp(confint(fitcl)),
+                                               digits)[2:nlev, ])
+
+    if (nlev > 2) {
+      res[1, 8] <- paste0("Global: ",
+                          pval_format_r(signif(anova(fit, test = "Chisq")[2, 5], 2)))
+      res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
+    }
+
+    inut <- capture.output(pval <- summary(fitcl))
+
+    res[2:nlev, 8] <- pval_format_r(signif(pval[2:nlev, 4], 2))
+    res[2:nlev, 9] <- pval_format(pval[2:nlev, 4])
   }
 
   colnames(res) <- c(y, "Modality", levels(data[, y])[1], levels(data[, y])[2],

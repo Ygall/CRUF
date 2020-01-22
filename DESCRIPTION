@@ -1,6 +1,6 @@
 Package: CRUF
 Title: Clinical Research Utilities Functions
-Version: 0.3.1
+Version: 0.4.1
 Authors@R: 
     person(given = "Yves",
            family = "Gallien",
@@ -19,7 +19,8 @@ Imports:
     utils,
     stats,
     survminer,
-    survival
+    survival,
+    miceadds
 Suggests: 
     knitr,
     rmarkdown,
