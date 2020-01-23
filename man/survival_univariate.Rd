@@ -4,7 +4,16 @@
 \alias{survival_univariate}
 \title{Univariate Surival Regression}
 \usage{
-survival_univariate(data, time, event, names = NULL, test = "LRT")
+survival_univariate(
+  data,
+  time,
+  event,
+  names = NULL,
+  strata = NULL,
+  cluster = NULL,
+  sup = NULL,
+  test = "LRT"
+)
 }
 \arguments{
 \item{data}{A dataframe including all the variable needed, one variable for
@@ -16,6 +25,13 @@ time to event and one variable for event indicator.}
 
 \item{names}{Names of the variables to display. Lenght must be minus 2 the
 number of column of data, excluding time and event}
+
+\item{strata}{Name of the variable used for analysis with strata}
+
+\item{cluster}{Name of the variable used for analysis with cluster}
+
+\item{sup}{Name of one variable used for adjusting the model on. Will not be
+displayed in the result table.}
 
 \item{test}{Which test to use for p-value, possible values are "LRT" for
 Likelihood Ratio Test, "Wald" for Wald Test and "LogRank" for Log-Rank

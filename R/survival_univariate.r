@@ -9,6 +9,10 @@
 #' @param test Which test to use for p-value, possible values are "LRT" for
 #'   Likelihood Ratio Test, "Wald" for Wald Test and "LogRank" for Log-Rank
 #'   Test"
+#' @param strata Name of the variable used for analysis with strata
+#' @param cluster Name of the variable used for analysis with cluster
+#' @param sup Name of one variable used for adjusting the model on. Will not be
+#'   displayed in the result table.
 #'
 #' @importFrom survival coxph
 #' @importFrom stats as.formula
@@ -16,44 +20,37 @@
 #'   data.
 #' @export
 #'
-survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
-  # Workflow :
-  #
-  # - Check si time et event sont dans data, si data est une dataframe, si test
-  # dans LRT/Wald/LogRank. Si time est un numérique et si event est un binaire
-  #
-  # - Préparation des données : Faire un vecteur de names en enlevant time et
-  # event. Repérer celles qui sont continues et celle qui sont des facteurs +
-  # ajouter le nombre de facteur. Calculer le nombre d'événement total et
-  # le nombre d'observations
-  #
-  # - Faire les fit avec itération sur les vecteur de names, storer dans une
-  # liste, laisse la possibilité de rendre la liste de tous les fits fait pour
-  # inspection
-  #
-  # - Faire le tableau de présentation en fonction du type de variable.
-  #
-  ##  -- Commencer par le header
-  ##  -- Pour continues : une seule ligne donnée
-  ##  -- Pour factorielles : une ligne par modalité, la première ligne étant
-  ##  spéciale
-
+survival_univariate <- function(data, time, event, names = NULL,
+                                strata = NULL, cluster = NULL, sup = NULL,
+                                test = "LRT") {
   # Check sanity
-  check_args_uni(data, time, event, names, test)
+  check_args_uni(data, time, event, names, test, strata, cluster, sup)
 
   # Prepare data
-  vecnames      <- subset(colnames(data), !(colnames(data) %in% c(time, event)))
+  vecnames      <- subset(colnames(data),
+                          !(colnames(data) %in% c(time, event,
+                                                  strata, cluster, sup)))
   if (is.null(names)) names <- vecnames
 
   data[, event] <- as.numeric.factor(factor(data[, event]))
   nevent        <- sum(data[, event])
+
+  if (!missing(cluster)) {
+    cluster <- paste0("+ cluster(", cluster, ")")
+  }
+  if (!missing(strata)) {
+    strata <- paste0("+ strata(", strata, ")")
+  }
+  if (!missing(sup)) {
+    sup <- paste0("+ ", sup)
+  }
 
   # Fit the data
   res_list <- list()
 
   for (i in seq_along(vecnames)) {
     formula <-  as.formula(paste0("Surv(", time, ",", event, ") ~ ",
-                                  vecnames[i]))
+                                  vecnames[i], cluster, strata, sup))
     res_list[[i]] <- coxph(formula = formula, data = data)
   }
 
@@ -72,15 +69,17 @@ survival_univariate <- function(data, time, event, names = NULL, test = "LRT") {
   return(result)
 }
 
-check_args_uni <- function(data, time, event, names, test) {
+check_args_uni <- function(data, time, event, names, test,
+                           strata, cluster, sup) {
   if (!("data.frame" %in% attributes(data)$class)) {
     stop("Data should be a data frame", call. = FALSE)
   }
 
   if (!is.null(names)) {
-    if (length(names) != (length(colnames(data)) - 2)) {
+    off <- 2 + !is.null(cluster) + !is.null(strata) + !is.null(sup)
+    if (length(names) != (length(colnames(data)) - off)) {
       stop(paste0("Names must be length of ",
-                  length(colnames(data)) - 2),
+                  length(colnames(data)) - off),
            call. = FALSE)
     }
 
@@ -104,6 +103,24 @@ check_args_uni <- function(data, time, event, names, test) {
 
   if (!(test %in% c("LRT", "Wald", "LogRank"))) {
     stop("Test method not in \"LRT\", \"Wald\", \"LogRank\"", call. = FALSE)
+  }
+
+  if (!is.null(cluster)) {
+    if (!(cluster %in% colnames(data))) {
+      stop("Cluster name is not in dataframe", call. = FALSE)
+    }
+  }
+
+  if (!is.null(strata)) {
+    if (!(strata %in% colnames(data))) {
+      stop("Strata name is not in dataframe", call. = FALSE)
+    }
+  }
+
+  if (!is.null(sup)) {
+    if (!(sup %in% colnames(data))) {
+      stop("Supplementary variable name is not in dataframe", call. = FALSE)
+    }
   }
 }
 

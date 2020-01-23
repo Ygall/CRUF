@@ -11,7 +11,7 @@ logistic_univariate(
   twobytwo = TRUE,
   formula = "(y ~ x)",
   collapse = FALSE,
-  ref.label = "1",
+  ref_label = "1",
   digits = 2
 )
 }
@@ -32,7 +32,7 @@ variable. Default is \code{TRUE}.}
 one column. \code{"OR"} collapses OR, Upper and Lower CI. \code{"CI"}
 collapses Upper and Lower CI.}
 
-\item{ref.label}{Character. Set the label for reference estimate.}
+\item{ref_label}{Character. Set the label for reference estimate.}
 
 \item{digits}{Numeric. Number of digits to display.}
 }

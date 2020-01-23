@@ -14,7 +14,7 @@
 #' @param collapse \code{"NULL"}, \code{"OR"}, \code{"CI"}. Collapse columns in
 #'   one column. \code{"OR"} collapses OR, Upper and Lower CI. \code{"CI"}
 #'   collapses Upper and Lower CI.
-#' @param ref.label Character. Set the label for reference estimate.
+#' @param ref_label Character. Set the label for reference estimate.
 #' @param digits Numeric. Number of digits to display.
 #'
 #' @return The returned value is a list of length \code{y_names}, which consists
@@ -27,12 +27,12 @@
 
 logistic_univariate <- function(data, y_names, x_names,
                                 twobytwo = TRUE, formula = "(y ~ x)",
-                                collapse = FALSE, ref.label = "1",
+                                collapse = FALSE, ref_label = "1",
                                 digits = 2) {
   y <- y_names
   x <- x_names
 
-  check_args_log(data, y, x, twobytwo, formula, collapse, ref.label, digits)
+  check_args_log(data, y, x, twobytwo, formula, collapse, ref_label, digits)
 
   dep <- y
   col <- x
@@ -47,8 +47,8 @@ logistic_univariate <- function(data, y_names, x_names,
       y <- dep[j]
 
       res_one <- data.frame(glm_univar(y, x, data, twobytwo, formula,
-                           digits, ref.label),
-                           check.names = F, stringsAsFactors = F)
+                                       digits, ref_label),
+                            check.names = F, stringsAsFactors = F)
 
       res_one <- collapse_table(res_one, collapse)
 
@@ -83,7 +83,7 @@ logistic_univariate <- function(data, y_names, x_names,
 #' @param collapse \code{"NULL"}, \code{"OR"}, \code{"CI"}. Collapse columns in
 #'   one column. \code{"OR"} collapses OR, Upper and Lower CI. \code{"CI"}
 #'   collapses Upper and Lower CI.
-#' @param ref.label Character. Set the label for reference estimate.
+#' @param ref_label Character. Set the label for reference estimate.
 #' @param digits Numeric. Number of digits to display.
 #' @param cluster Character. Name of the clustering variable.
 #'
@@ -98,13 +98,13 @@ logistic_univariate <- function(data, y_names, x_names,
 #'
 #' @export
 logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
-                                twobytwo = TRUE, formula = "(y ~ x)",
-                                collapse = FALSE, ref.label = "1",
-                                digits = 2) {
+                                        twobytwo = TRUE, formula = "(y ~ x)",
+                                        collapse = FALSE, ref_label = "1",
+                                        digits = 2) {
   y <- y_names
   x <- x_names
 
-  check_args_log(data, y, x, twobytwo, formula, collapse, ref.label, digits)
+  check_args_log(data, y, x, twobytwo, formula, collapse, ref_label, digits)
 
   dep <- y
   col <- x
@@ -119,7 +119,7 @@ logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
       y <- dep[j]
 
       res_one <- data.frame(glm_cluster_univar(y, x, data, twobytwo, formula,
-                                       digits, ref.label, cluster),
+                                               digits, ref_label, cluster),
                             check.names = F, stringsAsFactors = F)
 
       res_one <- collapse_table(res_one, collapse)
@@ -138,7 +138,8 @@ logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
   res_uni
 }
 
-check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref.label, digits) {
+check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref_label,
+                           digits) {
   if (!("data.frame" %in% attributes(data)$class)) {
     stop("Data should be a data frame", call. = FALSE)
   }
@@ -190,15 +191,16 @@ check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref.label, d
     stop("Arg collapse must be in \"OR\", \"CI\" or NULL", call. = FALSE)
   }
 
-  if (!is.character(ref.label)) {
-    stop("Arg ref.label must be character", call. = FALSE)
+  if (!is.character(ref_label)) {
+    stop("Arg ref_label must be character", call. = FALSE)
   }
 
   if (!is.numeric(digits)) {
     stop("Arg digits must be numeric", call. = FALSE)
   }
 }
-glm_univar             <- function(y, x, data, twobytwo, formula, digits, ref.label) {
+glm_univar             <- function(y, x, data, twobytwo, formula, digits,
+                                   ref_label) {
 
   formula <- sub("y", y, formula)
   formula <- sub("x", x, formula)
@@ -216,14 +218,15 @@ glm_univar             <- function(y, x, data, twobytwo, formula, digits, ref.la
   res[, 4]  <- table(fit$model[, c(x, y)])[, 2]
 
   if (!any(table(fit$model[, c(x, y)]) %in% 0)) {
-    res[1, 5] <- ref.label
+    res[1, 5] <- ref_label
     res[2:nlev, 5] <- round(exp(fit$coefficients), digits)[2:nlev]
     res[2:nlev, 6:7] <- suppressMessages(round(exp(confint(fit)),
                                                digits)[2:nlev, ])
 
     if (nlev > 2) {
       res[1, 8] <- paste0("Global: ",
-                          pval_format_r(signif(anova(fit, test = "Chisq")[2, 5], 2)))
+                          pval_format_r(signif(anova(fit,
+                                                     test = "Chisq")[2, 5], 2)))
       res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
     }
     res[2:nlev, 8] <- pval_format_r(signif(coef(summary(fit))[2:nlev, 4], 2))
@@ -240,7 +243,8 @@ glm_univar             <- function(y, x, data, twobytwo, formula, digits, ref.la
   res
 
 }
-glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits, ref.label, cluster) {
+glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits,
+                                   ref_label, cluster) {
 
   formula <- sub("y", y, formula)
   formula <- sub("x", x, formula)
@@ -248,7 +252,8 @@ glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits, ref.la
 
   nlev <- length(levels(data[, x]))
 
-  fitcl <- glm.cluster(formula, data = data, family = "binomial", cluster = cluster)
+  fitcl <- glm.cluster(formula, data = data, family = "binomial",
+                       cluster = cluster)
 
   fit <- fitcl$glm_res
 
@@ -260,18 +265,22 @@ glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits, ref.la
   res[, 4]  <- table(fit$model[, c(x, y)])[, 2]
 
   if (!any(table(fit$model[, c(x, y)]) %in% 0)) {
-    res[1, 5] <- ref.label
+    res[1, 5] <- ref_label
     res[2:nlev, 5] <- round(exp(fit$coefficients), digits)[2:nlev]
     res[2:nlev, 6:7] <- suppressMessages(round(exp(confint(fitcl)),
                                                digits)[2:nlev, ])
 
     if (nlev > 2) {
       res[1, 8] <- paste0("Global: ",
-                          pval_format_r(signif(wald.test(fitcl$vcov, fit$coefficients, 2:nlev)$result$chi2[3], 2)))
+                          pval_format_r(signif(wald.test(fitcl$vcov,
+                                                         fit$coefficients,
+                                                         2:nlev)$result$chi2[3],
+                                               2)))
       res[1:nlev, 9] <- pval_format(anova(fit, test = "Chisq")[2, 5])
     }
 
     inut <- capture.output(pval <- summary(fitcl))
+    rm(inut)
 
     res[2:nlev, 8] <- pval_format_r(signif(pval[2:nlev, 4], 2))
     res[2:nlev, 9] <- pval_format(pval[2:nlev, 4])
@@ -301,12 +310,79 @@ collapse_table <- function(data, collapse) {
   } else if (collapse == "OR") {
 
     data[2:nrow(data), "OR"] <- paste0(data[2:nrow(data), "OR"],
-                                      " [", data[2:nrow(data), "CI Lower"], ";",
-                                      data[2:nrow(data), "CI Upper"], "]")
+                                       " [", data[2:nrow(data), "CI Lower"], ";",
+                                       data[2:nrow(data), "CI Upper"], "]")
     names(data)[names(data) == "OR"] <- "OR [CI]"
     data[, c("CI Lower", "CI Upper")] <- NULL
 
     return(data)
   }
+}
+
+#' Backward stepwise selection with pvalue for logistic regression with clustering
+#'
+#' @param fitcl Initial multivariate model
+#' @param cluster Character. Name of the clustering variable of the model
+#' @param threshold Numeric [0,1].
+#' @param verbose Whether to display messages or not. Default TRUE
+#'
+#' @return A final multivariate model
+#' @export
+step_lrcl_pval <- function(fitcl, cluster, threshold = 0.05, verbose = TRUE) {
+
+  data    <- fitcl$glm_res$data
+  family  <- fitcl$glm_res$family
+  formula <- fitcl$glm_res$formula
+
+  stop <- FALSE
+  j <- 0
+  while (stop == FALSE) {
+    j <- j + 1
+    fitcl <- glm.cluster(formula = formula, data = data, family = family, cluster = cluster)
+
+    fit <- fitcl$glm_res
+    vcov <- fitcl$vcov[-1, -1]
+    betas    <- coef(fit)[-1]
+
+    # Nombre de modalité par variable du fit
+    nmod <- unlist(lapply(fit$xlevels, function(x){length(x)}))
+
+    # Index de départ/arrivée de la matrice pour chaque variable
+    indvcov  <- cumsum(nmod - 1) - (nmod - 1) + 1
+    indvcovf <- cumsum(nmod - 1)
+
+    pval <- NULL
+    for (i in seq_along(fit$xlevels)) {
+      pval[i] <- wald.test(vcov, betas, indvcov[i]:indvcovf[i])$result$chi2[3]
+    }
+
+    if (max(pval) < threshold) {
+      break()
+    }
+
+    vartokeep <- names(fit$xlevels)[!(pval == max(pval))]
+
+    formula <- as.formula(paste(as.character(fit$formula)[2], "~", paste(vartokeep, collapse = " + ")))
+
+    if (verbose %in% "TRUE") {
+      cat(paste("Model", j,": \n",
+                paste(as.character(formula)[2],
+                      as.character(formula)[1],
+                      as.character(formula)[3])), sep = "\n")
+      cat(paste("Discarded :", names(fit$xlevels)[(pval == max(pval))]),
+          sep = "\n")
+      cat("\n")
+    }
+  }
+
+  if (verbose %in% c("Final", TRUE)) {
+    cat(paste("Final model :",
+              as.character(formula)[2],
+              as.character(formula)[1],
+              as.character(formula)[3]), sep = "\n")
+  }
+
+  return(fitcl)
+
 }
 

@@ -3,6 +3,7 @@
 export(logistic_cluster_univariate)
 export(logistic_univariate)
 export(select_noms)
+export(step_lrcl_pval)
 export(survival_univariate)
 export(tabkris_2)
 importFrom(aod,wald.test)
