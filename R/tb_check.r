@@ -28,7 +28,8 @@ check_names <- function(data, names) {
         }
 
         if (length(names) != dim(data)[2]) {
-            stop("Argument names must be length of data columns",
+            stop(paste0("Argument names must be length of data columns : ",
+                        dim(data)[2]),
                  call. = FALSE)
         }
     } else {

@@ -1,4 +1,4 @@
-make_auto_detect <- function(data) {
+make_auto_detect <- function(data, lev_co, verbose) {
   detect <- NULL
   type   <- NULL
 
@@ -9,22 +9,25 @@ make_auto_detect <- function(data) {
 
     if (lev == 2) {
       type <- c(type, "bino")
-    } else if (lev < 10 & lev > 2) {
+    } else if (lev < lev_co & lev > 2) {
       type <- c(type, "cate")
     } else {
       type <- c(type, "unch")
     }
   }
 
-  for (i in seq_along(data)) {
-    if (detect[i] & type[i] != "unch") {
-      data[, i] <- factor(data[, i])
-      message(paste0("\"",
-                     names(data)[i],
-                     "\" -> ",
-                     type[i]),
-              "", appendLF = T)
+    for (i in seq_along(data)) {
+      if (detect[i] & type[i] != "unch") {
+        data[, i] <- factor(data[, i])
+        if (verbose == TRUE) {
+                message(paste0("\"",
+                       names(data)[i],
+                       "\" -> ",
+                       type[i]),
+                "", appendLF = T)
+      }
     }
+
   }
 
   return(data)
@@ -50,8 +53,6 @@ make_method <- function(data,
                         default_method = c("cont", "bino", "cate", "ordo")) {
   # assign methods based on type,
   # use method 1 if there is no single
-  #
-  #
   method <- rep("", length(names(data)))
   names(method) <- names(data)
   for (j in names(data)) {
@@ -133,17 +134,15 @@ make_result <-
 
     result <- NULL
 
+
     for (i in seq_along(names)) {
       name  <- names(data[[1]])[i]
       label <- names[i]
 
       lev <- levels(data[[1]][, i])
 
-      result_first <-
+      result_tmp <-
         make_first_column(lev, label, name, method, explicit_na)
-
-      result_desc <-
-        data.frame(matrix(NA, nrow = nrow(result_first), ncol = 1))
 
       for (j in 1:iter) {
         temp <- data[[j]]
@@ -158,11 +157,8 @@ make_result <-
                            pres_quant,
                            pres_quali)
 
-        result_desc <- cbind.data.frame(result_desc, description)
+        result_tmp <- cbind.data.frame(result_tmp, description)
       }
-
-      result_test <-
-        data.frame(matrix(NA, nrow = nrow(result_first), ncol = 1))
 
       if (test_yn == TRUE) {
         tested <-
@@ -175,25 +171,14 @@ make_result <-
                           digits,
                           varint)
 
-        result_test <- cbind.data.frame(result_test, tested)
+        result_tmp <- cbind.data.frame(result_tmp, tested)
       }
-
-      result_tmp <-
-        cbind.data.frame(result_first, result_desc, result_test)
 
       result <-
         rbind.data.frame(result, result_tmp, stringsAsFactors = F)
+
+      rm(description, result_tmp, temp)
     }
-
-    result <-
-      result [, apply(result, 2, function(x) {
-        !any(is.na(x))
-      })]
-    result <-
-      result [, apply(result, 2, function(x) {
-        !all(x == "")
-      })]
-
 
     lev <- attributes(data)$levels
 
@@ -210,6 +195,7 @@ make_result <-
 
 make_first_column <-
   function(lev, label, name, method, explicit_na) {
+
     res <- NULL
 
     exp_na <- as.numeric(explicit_na)
@@ -256,7 +242,7 @@ make_first_row    <- function(result, lev, n, varint, test_yn) {
 
   varint_name <- as.vector(sapply(lev,
                                   function(x) {
-                                    c("", paste0(x, " (N = ", n[x], ")"))
+                                    c(paste0("(N = ", n[x], ")"), x)
                                   }))
   if (exp == n_result & test_yn == TRUE) {
     colnames(result) <- c("Variable", "Modality",

@@ -49,6 +49,9 @@
 #'   (i.e. having between 2 and 10 levels) and change the type of variable if
 #'   so.
 #'
+#'   \code{lev_co} will set the number of maximum levels to coerce a column in a
+#'   factor
+#'
 #' @param data Dataframe to describe or a "desctable" object
 #' @param names Vectors of variables to display in the final table, length of
 #'   \code{ncol(data)}
@@ -76,7 +79,11 @@
 #'   option easily, default \code{TRUE}
 #' @param auto_detect Whether to automatically detect variable type,
 #'   transforming to factors numeric variable with moderate levels (< 10),
-#'   default \code{FALSE}
+#'   default \code{TRUE}. Possible to set the cut-off number with \code{lev_co}
+#' @param lev_co Numeric. When auto_detect is \code{TRUE}, set the number of
+#'   level to cutoff for categorical variables
+#' @param verbose Logical. Display information about transformation of
+#'   variables. default \code{FALSE}
 #'
 #' @importFrom stats sd median quantile chisq.test fisher.test kruskal.test
 #'   t.test wilcox.test
@@ -106,7 +113,9 @@ tabkris_2 <- function(data,
                       explicit_na = FALSE,
                       digits = 2,
                       return_table = TRUE,
-                      auto_detect = FALSE) {
+                      auto_detect = TRUE,
+                      lev_co = 10,
+                      verbose = FALSE) {
   # Logical junction
 
   if ("desctable" %in% attributes(data)$class) {
@@ -117,7 +126,7 @@ tabkris_2 <- function(data,
 
   if (auto_detect == TRUE) {
     # Make auto_detect
-    data <- make_auto_detect(data)
+    data <- make_auto_detect(data, lev_co, verbose)
   }
 
   check_args(lang,
