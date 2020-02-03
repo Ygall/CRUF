@@ -7,11 +7,11 @@
 survival_univariate(
   data,
   time,
+  time2 = NULL,
   event,
   names = NULL,
   strata = NULL,
   cluster = NULL,
-  sup = NULL,
   test = "LRT"
 )
 }
@@ -19,7 +19,10 @@ survival_univariate(
 \item{data}{A dataframe including all the variable needed, one variable for
 time to event and one variable for event indicator.}
 
-\item{time}{Name of the variable used for time to event.}
+\item{time}{Name of the variable used for time to event or for start time if
+Start-Stop format}
+
+\item{time2}{Stop time if the data are in Start-Stop format}
 
 \item{event}{Name of the column used for event indicator.}
 
@@ -29,9 +32,6 @@ number of column of data, excluding time and event}
 \item{strata}{Name of the variable used for analysis with strata}
 
 \item{cluster}{Name of the variable used for analysis with cluster}
-
-\item{sup}{Name of one variable used for adjusting the model on. Will not be
-displayed in the result table.}
 
 \item{test}{Which test to use for p-value, possible values are "LRT" for
 Likelihood Ratio Test, "Wald" for Wald Test and "LogRank" for Log-Rank

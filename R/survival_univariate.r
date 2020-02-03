@@ -2,7 +2,8 @@
 #'
 #' @param data A dataframe including all the variable needed, one variable for
 #'   time to event and one variable for event indicator.
-#' @param time Name of the variable used for time to event.
+#' @param time Name of the variable used for time to event or for start time if
+#'   Start-Stop format
 #' @param event Name of the column used for event indicator.
 #' @param names Names of the variables to display. Lenght must be minus 2 the
 #'   number of column of data, excluding time and event
@@ -11,8 +12,7 @@
 #'   Test"
 #' @param strata Name of the variable used for analysis with strata
 #' @param cluster Name of the variable used for analysis with cluster
-#' @param sup Name of one variable used for adjusting the model on. Will not be
-#'   displayed in the result table.
+#' @param time2 Stop time if the data are in Start-Stop format
 #'
 #' @importFrom survival coxph
 #' @importFrom stats as.formula
@@ -20,44 +20,47 @@
 #'   data.
 #' @export
 #'
-survival_univariate <- function(data, time, event, names = NULL,
-                                strata = NULL, cluster = NULL, sup = NULL,
+survival_univariate <- function(data, time, time2 = NULL, event, names = NULL,
+                                strata = NULL, cluster = NULL,
                                 test = "LRT") {
   # Check sanity
-  check_args_uni(data, time, event, names, test, strata, cluster, sup)
+  check_args_uni(data, time, time2, event, names, test, strata, cluster)
 
   # Prepare data
   vecnames      <- subset(colnames(data),
-                          !(colnames(data) %in% c(time, event,
-                                                  strata, cluster, sup)))
+                          !(colnames(data) %in% c(time, time2, event,
+                                                  strata, cluster)))
   if (is.null(names)) names <- vecnames
 
   data[, event] <- as.numeric.factor(factor(data[, event]))
   nevent        <- sum(data[, event])
 
+  if (!missing(time2)) {
+    time2 <- paste0(" ", time2, ", ")
+  }
   if (!missing(cluster)) {
     cluster <- paste0("+ cluster(", cluster, ")")
   }
   if (!missing(strata)) {
     strata <- paste0("+ strata(", strata, ")")
   }
-  if (!missing(sup)) {
-    sup <- paste0("+ ", sup)
-  }
 
   # Fit the data
   res_list <- list()
 
   for (i in seq_along(vecnames)) {
-    formula <-  as.formula(paste0("Surv(", time, ",", event, ") ~ ",
-                                  vecnames[i], cluster, strata, sup))
+    formula <-  as.formula(paste0("Surv(", time, ",", time2, event, ") ~ ",
+                                  vecnames[i], cluster, strata))
     res_list[[i]] <- coxph(formula = formula, data = data)
   }
 
   # Get the number of level for each model
-  veclevel <- unlist(lapply(res_list, function(x) {
-    (length(x$xlevels[[1]]))}))
+  veclevel <- NULL
+  for (i in seq_along(vecnames)) {
+    veclevel[i] <- length(res_list[[i]]$xlevels[[vecnames[i]]])
+  }
   veclevel <- ifelse(veclevel == 0, 1, veclevel)
+
 
   # Make the result table
   result <- make_result_uni(res_list, vecnames, names,
@@ -69,14 +72,14 @@ survival_univariate <- function(data, time, event, names = NULL,
   return(result)
 }
 
-check_args_uni <- function(data, time, event, names, test,
-                           strata, cluster, sup) {
+check_args_uni <- function(data, time, time2, event, names, test,
+                           strata, cluster) {
   if (!("data.frame" %in% attributes(data)$class)) {
     stop("Data should be a data frame", call. = FALSE)
   }
 
   if (!is.null(names)) {
-    off <- 2 + !is.null(cluster) + !is.null(strata) + !is.null(sup)
+    off <- 2 + !is.null(cluster) + !is.null(strata)
     if (length(names) != (length(colnames(data)) - off)) {
       stop(paste0("Names must be length of ",
                   length(colnames(data)) - off),
@@ -105,6 +108,12 @@ check_args_uni <- function(data, time, event, names, test,
     stop("Test method not in \"LRT\", \"Wald\", \"LogRank\"", call. = FALSE)
   }
 
+  if (!is.null(time2)) {
+    if (!(time2 %in% colnames(data))) {
+      stop("Time2 name is not in dataframe", call. = FALSE)
+    }
+  }
+
   if (!is.null(cluster)) {
     if (!(cluster %in% colnames(data))) {
       stop("Cluster name is not in dataframe", call. = FALSE)
@@ -114,12 +123,6 @@ check_args_uni <- function(data, time, event, names, test,
   if (!is.null(strata)) {
     if (!(strata %in% colnames(data))) {
       stop("Strata name is not in dataframe", call. = FALSE)
-    }
-  }
-
-  if (!is.null(sup)) {
-    if (!(sup %in% colnames(data))) {
-      stop("Supplementary variable name is not in dataframe", call. = FALSE)
     }
   }
 }
@@ -158,12 +161,19 @@ make_result_cont <- function(model, vecname, name, test) {
                       "LogRank" = summary(model)$sctest[3]
   )
 
+  if (length(as.character(model$call)) > 3) {
+    if (summary(model)$used.robust) {
+      t.switch <- summary(model)$robscore[3]
+      test <- "Robust Score"
+    }
+  }
+
   result <- matrix("", nrow = 1, ncol = 10)
 
   result[1, 1]   <- name
   result[1, 3]   <- model$nevent
   result[1, 4]   <- model$n
-  result[1, 5:7] <- round(summary(model)$conf.int[-2], 3)
+  result[1, 5:7] <- round(summary(model)$conf.int[1, -2], 3)
 
   result[1, 8]   <- signif(t.switch, 2)
   result[1, 9]   <- pval_format(t.switch)
@@ -179,20 +189,31 @@ make_result_fact <- function(model, vecname, name, level, test, data, event) {
                       "LogRank" = summary(model)$sctest[3]
   )
 
+  if (length(as.character(model$call)) > 3) {
+    if (summary(model)$used.robust) {
+      t.switch <- summary(model)$robscore[3]
+      test <- "Robust Score"
+    }
+  }
+
   result <- matrix("", nrow = level, ncol = 10)
   result[1, 1]   <- name
 
-  result[, 2] <- model$xlevels[[1]]
+  result[, 2] <- levels(factor(data[, vecname]))
 
   result[, 3] <- as.vector(by(data[, event], data[, vecname], sum))
   result[, 4] <- as.vector(by(data[, event], data[, vecname], length))
 
   result[1, 5:7] <- c(1, "", "")
-  result[2:level, 5:7] <- round(summary(model)$conf.int[, -2], 3)
+  result[2:level, 5:7] <- round(summary(model)$conf.int[1:(level-1), -2], 3)
 
   result[1, 8]   <- signif(t.switch, 2)
   result[1, 9]   <- pval_format(t.switch)
   result[1, 10]  <- test
+
+  if (min(result[, 3:4]) %in% c(0, NA)) {
+    result[, 5:7] <- ""
+  }
 
   result
 }

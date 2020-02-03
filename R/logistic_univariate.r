@@ -386,3 +386,49 @@ step_lrcl_pval <- function(fitcl, cluster, threshold = 0.05, verbose = TRUE) {
 
 }
 
+#' Multivariate Logistic Regression with cluster
+#'
+#' A function used to generate result table for multivariate logistic regression
+#' model using a cluster variable. Compute robust variance using sandwich
+#'
+#' @param fit Class glm.cluster. Multivariate model to format
+#'
+#' @return A dataframe of the multivariate parameters formatted
+#' @export
+#'
+logistic_cluster_multivariate <- function(fit){
+  nmod <- unlist(lapply(fit$glm_res$xlevels, function(x){length(x)}))
+
+  posmod <- cumsum(nmod) - nmod + 1
+  posemp <- (1:sum(nmod))[!(1:sum(nmod) %in% posmod)]
+
+  res <- matrix("", ncol = 9, nrow = sum(nmod))
+  varname <- names(fit$glm_res$xlevels)
+
+  res[posmod, 1] <- varname
+  res[, 2]       <- unlist(fit$glm_res$xlevels)
+
+  #coef(final_Serome)[grepl(names(final_Serome$glm_res$xlevels)[4], names(coef(final_Serome)))]
+
+  table <- NULL
+  for (i in varname) {
+    table <- rbind(table, table(fit$glm_res$model[, i], fit$glm_res$model[, 1]))
+  }
+
+  res[, 3:4] <- table
+
+  res[posmod, 5]   <- 1
+  res[posemp, 5]   <- round(exp(coef(fit)[-1]), 2)
+  res[posemp, 6:7] <- round(exp(confint(fit)[-1, ]), 2)
+
+  inut <- capture.output(pval <- summary(fit))
+  res[posemp, 8] <- pval_format_r(signif(pval[-1, 4], 2))
+  res[posemp, 9] <- pval_format(signif(pval[-1, 4], 2))
+
+  lev <- levels(fit$glm_res$data[, as.character(fit$glm_res$formula)[2]])
+
+  colnames(res) <- c(as.character(fit$glm_res$formula)[2], "Modality", lev[1], lev[2],
+                     "OR", "CI Lower", "CI Upper", "p-value", "Sign")
+
+  res
+}
