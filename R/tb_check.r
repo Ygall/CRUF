@@ -246,21 +246,21 @@ check_test <- function(data, test, default_test, varint, method) {
         met <- method[i]
         tes <- test[i]
 
-        ad <- ifelse(nlev > 2,
+        ad <- if(nlev > 2) {
                      switch(
                          met,
                          cont = c("kruskal"),
-                         bino = c("chisq"),
-                         cate = c("chisq"),
+                         bino = c("chisq", "fish"),
+                         cate = c("chisq", "fish"),
                          ordo = c("kruskal")
-                     ),
+                     )} else {
                      switch(
                          met,
                          cont = c("stud", "wilcox"),
-                         bino = c("chisq", "fisher"),
-                         cate = c("chisq"),
-                         ordo = c("chisq")
-                     ))
+                         bino = c("chisq", "fish"),
+                         cate = c("chisq", "fish"),
+                         ordo = c("chisq", "fish")
+                     )}
 
         if (!(tes %in% ad)) {
             stop(paste0(

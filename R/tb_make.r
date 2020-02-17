@@ -454,7 +454,7 @@ make_table_test <-
     exp_na <- as.numeric(explicit_na)
 
     r <- switch(
-      method[label],
+      method[name],
       cont = 1 + exp_na,
       bino = 1 + exp_na,
       cate = 1 + exp_na + length(levels(data_c[, label])),
@@ -464,16 +464,16 @@ make_table_test <-
     mat <- matrix("", ncol = 1, nrow = r)
 
     mat[1, 1] <- switch(
-      test[label],
-      stud   = signif(t.test(data_c[, label] ~ data_c[, varint])$p.value,
+      test[name],
+      stud   = signif(t.test(data_c[, name] ~ data_c[, varint])$p.value,
                       digits),
-      wilcox = signif(wilcox.test(data_c[, label] ~ data_c[, varint])$p.value,
+      wilcox = signif(wilcox.test(data_c[, name] ~ data_c[, varint])$p.value,
                       digits),
-      kruskal = signif(kruskal.test(data_c[, label] ~ data_c[, varint])$p.value,
+      kruskal = signif(kruskal.test(data_c[, name] ~ data_c[, varint])$p.value,
                        digits),
-      chisq  = signif(chisq.test(table(data_c[, label],
+      chisq  = signif(chisq.test(table(data_c[, name],
                                        data_c[, varint]))$p.value, digits),
-      fish   = signif(fisher.test(table(data_c[, label],
+      fish   = signif(fisher.test(table(data_c[, name],
                                         data_c[, varint]))$p.value, digits)
     )
 

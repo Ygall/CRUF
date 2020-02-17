@@ -1,5 +1,5 @@
 ---
-title: "TABKRIS2 : Manual"
+title: "CRUF : Manual"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{manual}
@@ -57,11 +57,12 @@ knitr::kable(desctable)
 # Auto-detect variable type
 
 Using the argument **auto_detect = TRUE** will test if each numeric variable can be coerced to a factor variable. It tests the potential levels of each variable and coerce to a factor type if the number of levels is moderate (i.e < 10). For variable with two levels, method used will be "bino", else it will be "cate".
+It is possible to set the cut-off of the levels of factor to coerce a variable with argument **lev_co** (for **level cut-off**), default is 10
 
 ```{r auto_detect}
 # In mtcars, "cyl", "vs", "am", "gear" and "carb" are encoded as numeric but they are factors in reality.
 # tabkris_2 changes each variable and display a message for each transformation.
-desctable <- tabkris_2(mtcars, auto_detect = T)
+desctable <- tabkris_2(mtcars, auto_detect = T, lev_co = 8)
 
 
 knitr::kable(desctable)
@@ -80,17 +81,17 @@ The user can modify only the argument he wants without needing to specify for ev
 It is possbile to create a *desc_prep* object with every default parameter, change a parameter, compute a table and re-use the *desc_prep* to rechange another parameter for another table.
 
 ```{r return_table}
-desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
-
-# Change the method for variable "vs" from a binomial to a categorical method
-desc_prep$method["vs"] <- "cate"
-
-desctable <- tabkris_2(desc_prep)
-
-# Variable of interest set to "am", also using the previous changed arguments
-desc_prep$varint <- "am"
-
-desctable_2 <- tabkris_2(desc_prep)
+# desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
+# 
+# # Change the method for variable "vs" from a binomial to a categorical method
+# desc_prep$method["vs"] <- "cate"
+# 
+# desctable <- tabkris_2(desc_prep)
+# 
+# # Variable of interest set to "am", also using the previous changed arguments
+# desc_prep$varint <- "am"
+# 
+# desctable_2 <- tabkris_2(desc_prep)
 
 ```
 
@@ -199,7 +200,7 @@ Note : If the number of levels of *"varint"* is greater than 2, *"default_test"*
 | wilcox           |   X  |      |      |      |
 | kruskal          |      |      |      |      |
 | chisq            |      |   X  |  X   |   X  |
-| fisher           |      |   X  |      |      |
+| fisher           |      |   X  |  X   |   X  |
 
 #### Level of varint greater than 2
 
