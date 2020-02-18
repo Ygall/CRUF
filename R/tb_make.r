@@ -402,7 +402,7 @@ make_desc_bino <- function(r, vec, digits, pres_quali) {
 }
 
 make_desc_cate <- function(r, vec, digits, pres_quali) {
-  vec <- factor(vec)
+  #vec <- factor(vec)
   mat <- matrix("", nrow = r, ncol = 2)
 
   for (i in seq_len(nlevels(vec))) {
@@ -412,6 +412,10 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
 
     if ("n" %in% pres_quali) {
       n <- sum(levels(vec)[i] == vec, na.rm = T)
+
+      if (n == 0) {
+        next()
+      }
     }
 
     if ("total" %in% pres_quali) {
