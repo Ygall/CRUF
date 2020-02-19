@@ -402,7 +402,6 @@ make_desc_bino <- function(r, vec, digits, pres_quali) {
 }
 
 make_desc_cate <- function(r, vec, digits, pres_quali) {
-  #vec <- factor(vec)
   mat <- matrix("", nrow = r, ncol = 2)
 
   for (i in seq_len(nlevels(vec))) {
@@ -414,7 +413,7 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
       n <- sum(levels(vec)[i] == vec, na.rm = T)
 
       if (n == 0) {
-        next()
+        next ()
       }
     }
 
@@ -484,3 +483,27 @@ make_table_test <-
     res <- data.frame(mat, stringsAsFactors = F)
     res
   }
+
+# Language post-processing -----------------------------------------------------
+make_language <- function(data, lang) {
+  # Permettre de transformer tous les noms dépendants de la fonction en une
+  # autre langue
+  #  Idéalement à mettre à la fin de la fonction.
+  data <- switch(lang,
+                 en = data,
+                 fr = make_french(data))
+
+  return(data)
+}
+
+make_french <- function(data) {
+  colonnes <- colnames(data)
+
+  colonnes[colonnes == "Variable"] <- "Variable"
+  colonnes[colonnes == "Modality"] <- "Modalit\u00E9"
+  colonnes[colonnes == "Statistics"] <- "Statistiques"
+
+  colnames(data) <- colonnes
+
+  return(data)
+}

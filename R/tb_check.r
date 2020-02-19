@@ -246,7 +246,7 @@ check_test <- function(data, test, default_test, varint, method) {
         met <- method[i]
         tes <- test[i]
 
-        ad <- if(nlev > 2) {
+        ad <- if (nlev > 2) {
                      switch(
                          met,
                          cont = c("kruskal"),
