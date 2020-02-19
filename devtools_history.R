@@ -6,6 +6,9 @@ usethis::use_package("utils") # Utile uniquement pour les fonctions de select
 usethis::use_package("miceadds")
 usethis::use_package("aod")
 
+# Template markdown
+# usethis::use_rmarkdown_template("Rapport Analyse")
+
 # Ignorer ces documents
 usethis::use_build_ignore("devtools_history.R")
 usethis::use_git_ignore("devtools_history.R")

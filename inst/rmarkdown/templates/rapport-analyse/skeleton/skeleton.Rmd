@@ -1,0 +1,86 @@
+---
+title: "Rapport Analyse - PROJET"
+subtitle: "Hôpital Saint-Louis  \nService de Biostatistique et d'Information Médicale"
+
+author: 
+- Auteur 1
+- Auteur 2
+
+date: \today
+
+output: 
+  pdf_document:
+    template: default.latex # Thème par défaut de LaTeX
+    fig_caption: yes        # Afficher les titres de figures
+    number_sections: yes    # Numérotation automatique des sections
+    toc: yes                # Table of content
+    toc_depth: 2            # Profondeur de la table des matières
+    df_print: kable         # Utilisation de kable comme fonction de défaut pour affichage de data.frame
+    # citation_package: biblatex
+
+documentclass: article # Format Article
+lot: yes               # Liste des tableaux
+lof: yes               # Liste des figures
+lang: fr               # Langue Française
+
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(kableExtra)
+
+knitr::opts_chunk$set(echo = FALSE)
+
+# Lignes de code permettant de sourcer le document uniquement si le fichier est
+# modifié après le RData qu'il produit. Il faut donc que le fichier source se
+# termine par un "save.image(file = "NOM_DU_FICHIER.RData")"
+
+# if (file.info("VOTRE_SCRIPT.R")$mtime > file.info("NOM_DU_FICHIER.RData")$mtime) {
+#   source("VOTRE_SCRIPT.R")
+# } else {
+#   load("NOM_DU_FICHIER.RData")
+# }
+
+```
+
+\pagebreak
+# Changements principaux
+
+- Enumérer les principaux changements depuis la dernière version transmise
+
+\pagebreak
+# Introduction
+
+- Description du projet : 
+  - Porteur du projet
+  - Schéma d'étude
+  - Objectifs principal et secondaires
+
+- Description des données
+  - Source de provenance
+  - Mode de recueil
+  - Nombre de participants
+  - Variables intéressantes
+  - Points d'attention
+
+\pagebreak
+# Méthodes
+
+## Méthodes statistiques
+
+\pagebreak
+# Résultats
+## Traitement préalables des données
+
+- Modification effectuées sur les données
+- Description des données manquantes
+
+## Descriptif
+
+- Description de la population
+  
+  
+## Analyses
+### Univariées
+    
+### Multivariées

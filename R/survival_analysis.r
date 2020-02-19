@@ -1,4 +1,4 @@
-#' Univariate Surival Regression
+#' Univariate Survival Regression
 #'
 #' @param data A dataframe including all the variable needed, one variable for
 #'   time to event and one variable for event indicator.
@@ -32,7 +32,7 @@ survival_univariate <- function(data, time, time2 = NULL, event, names = NULL,
                                                   strata, cluster)))
   if (is.null(names)) names <- vecnames
 
-  data[, event] <- as.numeric.factor(factor(data[, event]))
+  data[, event] <- as_numeric_factor(factor(data[, event]))
   nevent        <- sum(data[, event])
 
   if (!missing(time2)) {
@@ -205,7 +205,7 @@ make_result_fact <- function(model, vecname, name, level, test, data, event) {
   result[, 4] <- as.vector(by(data[, event], data[, vecname], length))
 
   result[1, 5:7] <- c(1, "", "")
-  result[2:level, 5:7] <- round(summary(model)$conf.int[1:(level-1), -2], 3)
+  result[2:level, 5:7] <- round(summary(model)$conf.int[1:(level - 1), -2], 3)
 
   result[1, 8]   <- signif(t.switch, 2)
   result[1, 9]   <- pval_format(t.switch)
@@ -216,22 +216,6 @@ make_result_fact <- function(model, vecname, name, level, test, data, event) {
   }
 
   result
-}
-
-# Helper functions
-pval_format <- function(pval) {
-  res <-
-      ifelse(pval < 0.001, "***",
-      ifelse(pval < 0.01,  "**",
-      ifelse(pval < 0.05,  "*",
-      ifelse(pval < 0.1,   ".", ""))))
-}
-pval_format_r <- function(pval) {
-  res <-
-    ifelse(pval < 0.001, "< 0.001", pval)
-}
-as.numeric.factor <- function(x) {
-  as.numeric(levels(x))[x]
 }
 
 post_process_result_uni <- function(result, data, nevent) {

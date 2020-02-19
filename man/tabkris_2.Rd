@@ -18,7 +18,9 @@ tabkris_2(
   explicit_na = FALSE,
   digits = 2,
   return_table = TRUE,
-  auto_detect = FALSE
+  auto_detect = TRUE,
+  lev_co = 10,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -62,7 +64,13 @@ option easily, default \code{TRUE}}
 
 \item{auto_detect}{Whether to automatically detect variable type,
 transforming to factors numeric variable with moderate levels (< 10),
-default \code{FALSE}}
+default \code{TRUE}. Possible to set the cut-off number with \code{lev_co}}
+
+\item{lev_co}{Numeric. When auto_detect is \code{TRUE}, set the number of
+level to cutoff for categorical variables}
+
+\item{verbose}{Logical. Display information about transformation of
+variables. default \code{FALSE}}
 }
 \value{
 Depending on argument \code{return_table}, an object of class
@@ -119,6 +127,9 @@ The \code{tabkris_2} function is a function to describe a set of
   \code{auto_detect} will test if each column can be coerced to a factor
   (i.e. having between 2 and 10 levels) and change the type of variable if
   so.
+
+  \code{lev_co} will set the number of maximum levels to coerce a column in a
+  factor
 }
 \seealso{
 \url{https://github.com/Ygall/CRUF} for manual and examples.
