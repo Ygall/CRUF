@@ -3,6 +3,7 @@
 export(as_numeric_factor)
 export(logistic_cluster_multivariate)
 export(logistic_cluster_univariate)
+export(logistic_multivariate)
 export(logistic_univariate)
 export(pval_format)
 export(select_noms)

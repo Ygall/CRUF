@@ -1,3 +1,5 @@
+# Logistic regression ----------------------------------------------------------
+
 #' Univariate Logistic Regression
 #'
 #' A function used to generate multiple result table for univariate logistic
@@ -65,6 +67,66 @@ logistic_univariate <- function(data, y_names, x_names,
 
   res_uni
 }
+
+#' Multivariate Logistic Regression
+#'
+#' A function used to generate result table for multivariate logistic regression
+#' model.
+#'
+#' @param fit Class glm. Multivariate model to format
+#'
+#' @return A dataframe of the multivariate parameters formatted
+#' @export
+#'
+logistic_multivariate <- function(fit) {
+  if (nlevels(fit$data[, as.character(fit$formula)[2]]) > 2) {
+    stop("Response variable must have two levels, check binomial model")
+  }
+  if (!("glm" %in% class(fit))) {
+    stop("Model must be the result of glm function")
+  }
+
+  nmod <- unlist(lapply(fit$xlevels, function(x) {
+    length(x)
+  }))
+
+  posmod <- cumsum(nmod) - nmod + 1
+  posemp <- (1:sum(nmod))[!(1:sum(nmod) %in% posmod)]
+
+  res <- matrix("", ncol = 9, nrow = sum(nmod))
+  varname <- names(fit$xlevels)
+
+  res[posmod, 1] <- varname
+  res[, 2]       <- unlist(fit$xlevels)
+
+  table <- NULL
+  for (i in varname) {
+    table <- rbind(table, table(fit$model[, i], fit$model[, 1]))
+  }
+
+  browser()
+
+  res[, 3:4] <- table
+
+  res[posmod, 5]   <- 1
+  res[posemp, 5]   <- round(exp(coef(fit)[-1]), 2)
+  res[posemp, 6:7] <- round(exp(confint(fit)[-1, ]), 2)
+
+  pval <- summary(fit)$coefficients
+
+  res[posemp, 8] <- pval_format_r(signif(pval[-1, 4], 2))
+  res[posemp, 9] <- pval_format(signif(pval[-1, 4], 2))
+
+  lev <- levels(fit$data[, as.character(fit$formula)[2]])
+
+  colnames(res) <- c(as.character(fit$formula)[2], "Modality",
+                     lev[1], lev[2],
+                     "OR", "CI Lower", "CI Upper", "p-value", "Sign")
+
+  res
+}
+
+# Logistic regression with cluster ---------------------------------------------
 
 #' Univariate Logistic Regression with cluster
 #'
@@ -148,6 +210,13 @@ logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
 #' @export
 #'
 logistic_cluster_multivariate <- function(fit) {
+  if (nlevels(fit$glm_res$data[, as.character(fit$glm_res$formula)[2]]) > 2) {
+    stop("Response variable must have two levels, check binomial model")
+  }
+  if (!("glm" %in% class(fit))) {
+    stop("Model must be the result of glm function")
+  }
+
   nmod <- unlist(lapply(fit$glm_res$xlevels, function(x) {
     length(x)
   }))
@@ -195,6 +264,9 @@ logistic_cluster_multivariate <- function(fit) {
 #'
 #' @return A final multivariate model
 #' @export
+
+# Model selection --------------------------------------------------------------
+
 step_lrcl_pval <- function(fitcl, cluster, threshold = 0.05, verbose = TRUE) {
 
   data    <- fitcl$glm_res$data
@@ -323,8 +395,8 @@ check_args_log <- function(data, y, x, twobytwo, formula, collapse, ref_label,
 glm_univar             <- function(y, x, data, twobytwo, formula, digits,
                                    ref_label) {
 
-  formula <- sub("y", y, formula)
-  formula <- sub("x", x, formula)
+  formula <- sub("y ", y, formula)
+  formula <- sub(" x", x, formula)
   formula <- as.formula(formula)
 
   nlev <- length(levels(data[, x]))
@@ -367,8 +439,8 @@ glm_univar             <- function(y, x, data, twobytwo, formula, digits,
 glm_cluster_univar     <- function(y, x, data, twobytwo, formula, digits,
                                    ref_label, cluster) {
 
-  formula <- sub("y", y, formula)
-  formula <- sub("x", x, formula)
+  formula <- sub("y ", y, formula)
+  formula <- sub(" x", x, formula)
   formula <- as.formula(formula)
 
   nlev <- length(levels(data[, x]))

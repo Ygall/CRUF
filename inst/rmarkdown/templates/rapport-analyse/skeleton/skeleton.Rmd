@@ -10,7 +10,7 @@ date: \today
 
 output: 
   pdf_document:
-    template: default.latex
+    template: default.latex # Thème par défaut de LaTeX
     fig_caption: yes        # Afficher les titres de figures
     number_sections: yes    # Numérotation automatique des sections
     toc: yes                # Table of content
