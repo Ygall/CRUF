@@ -15,6 +15,24 @@ clinical research data analysis.
 ## Functions
 
   - tabkris\_2 : Description table with options
+  - Survival :
+      - Univariate : Compute and format multiple univariate cox model in
+        a single table
+        <!-- - Multivariate : Format a multivariate cox model in a single table -->
+  - Logistic regression :
+      - Univariate : Compute and format multiple univariate logistic
+        model in a single table
+      - Multivariate : Format a multivariate logistic model in a single
+        table
+  - Logistic regression with cluster :
+      - Univariate : Compute and format multiple univariate logistic
+        model in a single table, using robust sandwich variance
+        estimation
+      - Multivariate : Format a multivariate logistic model in a single
+        table, using robust sandwich variance estimation
+  - Others :
+      - Format p-value with stars such as R does in summary of models
+      - Coerce factor to numeric with actual values
 
 ## Installation
 
@@ -77,19 +95,31 @@ desctable <- tabkris_2(mtcars)
 knitr::kable(desctable)
 ```
 
-| Variable | Statistics           |
-| :------- | :------------------- |
-| mpg      | 19.2 \[15.43;22.8\]  |
-| cyl      | 6 \[4;8\]            |
-| disp     | 196.3 \[120.83;326\] |
-| hp       | 123 \[96.5;180\]     |
-| drat     | 3.7 \[3.08;3.92\]    |
-| wt       | 3.33 \[2.58;3.61\]   |
-| qsec     | 17.71 \[16.89;18.9\] |
-| vs       | 0 \[0;1\]            |
-| am       | 0 \[0;1\]            |
-| gear     | 4 \[3;4\]            |
-| carb     | 2 \[2;4\]            |
+| Variable | Modality | N = 32 | Statistics           |
+| :------- | :------- | :----- | :------------------- |
+| mpg      |          |        | 19.2 \[15.43;22.8\]  |
+| cyl      |          |        |                      |
+|          | 4        |        | 11 (34.38%)          |
+|          | 6        |        | 7 (21.88%)           |
+|          | 8        |        | 14 (43.75%)          |
+| disp     |          |        | 196.3 \[120.83;326\] |
+| hp       |          |        | 123 \[96.5;180\]     |
+| drat     |          |        | 3.7 \[3.08;3.92\]    |
+| wt       |          |        | 3.33 \[2.58;3.61\]   |
+| qsec     |          |        | 17.71 \[16.89;18.9\] |
+| vs       | 1        |        | 14 (43.75%)          |
+| am       | 1        |        | 13 (40.62%)          |
+| gear     |          |        |                      |
+|          | 3        |        | 15 (46.88%)          |
+|          | 4        |        | 12 (37.5%)           |
+|          | 5        |        | 5 (15.62%)           |
+| carb     |          |        |                      |
+|          | 1        |        | 7 (21.88%)           |
+|          | 2        |        | 10 (31.25%)          |
+|          | 3        |        | 3 (9.38%)            |
+|          | 4        |        | 10 (31.25%)          |
+|          | 6        |        | 1 (3.12%)            |
+|          | 8        |        | 1 (3.12%)            |
 
 -----
 
@@ -99,48 +129,44 @@ Using the argument **auto\_detect = TRUE** will test if each numeric
 variable can be coerced to a factor variable. It tests the potential
 levels of each variable and coerce to a factor type if the number of
 levels is moderate (i.e \< 10). For variable with two levels, method
-used will be “bino”, else it will be
-“cate”.
+used will be “bino”, else it will be “cate”. It is possible to set the
+cut-off of the levels of factor to coerce a variable with argument
+**lev\_co** (for **level cut-off**), default is 10
 
 ``` r
 # In mtcars, "cyl", "vs", "am", "gear" and "carb" are encoded as numeric but they are factors in reality.
 # tabkris_2 changes each variable and display a message for each transformation.
-desctable <- tabkris_2(mtcars, auto_detect = T)
-# > "cyl" -> cate
-# > "vs" -> bino
-# > "am" -> bino
-# > "gear" -> cate
-# > "carb" -> cate
+desctable <- tabkris_2(mtcars, auto_detect = T, lev_co = 8)
 
 
 knitr::kable(desctable)
 ```
 
-| Variable | N = 32 | Statistics           |
-| :------- | :----- | :------------------- |
-| mpg      |        | 19.2 \[15.43;22.8\]  |
-| cyl      |        |                      |
-|          | 4      | 11 (34.38%)          |
-|          | 6      | 7 (21.88%)           |
-|          | 8      | 14 (43.75%)          |
-| disp     |        | 196.3 \[120.83;326\] |
-| hp       |        | 123 \[96.5;180\]     |
-| drat     |        | 3.7 \[3.08;3.92\]    |
-| wt       |        | 3.33 \[2.58;3.61\]   |
-| qsec     |        | 17.71 \[16.89;18.9\] |
-| vs       | 1      | 14 (43.75%)          |
-| am       | 1      | 13 (40.62%)          |
-| gear     |        |                      |
-|          | 3      | 15 (46.88%)          |
-|          | 4      | 12 (37.5%)           |
-|          | 5      | 5 (15.62%)           |
-| carb     |        |                      |
-|          | 1      | 7 (21.88%)           |
-|          | 2      | 10 (31.25%)          |
-|          | 3      | 3 (9.38%)            |
-|          | 4      | 10 (31.25%)          |
-|          | 6      | 1 (3.12%)            |
-|          | 8      | 1 (3.12%)            |
+| Variable | Modality | N = 32 | Statistics           |
+| :------- | :------- | :----- | :------------------- |
+| mpg      |          |        | 19.2 \[15.43;22.8\]  |
+| cyl      |          |        |                      |
+|          | 4        |        | 11 (34.38%)          |
+|          | 6        |        | 7 (21.88%)           |
+|          | 8        |        | 14 (43.75%)          |
+| disp     |          |        | 196.3 \[120.83;326\] |
+| hp       |          |        | 123 \[96.5;180\]     |
+| drat     |          |        | 3.7 \[3.08;3.92\]    |
+| wt       |          |        | 3.33 \[2.58;3.61\]   |
+| qsec     |          |        | 17.71 \[16.89;18.9\] |
+| vs       | 1        |        | 14 (43.75%)          |
+| am       | 1        |        | 13 (40.62%)          |
+| gear     |          |        |                      |
+|          | 3        |        | 15 (46.88%)          |
+|          | 4        |        | 12 (37.5%)           |
+|          | 5        |        | 5 (15.62%)           |
+| carb     |          |        |                      |
+|          | 1        |        | 7 (21.88%)           |
+|          | 2        |        | 10 (31.25%)          |
+|          | 3        |        | 3 (9.38%)            |
+|          | 4        |        | 10 (31.25%)          |
+|          | 6        |        | 1 (3.12%)            |
+|          | 8        |        | 1 (3.12%)            |
 
 -----
 
@@ -159,22 +185,17 @@ parameter, change a parameter, compute a table and re-use the
 *desc\_prep* to rechange another parameter for another table.
 
 ``` r
-desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
-# > "cyl" -> cate
-# > "vs" -> bino
-# > "am" -> bino
-# > "gear" -> cate
-# > "carb" -> cate
-
-# Change the method for variable "vs" from a binomial to a categorical method
-desc_prep$method["vs"] <- "cate"
-
-desctable <- tabkris_2(desc_prep)
-
-# Variable of interest set to "am", also using the previous changed arguments
-desc_prep$varint <- "am"
-
-desctable_2 <- tabkris_2(desc_prep)
+# desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
+# 
+# # Change the method for variable "vs" from a binomial to a categorical method
+# desc_prep$method["vs"] <- "cate"
+# 
+# desctable <- tabkris_2(desc_prep)
+# 
+# # Variable of interest set to "am", also using the previous changed arguments
+# desc_prep$varint <- "am"
+# 
+# desctable_2 <- tabkris_2(desc_prep)
 ```
 
 ## Customization of result
@@ -274,11 +295,6 @@ desctable <- tabkris_2(mtcars, names = lab,
                        digits = 1,
                        lang = "fr",
                        auto_detect = T)
-# > "cyl" -> cate
-# > "vs" -> bino
-# > "am" -> bino
-# > "gear" -> cate
-# > "carb" -> cate
 
 knitr::kable(desctable)
 ```
@@ -370,7 +386,7 @@ continuous and ordered variables.
 | wilcox  |  X   |      |      |      |
 | kruskal |      |      |      |      |
 |  chisq  |      |  X   |  X   |  X   |
-| fisher  |      |  X   |      |      |
+| fisher  |      |  X   |  X   |  X   |
 
 #### Level of varint greater than 2
 

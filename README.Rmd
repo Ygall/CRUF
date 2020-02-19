@@ -28,6 +28,18 @@ Clinical Research Utilities Functions (CRUF) : Useful functions for clinical res
 ## Functions
 
 - tabkris_2 : Description table with options
+- Survival :
+  - Univariate : Compute and format multiple univariate cox model in a single table
+  <!-- - Multivariate : Format a multivariate cox model in a single table -->
+- Logistic regression :
+  - Univariate : Compute and format multiple univariate logistic model in a single table
+  - Multivariate : Format a multivariate logistic model in a single table
+- Logistic regression with cluster :
+  - Univariate : Compute and format multiple univariate logistic model in a single table, using robust sandwich variance estimation
+  - Multivariate : Format a multivariate logistic model in a single table, using robust sandwich variance estimation
+- Others :
+  - Format p-value with stars such as R does in summary of models
+  - Coerce factor to numeric with actual values
 
 ## Installation
 
