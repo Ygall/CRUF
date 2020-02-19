@@ -36,15 +36,14 @@ clinical research data analysis.
 
 ## Installation
 
-Future released version will be available on
-[CRAN](https://CRAN.R-project.org) with:
+Released version is available on [CRAN](https://CRAN.R-project.org)
+with:
 
 ``` r
 install.packages("CRUF")
 ```
 
-For now, development version is available on
-[GitHub](https://github.com/) with:
+Development version is available on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -177,10 +176,10 @@ knitr::kable(desctable)
 Using the argument **return\_table = FALSE** will not return a table but
 a list including all parameters used for the computation of the table.
 The user can modify only the argument he wants without needing to
-specify for every variable an unchanged paramater. To compute the table,
+specify for every variable an unchanged parameter. To compute the table,
 pass the list to the function once more with **return\_table = TRUE**.
 
-It is possbile to create a *desc\_prep* object with every default
+It is possible to create a *desc\_prep* object with every default
 parameter, change a parameter, compute a table and re-use the
 *desc\_prep* to rechange another parameter for another table.
 

@@ -43,13 +43,13 @@ Clinical Research Utilities Functions (CRUF) : Useful functions for clinical res
 
 ## Installation
 
-Future released version will be available on [CRAN](https://CRAN.R-project.org) with:
+Released version is available on [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("CRUF")
 ```
 
-For now, development version is available on [GitHub](https://github.com/) with:
+Development version is available on [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
