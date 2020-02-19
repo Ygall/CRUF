@@ -76,9 +76,9 @@ knitr::kable(desctable)
 ## **return_table = FALSE**
 
 Using the argument **return_table = FALSE** will not return a table but a list including all parameters used for the computation of the table.
-The user can modify only the argument he wants without needing to specify for every variable an unchanged paramater. To compute the table, pass the list to the function once more with **return_table = TRUE**.
+The user can modify only the argument he wants without needing to specify for every variable an unchanged parameter. To compute the table, pass the list to the function once more with **return_table = TRUE**.
 
-It is possbile to create a *desc_prep* object with every default parameter, change a parameter, compute a table and re-use the *desc_prep* to rechange another parameter for another table.
+It is possible to create a *desc_prep* object with every default parameter, change a parameter, compute a table and re-use the *desc_prep* to rechange another parameter for another table.
 
 ```{r return_table}
 # desc_prep <- tabkris_2(mtcars, return_table = F, auto_detect = T)
