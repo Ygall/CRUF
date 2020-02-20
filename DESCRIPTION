@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-1245-9260"))
 URL: https://github.com/Ygall/CRUF
 BugReports: https://github.com/Ygall/CRUF/issues
-Description: Useful functions for clinical research data analysis.
+Description: Useful functions for clinical research data analysis. Format table of descriptive statistics, regression models, pvalues according to medical journals standards.
 Depends: R (>= 3.4)
 License: GPL-3
 Encoding: UTF-8

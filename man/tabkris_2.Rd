@@ -137,6 +137,4 @@ The \code{tabkris_2} function is a function to describe a set of
 \author{
 Yves Gallien \email{yves.gallien@gmail.com}, 2019
 }
-\keyword{descriptive,}
-\keyword{one}
-\keyword{table}
+\concept{clinical research}

@@ -98,7 +98,7 @@
 #'
 #' @seealso \url{https://github.com/Ygall/CRUF} for manual and examples.
 #'
-#' @keywords descriptive, table one
+#' @concept clinical research
 #' @export
 
 
