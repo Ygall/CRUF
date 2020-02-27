@@ -7,6 +7,12 @@
 #' @return "***" if < 0.001, "\*\*" if < 0.01, "\*" if < 0.05, "." if < 0.1
 #' @export
 #'
+#' @examples
+#'
+#' pval_format(0.00025)
+#'
+#' pval_format(0.20)
+#'
 pval_format <- function(pval) {
   res <-
     ifelse(pval < 0.001, "***",
@@ -27,13 +33,20 @@ pval_format_r <- function(pval) {
 #' @return A vector as a numeric
 #' @export
 #'
+#' @examples
+#'
+#' vec <- as.factor(c(8:10))
+#'
+#' as.numeric(vec) # Return a false value
+#' as_numeric_factor # Return the value of numeric vector
+#'
 as_numeric_factor <- function(x) {
   as.numeric(levels(x))[x]
 }
 
 # Formatage --------------------------------------------------------------------
 
-format_pv <- function(p, text = F) {
+format_pv <- function(p, text = FALSE) {
   if (p < 0.0001)
     return("<0.0001")
   if (p >= 0.0001 &

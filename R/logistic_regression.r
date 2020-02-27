@@ -50,19 +50,19 @@ logistic_univariate <- function(data, y_names, x_names,
 
       res_one <- data.frame(glm_univar(y, x, data, twobytwo, formula,
                                        digits, ref_label),
-                            check.names = F, stringsAsFactors = F)
+                            check.names = FALSE, stringsAsFactors = FALSE)
 
       res_one <- collapse_table(res_one, collapse)
 
       res <- rbind.data.frame(res,
                               res_one,
-                              stringsAsFactors = F)
+                              stringsAsFactors = FALSE)
     }
     res_uni[[j]] <- res
   }
 
   if (length(y_names) == 1) {
-    res_uni <- data.frame(res_uni, check.names = F)
+    res_uni <- data.frame(res_uni, check.names = FALSE)
   }
 
   res_uni
@@ -103,8 +103,6 @@ logistic_multivariate <- function(fit) {
   for (i in varname) {
     table <- rbind(table, table(fit$model[, i], fit$model[, 1]))
   }
-
-  browser()
 
   res[, 3:4] <- table
 
@@ -182,19 +180,20 @@ logistic_cluster_univariate <- function(data, y_names, x_names, cluster,
 
       res_one <- data.frame(glm_cluster_univar(y, x, data, twobytwo, formula,
                                                digits, ref_label, cluster),
-                            check.names = F, stringsAsFactors = F)
+                            check.names = FALSE,
+                            stringsAsFactors = FALSE)
 
       res_one <- collapse_table(res_one, collapse)
 
       res <- rbind.data.frame(res,
                               res_one,
-                              stringsAsFactors = F)
+                              stringsAsFactors = FALSE)
     }
     res_uni[[j]] <- res
   }
 
   if (length(y_names) == 1) {
-    res_uni <- data.frame(res_uni, check.names = F)
+    res_uni <- data.frame(res_uni, check.names = FALSE)
   }
 
   res_uni

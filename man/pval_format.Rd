@@ -15,3 +15,10 @@ pval_format(pval)
 \description{
 Format a p-value into R display system with stars
 }
+\examples{
+
+pval_format(0.00025)
+
+pval_format(0.20)
+
+}

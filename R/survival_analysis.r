@@ -143,10 +143,10 @@ make_result_uni <- function(res_list, vecnames, names,
       res <- make_result_fact(model, vecname, name, level, test, data, event)
     }
 
-    result <- rbind.data.frame(result, res, stringsAsFactors = F)
+    result <- rbind.data.frame(result, res, stringsAsFactors = FALSE)
   }
 
-  data.frame(result, stringsAsFactors = F)
+  data.frame(result, stringsAsFactors = FALSE)
   colnames(result) <- c("Variable", "Modality", "N Event", "N Group",
                         "HR", "CI.Lower", "CI.Upper", "p-value", "Sig",
                         "Method")

@@ -100,6 +100,10 @@
 #'
 #' @concept clinical research
 #' @export
+#'
+#' @examples
+#'
+#' tabkris_2(boys)
 
 
 tabkris_2 <- function(data,
@@ -229,7 +233,7 @@ check_data <- function(data, env) {
   if (any(dup))
     stop("Duplicate names found: ",
          paste(colnames(data)[dup], collapse = ", "),
-         call. = F)
+         call. = FALSE)
 
   data
 }
@@ -255,16 +259,16 @@ check_names <- function(data, names) {
 check_varint <- function(data, varint) {
   if (!is.null(varint)) {
     if (!(varint %in% colnames(data))) {
-      stop("Argument varint not in data", call. = F)
+      stop("Argument varint not in data", call. = FALSE)
     }
 
     if (!is.character(varint)) {
-      stop("Argument varint not a character", call. = F)
+      stop("Argument varint not a character", call. = FALSE)
     }
 
     if (!is.factor(data[, varint])) {
       stop("Argument varint must refer to a factor variable in data",
-           call. = F)
+           call. = FALSE)
     }
   }
 }
@@ -301,15 +305,15 @@ check_args <- function(lang,
 
   # Check default method
   if (!is.vector(default_method)) {
-    stop("Argument default_method not a vector", call. = F)
+    stop("Argument default_method not a vector", call. = FALSE)
   } else if (length(default_method) != 4) {
-    stop("Argument default_method must be length 4", call. = F)
+    stop("Argument default_method must be length 4", call. = FALSE)
   }
   # Check default test
   if (!is.vector(default_test)) {
-    stop("Argument default_test not a vector", call. = F)
+    stop("Argument default_test not a vector", call. = FALSE)
   } else if (length(default_test) != 4) {
-    stop("Argument default_test must be length 4", call. = F)
+    stop("Argument default_test must be length 4", call. = FALSE)
   }
 
   # Check le format de explicit_na
@@ -358,7 +362,7 @@ check_default_method <- function(data, method, default_method) {
 
 check_method <- function(data, method, names) {
   if (!is.vector(method)) {
-    stop("Argument method not a vector", call. = F)
+    stop("Argument method not a vector", call. = FALSE)
   } else if (length(method) != dim(data)[2]) {
     stop("Argument method must be length of data columns", call. = FALSE)
   }
@@ -413,7 +417,7 @@ check_test_yn <- function(data, test, varint) {
   }
 
   if (!is.vector(test)) {
-    stop("Argument test not a vector", call. = F)
+    stop("Argument test not a vector", call. = FALSE)
   } else if (length(test) != dim(data)[2]) {
     stop("Argument test must be length of data columns", call. = FALSE)
   }
@@ -521,7 +525,7 @@ make_auto_detect <- function(data, lev_co, verbose) {
                        names(data)[i],
                        "\" -> ",
                        type[i]),
-                "", appendLF = T)
+                "", appendLF = TRUE)
       }
     }
 
@@ -672,7 +676,7 @@ make_result <-
       }
 
       result <-
-        rbind.data.frame(result, result_tmp, stringsAsFactors = F)
+        rbind.data.frame(result, result_tmp, stringsAsFactors = FALSE)
 
       rm(description, result_tmp, temp)
     }
@@ -724,7 +728,7 @@ make_first_column <-
                  "NA")
     )
 
-    res <- data.frame(mat, stringsAsFactors = F)
+    res <- data.frame(mat, stringsAsFactors = FALSE)
 
     res
   }
@@ -780,7 +784,7 @@ make_first_row    <- function(result, lev, n, varint, test_yn) {
   }
 
   if (!is.null(varint)) {
-    result <- rbind.data.frame(first_row, result, stringsAsFactors = F)
+    result <- rbind.data.frame(first_row, result, stringsAsFactors = FALSE)
   } else {
     attributes(result)$names[grep("N", colnames(result))] <- paste0("N = ", n)
   }
@@ -823,7 +827,7 @@ make_description <-
       mat[r, 1] <- sum(is.na(vec))
     }
 
-    res <- data.frame(mat, stringsAsFactors = F)
+    res <- data.frame(mat, stringsAsFactors = FALSE)
     res
   }
 
@@ -835,24 +839,24 @@ make_desc_cont <- function(r, vec, digits, pres_quant) {
   res3 <- ""
 
   if ("mean" %in% pres_quant) {
-    res1 <- paste0(round(mean(vec, na.rm = T), digits), " (",
-                   round(sd(vec, na.rm = T), digits), ") ")
+    res1 <- paste0(round(mean(vec, na.rm = TRUE), digits), " (",
+                   round(sd(vec, na.rm = TRUE), digits), ") ")
   }
 
   if ("med" %in% pres_quant) {
     res2 <- paste0(
-      round(median(vec, na.rm = T), digits),
+      round(median(vec, na.rm = TRUE), digits),
       " [",
-      round(quantile(vec, 0.25, na.rm = T), digits),
+      round(quantile(vec, 0.25, na.rm = TRUE), digits),
       ";",
-      round(quantile(vec, 0.75, na.rm = T), digits),
+      round(quantile(vec, 0.75, na.rm = TRUE), digits),
       "] "
     )
   }
 
   if ("range" %in% pres_quant) {
-    res3 <- paste0("{", round(min(vec, na.rm = T), digits), ";",
-                   round(max(vec, na.rm = T), digits), "}")
+    res3 <- paste0("{", round(min(vec, na.rm = TRUE), digits), ";",
+                   round(max(vec, na.rm = TRUE), digits), "}")
   }
 
   if (sum(is.na(vec)) != 0) {
@@ -873,25 +877,25 @@ make_desc_bino <- function(r, vec, digits, pres_quali) {
   per <- NULL
 
   if ("n" %in% pres_quali) {
-    n <- sum(levels(vec)[2] == vec, na.rm = T)
+    n <- sum(levels(vec)[2] == vec, na.rm = TRUE)
   }
 
   if ("total" %in% pres_quali) {
-    tot <- paste0("/", sum(!is.na(vec), na.rm = T))
+    tot <- paste0("/", sum(!is.na(vec), na.rm = TRUE))
   }
 
   if ("per" %in% pres_quali) {
     per <-
       paste0(" (",
              round(
-               sum(levels(vec)[2] == vec, na.rm = T) / sum(!is.na(vec),
-                                                           na.rm = T) * 100,
+               sum(levels(vec)[2] == vec, na.rm = TRUE) / sum(!is.na(vec),
+                                                           na.rm = TRUE) * 100,
                digits
              ), "%)")
   }
 
   if (!("total" %in% pres_quali) && (sum(is.na(vec)) != 0)) {
-    mat[1, 1] <- sum(!is.na(vec), na.rm = T)
+    mat[1, 1] <- sum(!is.na(vec), na.rm = TRUE)
   }
   mat[1, 2] <- paste0(n, tot, per)
 
@@ -907,7 +911,7 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
     per <- NULL
 
     if ("n" %in% pres_quali) {
-      n <- sum(levels(vec)[i] == vec, na.rm = T)
+      n <- sum(levels(vec)[i] == vec, na.rm = TRUE)
 
       if (n == 0) {
         next ()
@@ -915,14 +919,14 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
     }
 
     if ("total" %in% pres_quali) {
-      tot <- paste0("/", sum(!is.na(vec), na.rm = T))
+      tot <- paste0("/", sum(!is.na(vec), na.rm = TRUE))
     }
     if ("per" %in% pres_quali) {
       per <-
         paste0(" (",
                round(
-                 sum(levels(vec)[i] == vec, na.rm = T) / sum(!is.na(vec),
-                                                             na.rm = T) * 100,
+                 sum(levels(vec)[i] == vec, na.rm = TRUE) / sum(!is.na(vec),
+                                                            na.rm = TRUE) * 100,
                  digits
                ), "%)")
     }
@@ -931,7 +935,7 @@ make_desc_cate <- function(r, vec, digits, pres_quali) {
   }
 
   if (sum(is.na(vec)) != 0) {
-    mat[1, 1] <- sum(!is.na(vec), na.rm = T)
+    mat[1, 1] <- sum(!is.na(vec), na.rm = TRUE)
   }
   return(mat)
 }
@@ -977,7 +981,7 @@ make_table_test <-
                                         data_c[, varint]))$p.value, digits)
     )
 
-    res <- data.frame(mat, stringsAsFactors = F)
+    res <- data.frame(mat, stringsAsFactors = FALSE)
     res
   }
 
@@ -1004,4 +1008,3 @@ make_french <- function(data) {
 
   return(data)
 }
-

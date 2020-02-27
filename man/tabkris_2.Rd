@@ -131,6 +131,10 @@ The \code{tabkris_2} function is a function to describe a set of
   \code{lev_co} will set the number of maximum levels to coerce a column in a
   factor
 }
+\examples{
+
+tabkris_2(boys)
+}
 \seealso{
 \url{https://github.com/Ygall/CRUF} for manual and examples.
 }

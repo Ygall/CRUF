@@ -3,18 +3,30 @@
 * fedora 31 (on r-hub.io)
 * win-builder (devel and release)
 
-## Re-submission
+## Re-first submission
 
- Found the following \keyword or \concept entries
-   which likely give several index terms:
-     File 'tabkris_2.Rd':
-       \keyword{descriptive,}
+*Please omit the redundant 'Useful functions for' from your description.*
 
-Changed with \concept{clinical research}
+=> Done
 
-Please elaborate in the Description field what this is about.
+*If there are references describing (the theoretical backgrounds of) the*
+*methods in your package, please add these in the description field of*
+*your DESCRIPTION file*
 
-Changed for a longer description of the package.
+=> No theoretical backroung paper for this package
+
+*Please always write TRUE and FALSE instead of T and F.*
+
+=> Done
+
+*Please add small executable examples in your Rd-files to illustrate the*
+*use of the exported function but also enable automatic testing.*
+
+=> Added examples for main functions in .Rd files
+
+*test_bug.R is an empty file.*
+
+=> Deleted tests as not implemented
 
 ## R CMD check results
 

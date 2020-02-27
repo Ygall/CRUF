@@ -15,3 +15,11 @@ A vector as a numeric
 \description{
 Coerce a factor to a numeric vector
 }
+\examples{
+
+vec <- as.factor(c(8:10))
+
+as.numeric(vec) # Return a false value
+as_numeric_factor # Return the value of numeric vector
+
+}
