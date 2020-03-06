@@ -212,8 +212,8 @@ logistic_cluster_multivariate <- function(fit) {
   if (nlevels(fit$glm_res$data[, as.character(fit$glm_res$formula)[2]]) > 2) {
     stop("Response variable must have two levels, check binomial model")
   }
-  if (!("glm" %in% class(fit))) {
-    stop("Model must be the result of glm function")
+  if (!("glm.cluster" %in% class(fit))) {
+    stop("Model must be the result of glm cluster function")
   }
 
   nmod <- unlist(lapply(fit$glm_res$xlevels, function(x) {
